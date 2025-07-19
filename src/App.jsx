@@ -7,9 +7,15 @@ import Cerimonia from "./pages/Cerimonia";
 import Confirmacao from "./pages/Confirmacao";
 import Presentes from "./pages/Presentes";
 import Contato from "./pages/Contato";
+import { initEmailJS } from "./config/emailjs";
 
 export default function App() {
   const [activeSection, setActiveSection] = useState("home");
+
+  // Initialize EmailJS
+  useEffect(() => {
+    initEmailJS();
+  }, []);
 
   // Smooth scroll to section
   const scrollToSection = (sectionId) => {
@@ -31,14 +37,13 @@ export default function App() {
         "confirmacao",
         "contato",
       ];
+
       const scrollPosition = window.scrollY + 100;
 
       for (const section of sections) {
         const element = document.getElementById(section);
         if (element) {
-          const offsetTop = element.offsetTop;
-          const offsetHeight = element.offsetHeight;
-
+          const { offsetTop, offsetHeight } = element;
           if (
             scrollPosition >= offsetTop &&
             scrollPosition < offsetTop + offsetHeight
@@ -56,37 +61,33 @@ export default function App() {
 
   return (
     <div className="App">
-      <Navbar activeSection={activeSection} onNavigate={scrollToSection} />
+      <Navbar activeSection={activeSection} scrollToSection={scrollToSection} />
 
-      {/* Home Section */}
-      <section id="home">
-        <Home />
-      </section>
+      <main>
+        <section id="home">
+          <Home scrollToSection={scrollToSection} />
+        </section>
 
-      {/* Historia Section */}
-      <section id="historia">
-        <Historia />
-      </section>
+        <section id="historia">
+          <Historia />
+        </section>
 
-      {/* Cerimonia Section */}
-      <section id="cerimonia">
-        <Cerimonia />
-      </section>
+        <section id="cerimonia">
+          <Cerimonia />
+        </section>
 
-      {/* Presentes Section */}
-      <section id="presentes">
-        <Presentes />
-      </section>
+        <section id="presentes">
+          <Presentes />
+        </section>
 
-      {/* Confirmacao Section */}
-      <section id="confirmacao">
-        <Confirmacao />
-      </section>
+        <section id="confirmacao">
+          <Confirmacao />
+        </section>
 
-      {/* Contato Section */}
-      <section id="contato">
-        <Contato />
-      </section>
+        <section id="contato">
+          <Contato />
+        </section>
+      </main>
 
       <Footer />
     </div>

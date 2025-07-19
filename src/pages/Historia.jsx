@@ -380,26 +380,6 @@ export default function Historia() {
             </div>
           </div>
         </div>
-
-        {/* Interactive Elements */}
-        <div
-          className={`mt-16 text-center transition-all duration-1000 delay-1400 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
-          <div className="bg-gradient-to-r from-slate-800 to-gray-900 p-8 rounded-2xl text-white">
-            <h3 className="text-2xl font-serif mb-4">
-              Quer saber mais sobre nossa história?
-            </h3>
-            <p className="mb-6">
-              Entre em contato conosco para conversar sobre nossos momentos
-              especiais!
-            </p>
-            <button className="bg-white text-slate-800 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg">
-              Fale Conosco
-            </button>
-          </div>
-        </div>
       </div>
     </div>
   );

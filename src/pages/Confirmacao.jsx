@@ -1,20 +1,18 @@
 import { useState } from "react";
-import emailjs from "emailjs-com";
+import { sendRSVPEmail } from "../config/emailjs";
 
 export default function Confirmacao() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    guests: 1,
+    guests: "",
     attending: "yes",
     dietaryRestrictions: "",
     message: "",
   });
-
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState("");
+  const [submitStatus, setSubmitStatus] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,401 +22,427 @@ export default function Confirmacao() {
     }));
   };
 
-  const validateForm = () => {
-    if (!formData.name.trim()) {
-      setSubmitError("Por favor, insira seu nome.");
-      return false;
-    }
-    if (!formData.email.trim()) {
-      setSubmitError("Por favor, insira seu email.");
-      return false;
-    }
-    if (!formData.email.includes("@")) {
-      setSubmitError("Por favor, insira um email válido.");
-      return false;
-    }
-    if (!formData.attending) {
-      setSubmitError("Por favor, confirme se irá comparecer.");
-      return false;
-    }
-    return true;
-  };
-
-  const saveToLocalStorage = (data) => {
-    try {
-      const existingData = JSON.parse(
-        localStorage.getItem("weddingRSVP") || "[]"
-      );
-      const newEntry = {
-        ...data,
-        id: Date.now(),
-        submittedAt: new Date().toISOString(),
-      };
-      existingData.push(newEntry);
-      localStorage.setItem("weddingRSVP", JSON.stringify(existingData));
-    } catch (error) {
-      console.error("Erro ao salvar localmente:", error);
-    }
-  };
-
-  const sendEmail = async (data) => {
-    const templateParams = {
-      to_name: "Wilson & Erica",
-      from_name: data.name,
-      from_email: data.email,
-      phone: data.phone || "Não informado",
-      guests: data.guests,
-      attending: data.attending === "yes" ? "Sim" : "Não",
-      dietary_restrictions: data.dietaryRestrictions || "Nenhuma",
-      message: data.message || "Nenhuma mensagem",
-      reply_to: data.email,
-    };
-
-    try {
-      const result = await emailjs.send(
-        "service_gvf7pkf", // Service ID fornecido
-        "template_4dmzovs", // Template ID fornecido
-        templateParams,
-        "3nsjjxziUMy949J-v" // Public Key fornecida
-      );
-
-      console.log("Email enviado com sucesso:", result);
-      return true;
-    } catch (error) {
-      console.error("Erro ao enviar email:", error);
-      return false;
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitError("");
-
-    if (!validateForm()) {
-      return;
-    }
-
     setIsSubmitting(true);
+    setSubmitStatus(null);
 
     try {
-      // Salva localmente primeiro
-      saveToLocalStorage(formData);
+      // Enviar email via EmailJS
+      const emailResult = await sendRSVPEmail(formData);
 
-      // Tenta enviar email
-      const emailSent = await sendEmail(formData);
+      // Save to localStorage as backup
+      const submissions = JSON.parse(
+        localStorage.getItem("rsvp_submissions") || "[]"
+      );
+      submissions.push({
+        ...formData,
+        timestamp: new Date().toISOString(),
+        emailSent: emailResult.success,
+      });
+      localStorage.setItem("rsvp_submissions", JSON.stringify(submissions));
 
-      if (!emailSent) {
-        console.warn(
-          "Email não foi enviado, mas dados foram salvos localmente"
-        );
+      if (emailResult.success) {
+        setSubmitStatus("success");
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          guests: "",
+          attending: "yes",
+          dietaryRestrictions: "",
+          message: "",
+        });
+      } else {
+        setSubmitStatus("error");
       }
-
-      console.log("Formulário enviado:", formData);
-      setIsSubmitted(true);
     } catch (error) {
-      console.error("Erro ao enviar formulário:", error);
-      setSubmitError("Erro ao enviar formulário. Tente novamente.");
+      console.error("Error saving confirmation:", error);
+      setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (isSubmitted) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 py-16">
-        <div className="max-w-2xl mx-auto px-4">
-          <div className="bg-white p-12 rounded-lg shadow-lg text-center">
-            <div className="text-6xl mb-6">🎉</div>
-            <h1 className="text-4xl font-serif text-gray-800 mb-4">
-              Obrigado!
-            </h1>
-            <p className="text-xl text-gray-600 mb-8">
-              Sua confirmação foi recebida com sucesso. Estamos muito felizes em
-              saber que você virá celebrar conosco!
-            </p>
-            <div className="bg-slate-50 p-6 rounded-lg">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                Próximos Passos
-              </h2>
-              <ul className="text-gray-600 space-y-2 text-left">
-                <li>• Você receberá um email de confirmação</li>
-                <li>• Lembre-se do dress code: Elegante Esportivo</li>
-                <li>• Chegue 30 minutos antes da cerimônia</li>
-                <li>• Não esqueça de trazer alegria e amor!</li>
-              </ul>
-            </div>
-            <button
-              onClick={() => {
-                setIsSubmitted(false);
-                setFormData({
-                  name: "",
-                  email: "",
-                  phone: "",
-                  guests: 1,
-                  attending: "yes",
-                  dietaryRestrictions: "",
-                  message: "",
-                });
-              }}
-              className="mt-8 bg-slate-600 text-white px-8 py-3 rounded-full hover:bg-slate-700 transition-colors"
-            >
-              Confirmar Outro Convidado
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 py-16">
-      <div className="max-w-4xl mx-auto px-4">
+    <div className="min-h-screen elegant-gradient-rose">
+      <div className="max-w-4xl mx-auto px-4 py-24">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-serif text-gray-800 mb-4">
-            Confirmação de Presença
+        <div className="text-center mb-20 elegant-animation">
+          <h1 className="text-6xl text-elegant mb-6 elegant-text-gradient">
+            Confirme sua Presença
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <div className="w-20 h-1 bg-gradient-to-r from-pink-300 to-rose-300 mx-auto mb-8 rounded-full"></div>
+          <p className="text-xl text-body text-slate-600 max-w-3xl mx-auto leading-relaxed">
             Sua presença é muito importante para nós! Por favor, confirme sua
-            participação até 30 de outubro de 2025.
+            participação preenchendo o formulário abaixo.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12">
-          {/* Form */}
-          <div className="bg-white p-8 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-serif text-gray-800 mb-6">
+        {/* Form */}
+        <div className="elegant-card p-12 elegant-animation-delay-1">
+          <div className="text-center mb-12">
+            <div
+              className="text-6xl mb-6 animate-bounce"
+              style={{ animationDuration: "3s" }}
+            >
+              💌
+            </div>
+            <h2 className="text-3xl text-elegant mb-6 elegant-text-gradient">
               Formulário de Confirmação
             </h2>
+            <div className="w-16 h-1 bg-gradient-to-r from-pink-200 to-rose-200 mx-auto mb-6 rounded-full"></div>
+            <p className="text-body text-slate-600">
+              Preencha os dados abaixo para confirmar sua presença em nosso
+              casamento.
+            </p>
+          </div>
 
-            {submitError && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-red-600">{submitError}</p>
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Personal Information */}
+            <div className="elegant-card p-8 mb-8">
+              <h3 className="text-xl text-elegant mb-6 elegant-text-gradient">
+                📝 Informações Pessoais
+              </h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block text-body-medium text-slate-700 mb-3"
+                  >
+                    Nome Completo *
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent elegant-transition text-body"
+                    placeholder="Digite seu nome completo"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-body-medium text-slate-700 mb-3"
+                  >
+                    Email *
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent elegant-transition text-body"
+                    placeholder="seu@email.com"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="phone"
+                    className="block text-body-medium text-slate-700 mb-3"
+                  >
+                    Telefone
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent elegant-transition text-body"
+                    placeholder="(11) 99999-9999"
+                  />
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="guests"
+                    className="block text-body-medium text-slate-700 mb-3"
+                  >
+                    Número de Convidados *
+                  </label>
+                  <select
+                    id="guests"
+                    name="guests"
+                    value={formData.guests}
+                    onChange={handleChange}
+                    required
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent elegant-transition text-body"
+                  >
+                    <option value="">Selecione...</option>
+                    <option value="1">1 pessoa</option>
+                    <option value="2">2 pessoas</option>
+                    <option value="3">3 pessoas</option>
+                    <option value="4">4 pessoas</option>
+                    <option value="5">5 pessoas</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            {/* Confirmation */}
+            <div className="elegant-card p-8 mb-8">
+              <h3 className="text-xl text-elegant mb-6 elegant-text-gradient">
+                ✅ Confirmação de Presença
+              </h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-body-medium text-slate-700 mb-4">
+                    Você irá comparecer ao nosso casamento? *
+                  </label>
+                  <div className="space-y-3">
+                    <label className="flex items-center gap-3 p-4 border border-slate-200 rounded-lg hover:bg-pink-50 elegant-transition cursor-pointer">
+                      <input
+                        type="radio"
+                        name="attending"
+                        value="yes"
+                        checked={formData.attending === "yes"}
+                        onChange={handleChange}
+                        className="w-4 h-4 text-pink-600 focus:ring-pink-500"
+                      />
+                      <div>
+                        <span className="text-lg text-elegant font-medium">
+                          Sim, estarei presente!
+                        </span>
+                        <p className="text-body text-slate-600">
+                          Mal posso esperar para celebrar com vocês!
+                        </p>
+                      </div>
+                    </label>
+                    <label className="flex items-center gap-3 p-4 border border-slate-200 rounded-lg hover:bg-pink-50 elegant-transition cursor-pointer">
+                      <input
+                        type="radio"
+                        name="attending"
+                        value="no"
+                        checked={formData.attending === "no"}
+                        onChange={handleChange}
+                        className="w-4 h-4 text-pink-600 focus:ring-pink-500"
+                      />
+                      <div>
+                        <span className="text-lg text-elegant font-medium">
+                          Infelizmente não poderei ir
+                        </span>
+                        <p className="text-body text-slate-600">
+                          Entendo, mas ficaremos com saudades!
+                        </p>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Dietary Restrictions */}
+            {formData.attending === "yes" && (
+              <div className="elegant-card p-8 mb-8">
+                <h3 className="text-xl text-elegant mb-6 elegant-text-gradient">
+                  🍽️ Restrições Alimentares
+                </h3>
+                <div>
+                  <label
+                    htmlFor="dietaryRestrictions"
+                    className="block text-body-medium text-slate-700 mb-3"
+                  >
+                    Você ou seus acompanhantes têm alguma restrição alimentar?
+                  </label>
+                  <textarea
+                    id="dietaryRestrictions"
+                    name="dietaryRestrictions"
+                    value={formData.dietaryRestrictions}
+                    onChange={handleChange}
+                    rows="3"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent elegant-transition text-body resize-none"
+                    placeholder="Ex: Vegetariano, alérgico a frutos do mar, celíaco, etc. (Deixe em branco se não houver restrições)"
+                  ></textarea>
+                  <p className="text-sm text-slate-500 mt-2">
+                    Isso nos ajudará a preparar um menu adequado para todos os
+                    convidados.
+                  </p>
+                </div>
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Message */}
+            <div className="elegant-card p-8 mb-8">
+              <h3 className="text-xl text-elegant mb-6 elegant-text-gradient">
+                💝 Mensagem para os Noivos
+              </h3>
               <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Nome Completo *
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent"
-                  placeholder="Seu nome completo"
-                  disabled={isSubmitting}
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent"
-                  placeholder="seu@email.com"
-                  disabled={isSubmitting}
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Telefone
-                </label>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent"
-                  placeholder="(11) 99999-9999"
-                  disabled={isSubmitting}
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Número de Convidados *
-                </label>
-                <select
-                  name="guests"
-                  value={formData.guests}
-                  onChange={handleChange}
-                  required
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent"
-                  disabled={isSubmitting}
+                <label
+                  htmlFor="message"
+                  className="block text-body-medium text-slate-700 mb-3"
                 >
-                  <option value={1}>1 pessoa</option>
-                  <option value={2}>2 pessoas</option>
-                  <option value={3}>3 pessoas</option>
-                  <option value={4}>4 pessoas</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Confirma Presença? *
-                </label>
-                <div className="space-y-2">
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="attending"
-                      value="yes"
-                      checked={formData.attending === "yes"}
-                      onChange={handleChange}
-                      className="mr-2"
-                      disabled={isSubmitting}
-                    />
-                    <span>Sim, estarei presente!</span>
-                  </label>
-                  <label className="flex items-center">
-                    <input
-                      type="radio"
-                      name="attending"
-                      value="no"
-                      checked={formData.attending === "no"}
-                      onChange={handleChange}
-                      className="mr-2"
-                      disabled={isSubmitting}
-                    />
-                    <span>Infelizmente não poderei ir</span>
-                  </label>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Restrições Alimentares
+                  Deixe uma mensagem especial (opcional)
                 </label>
                 <textarea
-                  name="dietaryRestrictions"
-                  value={formData.dietaryRestrictions}
-                  onChange={handleChange}
-                  rows="3"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent"
-                  placeholder="Ex: Vegetariano, alérgico a frutos do mar, etc."
-                  disabled={isSubmitting}
-                />
-              </div>
-
-              <div>
-                <label className="block text-gray-700 font-semibold mb-2">
-                  Mensagem para os Noivos
-                </label>
-                <textarea
+                  id="message"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
                   rows="4"
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-slate-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent elegant-transition text-body resize-none"
                   placeholder="Deixe uma mensagem especial para Wilson e Erica..."
-                  disabled={isSubmitting}
-                />
+                ></textarea>
               </div>
+            </div>
 
+            <div className="text-center">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-200 transform ${
-                  isSubmitting
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-gradient-to-r from-slate-600 to-gray-700 text-white hover:from-slate-700 hover:to-gray-800 hover:scale-105"
+                className={`elegant-button text-lg px-12 py-4 font-medium ${
+                  isSubmitting ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               >
                 {isSubmitting ? (
-                  <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     Enviando...
                   </div>
                 ) : (
                   "Confirmar Presença"
                 )}
               </button>
-            </form>
-          </div>
+            </div>
+          </form>
 
-          {/* Info Sidebar */}
-          <div className="space-y-6">
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-serif text-gray-800 mb-4">
-                📅 Informações Importantes
-              </h3>
+          {/* Status Messages */}
+          {submitStatus === "success" && (
+            <div className="mt-8 p-6 bg-green-50 border border-green-200 rounded-xl elegant-animation">
+              <div className="flex items-center gap-4">
+                <div className="text-3xl">✅</div>
+                <div>
+                  <h3 className="text-lg text-elegant mb-2 elegant-text-gradient">
+                    Confirmação Enviada!
+                  </h3>
+                  <p className="text-body text-green-700">
+                    Obrigado por confirmar sua presença! Um email de confirmação
+                    foi enviado para você. Entraremos em contato em breve com
+                    mais detalhes sobre o evento.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {submitStatus === "error" && (
+            <div className="mt-8 p-6 bg-red-50 border border-red-200 rounded-xl elegant-animation">
+              <div className="flex items-center gap-4">
+                <div className="text-3xl">❌</div>
+                <div>
+                  <h3 className="text-lg text-elegant mb-2 elegant-text-gradient">
+                    Erro ao Enviar
+                  </h3>
+                  <p className="text-body text-red-700">
+                    Houve um problema ao enviar sua confirmação. Por favor,
+                    tente novamente ou entre em contato conosco diretamente.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Additional Information */}
+        <div className="elegant-card p-12 mt-20 elegant-animation-delay-2">
+          <h2 className="text-3xl text-elegant text-center mb-12 elegant-text-gradient">
+            Informações Importantes
+          </h2>
+          <div className="w-16 h-1 bg-gradient-to-r from-pink-200 to-rose-200 mx-auto mb-12 rounded-full"></div>
+
+          <div className="grid md:grid-cols-2 gap-12">
+            <div className="elegant-card p-8 elegant-card-hover">
+              <div className="text-center mb-6">
+                <div className="text-5xl mb-4">📅</div>
+                <h3 className="text-xl text-elegant mb-4 elegant-text-gradient">
+                  Data e Horário
+                </h3>
+              </div>
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <span className="text-slate-500">📅</span>
-                  <span className="text-gray-600">
-                    Data: 22 de Novembro de 2025
+                  <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
+                  <span className="text-body text-slate-600">
+                    22 de Novembro de 2025
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-slate-500">⏰</span>
-                  <span className="text-gray-600">Horário: 18:00</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-slate-500">📍</span>
-                  <span className="text-gray-600">
-                    Local: Espaço de Eventos Flores
+                  <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
+                  <span className="text-body text-slate-600">
+                    Cerimônia: 18:00
                   </span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <span className="text-slate-500">👗</span>
-                  <span className="text-gray-600">
-                    Dress Code: Elegante Esportivo
+                  <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
+                  <span className="text-body text-slate-600">
+                    Recepção: 20:00
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="bg-gradient-to-r from-slate-500 to-gray-600 p-6 rounded-lg text-white">
-              <h3 className="text-xl font-serif mb-4">💝 O que Esperar</h3>
-              <ul className="space-y-2">
-                <li>• Cerimônia religiosa emocionante</li>
-                <li>• Cocktail com drinks especiais</li>
-                <li>• Jantar gourmet</li>
-                <li>• Música ao vivo e DJ</li>
-                <li>• Muitas surpresas especiais!</li>
-              </ul>
+            <div className="elegant-card p-8 elegant-card-hover">
+              <div className="text-center mb-6">
+                <div className="text-5xl mb-4">📍</div>
+                <h3 className="text-xl text-elegant mb-4 elegant-text-gradient">
+                  Local
+                </h3>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
+                  <span className="text-body text-slate-600">
+                    Espaço de Eventos Flores
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
+                  <span className="text-body text-slate-600">
+                    Rua das Flores, 123
+                  </span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
+                  <span className="text-body text-slate-600">
+                    São Paulo, SP
+                  </span>
+                </div>
+              </div>
             </div>
+          </div>
+        </div>
 
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-serif text-gray-800 mb-4">
-                ❓ Dúvidas Frequentes
-              </h3>
-              <div className="space-y-4">
-                <div>
-                  <h4 className="font-semibold text-gray-800">
-                    Posso levar acompanhante?
-                  </h4>
-                  <p className="text-gray-600 text-sm">
-                    Sim, mas confirme no formulário acima.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-800">
-                    Há estacionamento?
-                  </h4>
-                  <p className="text-gray-600 text-sm">
-                    Sim, gratuito no local.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-semibold text-gray-800">
-                    Posso levar crianças?
-                  </h4>
-                  <p className="text-gray-600 text-sm">
-                    Sim, é um evento familiar!
-                  </p>
-                </div>
+        {/* Contact Information */}
+        <div className="elegant-gradient-pink p-12 rounded-3xl text-gray-600 mt-20 elegant-animation-delay-3">
+          <div className="text-center">
+            <h2 className="text-3xl text-elegant mb-8">Precisa de Ajuda?</h2>
+            <div className="w-16 h-1 bg-white/30 mx-auto mb-8 rounded-full"></div>
+            <p className="text-body-light mb-8 max-w-2xl mx-auto">
+              Se você tem alguma dúvida ou dificuldade para confirmar sua
+              presença, entre em contato conosco através dos canais abaixo.
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-8">
+              <div className="elegant-glass p-6 rounded-2xl">
+                <div className="text-4xl mb-3">📞</div>
+                <h3 className="text-lg text-elegant mb-2">Telefone</h3>
+                <p className="text-body-light">(11) 99999-9999</p>
+              </div>
+              <div className="elegant-glass p-6 rounded-2xl">
+                <div className="text-4xl mb-3">💬</div>
+                <h3 className="text-lg text-elegant mb-2">WhatsApp</h3>
+                <p className="text-body-light">(11) 99999-9999</p>
+              </div>
+              <div className="elegant-glass p-6 rounded-2xl">
+                <div className="text-4xl mb-3">📧</div>
+                <h3 className="text-lg text-elegant mb-2">Email</h3>
+                <p className="text-body-light">wilson.erica@email.com</p>
               </div>
             </div>
           </div>
