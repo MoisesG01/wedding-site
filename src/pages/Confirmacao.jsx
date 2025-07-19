@@ -323,9 +323,8 @@ export default function Confirmacao() {
                     Confirmação Enviada!
                   </h3>
                   <p className="text-body text-green-700">
-                    Obrigado por confirmar sua presença! Um email de confirmação
-                    foi enviado para você. Entraremos em contato em breve com
-                    mais detalhes sobre o evento.
+                    Obrigado por confirmar sua presença! Entraremos em contato
+                    em breve com mais detalhes sobre o evento.
                   </p>
                 </div>
               </div>
