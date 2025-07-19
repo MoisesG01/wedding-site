@@ -13,6 +13,7 @@ export default function Confirmacao() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [lastSubmittedData, setLastSubmittedData] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,6 +44,7 @@ export default function Confirmacao() {
       localStorage.setItem("rsvp_submissions", JSON.stringify(submissions));
 
       if (emailResult.success) {
+        setLastSubmittedData({ ...formData });
         setSubmitStatus("success");
         setFormData({
           name: "",
@@ -166,15 +168,21 @@ export default function Confirmacao() {
                     htmlFor="guests"
                     className="block text-body-medium text-slate-700 mb-3"
                   >
-                    Número de Convidados *
+                    Número de Convidados{" "}
+                    {formData.attending === "yes" ? "*" : ""}
                   </label>
                   <select
                     id="guests"
                     name="guests"
                     value={formData.guests}
                     onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent elegant-transition text-body"
+                    required={formData.attending === "yes"}
+                    disabled={formData.attending === "no"}
+                    className={`w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent elegant-transition text-body ${
+                      formData.attending === "no"
+                        ? "bg-gray-100 cursor-not-allowed"
+                        : ""
+                    }`}
                   >
                     <option value="">Selecione...</option>
                     <option value="1">1 pessoa</option>
@@ -183,6 +191,11 @@ export default function Confirmacao() {
                     <option value="4">4 pessoas</option>
                     <option value="5">5 pessoas</option>
                   </select>
+                  {formData.attending === "no" && (
+                    <p className="text-sm text-gray-500 mt-2">
+                      Campo não necessário quando não vai comparecer
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
@@ -306,25 +319,32 @@ export default function Confirmacao() {
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                     Enviando...
                   </div>
-                ) : (
+                ) : formData.attending === "yes" ? (
                   "Confirmar Presença"
+                ) : (
+                  "Enviar Resposta"
                 )}
               </button>
             </div>
           </form>
 
           {/* Status Messages */}
-          {submitStatus === "success" && (
+          {submitStatus === "success" && lastSubmittedData && (
             <div className="mt-8 p-6 bg-green-50 border border-green-200 rounded-xl elegant-animation">
               <div className="flex items-center gap-4">
-                <div className="text-3xl">✅</div>
+                <div className="text-3xl">
+                  {lastSubmittedData.attending === "yes" ? "✅" : "💝"}
+                </div>
                 <div>
                   <h3 className="text-lg text-elegant mb-2 elegant-text-gradient">
-                    Confirmação Enviada!
+                    {lastSubmittedData.attending === "yes"
+                      ? "Presença Confirmada!"
+                      : "Resposta Recebida!"}
                   </h3>
                   <p className="text-body text-green-700">
-                    Obrigado por confirmar sua presença! Entraremos em contato
-                    em breve com mais detalhes sobre o evento.
+                    {lastSubmittedData.attending === "yes"
+                      ? "Obrigado por confirmar sua presença! Entraremos em contato em breve com mais detalhes sobre o evento."
+                      : "Obrigado por nos informar! Entendemos que nem sempre é possível comparecer, mas sua presença em nossos corações é o que mais importa."}
                   </p>
                 </div>
               </div>
