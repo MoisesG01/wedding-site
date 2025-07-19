@@ -1,72 +1,83 @@
-import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 
-export default function Navbar() {
+export default function Navbar({ activeSection, onNavigate }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation();
 
-  const isActive = (path) => location.pathname === path;
+  // Função para scroll suave para uma seção
+  const scrollToSection = (sectionId) => {
+    if (onNavigate) {
+      onNavigate(sectionId);
+    } else {
+      const element = document.getElementById(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  };
 
   return (
     <nav className="bg-gradient-to-r from-slate-800 to-gray-900 shadow-lg sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          <button
+            onClick={() => scrollToSection("home")}
+            className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+          >
             <span className="text-2xl">💕</span>
             <h1 className="font-bold text-xl text-white">Wilson & Erica</h1>
-          </Link>
+          </button>
 
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-6">
-            <Link
-              to="/"
+            <button
+              onClick={() => scrollToSection("home")}
               className={`text-white hover:text-gray-300 transition-colors font-medium ${
-                isActive("/") ? "border-b-2 border-white" : ""
+                activeSection === "home" ? "border-b-2 border-white" : ""
               }`}
             >
               Home
-            </Link>
-            <Link
-              to="/historia"
+            </button>
+            <button
+              onClick={() => scrollToSection("historia")}
               className={`text-white hover:text-gray-300 transition-colors font-medium ${
-                isActive("/historia") ? "border-b-2 border-white" : ""
+                activeSection === "historia" ? "border-b-2 border-white" : ""
               }`}
             >
               História
-            </Link>
-            <Link
-              to="/cerimonia"
+            </button>
+            <button
+              onClick={() => scrollToSection("cerimonia")}
               className={`text-white hover:text-gray-300 transition-colors font-medium ${
-                isActive("/cerimonia") ? "border-b-2 border-white" : ""
+                activeSection === "cerimonia" ? "border-b-2 border-white" : ""
               }`}
             >
               Cerimônia
-            </Link>
-            <Link
-              to="/confirmacao"
+            </button>
+            <button
+              onClick={() => scrollToSection("presentes")}
               className={`text-white hover:text-gray-300 transition-colors font-medium ${
-                isActive("/confirmacao") ? "border-b-2 border-white" : ""
-              }`}
-            >
-              Confirmação
-            </Link>
-            <Link
-              to="/presentes"
-              className={`text-white hover:text-gray-300 transition-colors font-medium ${
-                isActive("/presentes") ? "border-b-2 border-white" : ""
+                activeSection === "presentes" ? "border-b-2 border-white" : ""
               }`}
             >
               Presentes
-            </Link>
-            <Link
-              to="/contato"
+            </button>
+            <button
+              onClick={() => scrollToSection("confirmacao")}
               className={`text-white hover:text-gray-300 transition-colors font-medium ${
-                isActive("/contato") ? "border-b-2 border-white" : ""
+                activeSection === "confirmacao" ? "border-b-2 border-white" : ""
+              }`}
+            >
+              Confirmação
+            </button>
+            <button
+              onClick={() => scrollToSection("contato")}
+              className={`text-white hover:text-gray-300 transition-colors font-medium ${
+                activeSection === "contato" ? "border-b-2 border-white" : ""
               }`}
             >
               Contato
-            </Link>
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -103,60 +114,80 @@ export default function Navbar() {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-slate-600">
             <div className="flex flex-col space-y-3">
-              <Link
-                to="/"
-                className={`text-white hover:text-gray-300 transition-colors font-medium py-2 ${
-                  isActive("/") ? "bg-slate-700 rounded px-3" : ""
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  scrollToSection("home");
+                }}
+                className={`text-white hover:text-gray-300 transition-colors font-medium py-2 text-left ${
+                  activeSection === "home" ? "bg-slate-700 rounded px-3" : ""
                 }`}
-                onClick={() => setIsMenuOpen(false)}
               >
                 Home
-              </Link>
-              <Link
-                to="/historia"
-                className={`text-white hover:text-gray-300 transition-colors font-medium py-2 ${
-                  isActive("/historia") ? "bg-slate-700 rounded px-3" : ""
+              </button>
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  scrollToSection("historia");
+                }}
+                className={`text-white hover:text-gray-300 transition-colors font-medium py-2 text-left ${
+                  activeSection === "historia"
+                    ? "bg-slate-700 rounded px-3"
+                    : ""
                 }`}
-                onClick={() => setIsMenuOpen(false)}
               >
                 História
-              </Link>
-              <Link
-                to="/cerimonia"
-                className={`text-white hover:text-gray-300 transition-colors font-medium py-2 ${
-                  isActive("/cerimonia") ? "bg-slate-700 rounded px-3" : ""
+              </button>
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  scrollToSection("cerimonia");
+                }}
+                className={`text-white hover:text-gray-300 transition-colors font-medium py-2 text-left ${
+                  activeSection === "cerimonia"
+                    ? "bg-slate-700 rounded px-3"
+                    : ""
                 }`}
-                onClick={() => setIsMenuOpen(false)}
               >
                 Cerimônia
-              </Link>
-              <Link
-                to="/confirmacao"
-                className={`text-white hover:text-gray-300 transition-colors font-medium py-2 ${
-                  isActive("/confirmacao") ? "bg-slate-700 rounded px-3" : ""
+              </button>
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  scrollToSection("presentes");
+                }}
+                className={`text-white hover:text-gray-300 transition-colors font-medium py-2 text-left ${
+                  activeSection === "presentes"
+                    ? "bg-slate-700 rounded px-3"
+                    : ""
                 }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Confirmação
-              </Link>
-              <Link
-                to="/presentes"
-                className={`text-white hover:text-gray-300 transition-colors font-medium py-2 ${
-                  isActive("/presentes") ? "bg-slate-700 rounded px-3" : ""
-                }`}
-                onClick={() => setIsMenuOpen(false)}
               >
                 Presentes
-              </Link>
-              <Link
-                to="/contato"
-                className={`text-white hover:text-gray-300 transition-colors font-medium py-2 ${
-                  isActive("/contato") ? "bg-slate-700 rounded px-3" : ""
+              </button>
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  scrollToSection("confirmacao");
+                }}
+                className={`text-white hover:text-gray-300 transition-colors font-medium py-2 text-left ${
+                  activeSection === "confirmacao"
+                    ? "bg-slate-700 rounded px-3"
+                    : ""
                 }`}
-                onClick={() => setIsMenuOpen(false)}
+              >
+                Confirmação
+              </button>
+              <button
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  scrollToSection("contato");
+                }}
+                className={`text-white hover:text-gray-300 transition-colors font-medium py-2 text-left ${
+                  activeSection === "contato" ? "bg-slate-700 rounded px-3" : ""
+                }`}
               >
                 Contato
-              </Link>
+              </button>
             </div>
           </div>
         )}

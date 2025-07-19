@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -9,22 +9,86 @@ import Presentes from "./pages/Presentes";
 import Contato from "./pages/Contato";
 
 export default function App() {
+  const [activeSection, setActiveSection] = useState("home");
+
+  // Smooth scroll to section
+  const scrollToSection = (sectionId) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+      setActiveSection(sectionId);
+    }
+  };
+
+  // Update active section on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = [
+        "home",
+        "historia",
+        "cerimonia",
+        "presentes",
+        "confirmacao",
+        "contato",
+      ];
+      const scrollPosition = window.scrollY + 100;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const offsetTop = element.offsetTop;
+          const offsetHeight = element.offsetHeight;
+
+          if (
+            scrollPosition >= offsetTop &&
+            scrollPosition < offsetTop + offsetHeight
+          ) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <BrowserRouter>
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/historia" element={<Historia />} />
-            <Route path="/cerimonia" element={<Cerimonia />} />
-            <Route path="/confirmacao" element={<Confirmacao />} />
-            <Route path="/presentes" element={<Presentes />} />
-            <Route path="/contato" element={<Contato />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </BrowserRouter>
+    <div className="App">
+      <Navbar activeSection={activeSection} onNavigate={scrollToSection} />
+
+      {/* Home Section */}
+      <section id="home">
+        <Home />
+      </section>
+
+      {/* Historia Section */}
+      <section id="historia">
+        <Historia />
+      </section>
+
+      {/* Cerimonia Section */}
+      <section id="cerimonia">
+        <Cerimonia />
+      </section>
+
+      {/* Presentes Section */}
+      <section id="presentes">
+        <Presentes />
+      </section>
+
+      {/* Confirmacao Section */}
+      <section id="confirmacao">
+        <Confirmacao />
+      </section>
+
+      {/* Contato Section */}
+      <section id="contato">
+        <Contato />
+      </section>
+
+      <Footer />
+    </div>
   );
 }

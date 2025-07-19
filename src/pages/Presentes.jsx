@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 export default function Presentes() {
+  const [selectedCategory, setSelectedCategory] = useState("all");
+
   const giftCategories = [
     {
       id: 1,
@@ -105,6 +109,21 @@ export default function Presentes() {
     },
   ];
 
+  // Get all items for display
+  const allItems = giftCategories.flatMap((category) =>
+    category.items.map((item) => ({
+      ...item,
+      category: category.name,
+      categoryIcon: category.icon,
+    }))
+  );
+
+  // Filter items based on selected category
+  const filteredItems =
+    selectedCategory === "all"
+      ? allItems
+      : allItems.filter((item) => item.category === selectedCategory);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50 to-rose-100 py-16">
       <div className="max-w-6xl mx-auto px-4">
@@ -133,46 +152,98 @@ export default function Presentes() {
             carinho, pensando em itens que nos ajudarão a construir nossa nova
             vida juntos."
           </p>
-          <p className="text-gray-600 mt-4 font-semibold">- Maria & João</p>
+          <p className="text-gray-600 mt-4 font-semibold">- Wilson & Erica</p>
         </div>
 
-        {/* Gift Categories */}
-        <div className="space-y-12">
-          {giftCategories.map((category) => (
-            <div
-              key={category.id}
-              className="bg-white p-8 rounded-lg shadow-lg"
+        {/* Filter Buttons */}
+        <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
+          <h3 className="text-xl font-serif text-gray-800 mb-6 text-center">
+            Filtre por Categoria
+          </h3>
+          <div className="flex flex-wrap justify-center gap-4">
+            <button
+              onClick={() => setSelectedCategory("all")}
+              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
+                selectedCategory === "all"
+                  ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg"
+                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              }`}
             >
-              <div className="text-center mb-8">
-                <div className="text-4xl mb-4">{category.icon}</div>
-                <h2 className="text-3xl font-serif text-gray-800">
-                  {category.name}
-                </h2>
-              </div>
+              🎁 Todos os Presentes
+            </button>
+            {giftCategories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => setSelectedCategory(category.name)}
+                className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
+                  selectedCategory === category.name
+                    ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                {category.icon} {category.name}
+              </button>
+            ))}
+          </div>
+        </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {category.items.map((item, index) => (
-                  <div
-                    key={index}
-                    className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
-                  >
-                    <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                      {item.name}
-                    </h3>
-                    <p className="text-pink-600 font-semibold mb-2">
-                      {item.price}
-                    </p>
-                    <p className="text-gray-600 text-sm mb-4">
-                      {item.description}
-                    </p>
-                    <button className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-2 px-4 rounded-lg hover:from-pink-600 hover:to-rose-600 transition-colors">
-                      Reservar Presente
-                    </button>
+        {/* Gift Items Grid */}
+        <div className="bg-white p-8 rounded-lg shadow-lg mb-16">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-serif text-gray-800 mb-2">
+              {selectedCategory === "all"
+                ? "Todos os Presentes"
+                : selectedCategory}
+            </h2>
+            <p className="text-gray-600">
+              {filteredItems.length}{" "}
+              {filteredItems.length === 1 ? "item" : "itens"} encontrado
+              {filteredItems.length === 1 ? "" : "s"}
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredItems.map((item, index) => (
+              <div
+                key={index}
+                className={`border border-gray-200 rounded-lg p-6 hover:shadow-md transition-all duration-300 transform hover:scale-105 ${
+                  selectedCategory !== "all" ? "ring-2 ring-pink-200" : ""
+                }`}
+              >
+                {/* Category Badge */}
+                {selectedCategory === "all" && (
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-lg">{item.categoryIcon}</span>
+                    <span className="text-xs bg-pink-100 text-pink-800 px-2 py-1 rounded-full font-medium">
+                      {item.category}
+                    </span>
                   </div>
-                ))}
+                )}
+
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  {item.name}
+                </h3>
+                <p className="text-pink-600 font-semibold mb-2">{item.price}</p>
+                <p className="text-gray-600 text-sm mb-4">{item.description}</p>
+                <button className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-2 px-4 rounded-lg hover:from-pink-600 hover:to-rose-600 transition-colors">
+                  Reservar Presente
+                </button>
               </div>
+            ))}
+          </div>
+
+          {/* No items message */}
+          {filteredItems.length === 0 && (
+            <div className="text-center py-12">
+              <div className="text-6xl mb-4">🎁</div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                Nenhum item encontrado
+              </h3>
+              <p className="text-gray-600">
+                Tente selecionar uma categoria diferente.
+              </p>
             </div>
-          ))}
+          )}
         </div>
 
         {/* Alternative Gifts */}
@@ -242,7 +313,7 @@ export default function Presentes() {
               </p>
               <ul className="text-gray-600 space-y-2">
                 <li>• WhatsApp: (11) 99999-9999</li>
-                <li>• Email: maria.joao@email.com</li>
+                <li>• Email: wilson.erica@email.com</li>
                 <li>• Endereço: Rua das Flores, 123</li>
               </ul>
             </div>
