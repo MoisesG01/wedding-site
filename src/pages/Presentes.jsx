@@ -96,7 +96,7 @@ export default function Presentes() {
           description: "Ajude-nos a realizar nosso sonho",
         },
         {
-          name: "Contribuição para Casa",
+          name: "Contribuição para Casa ficar pronta",
           price: "Valor à escolha",
           description: "Para mobiliar nosso novo lar",
         },
@@ -125,14 +125,15 @@ export default function Presentes() {
       : allItems.filter((item) => item.category === selectedCategory);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-rose-100 py-16">
-      <div className="max-w-6xl mx-auto px-4">
+    <div className="min-h-screen elegant-gradient-rose">
+      <div className="max-w-6xl mx-auto px-4 py-24">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-serif text-gray-800 mb-4">
+        <div className="text-center mb-20 elegant-animation">
+          <h1 className="text-6xl text-elegant mb-6 elegant-text-gradient">
             Lista de Presentes
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <div className="w-20 h-1 bg-gradient-to-r from-pink-300 to-rose-300 mx-auto mb-8 rounded-full"></div>
+          <p className="text-xl text-body text-slate-600 max-w-4xl mx-auto leading-relaxed">
             Sua presença é o nosso maior presente, mas se quiser nos presentear,
             criamos uma lista especial com itens que nos ajudarão a construir
             nossa vida juntos.
@@ -140,33 +141,41 @@ export default function Presentes() {
         </div>
 
         {/* Message */}
-        <div className="bg-white p-8 rounded-lg shadow-lg mb-16 text-center">
-          <div className="text-4xl mb-4">💕</div>
-          <h2 className="text-2xl font-serif text-gray-800 mb-4">
+        <div className="elegant-card p-12 mb-20 text-center elegant-animation-delay-1">
+          <div
+            className="text-6xl mb-6 animate-bounce"
+            style={{ animationDuration: "3s" }}
+          >
+            💕
+          </div>
+          <h2 className="text-3xl text-elegant mb-6 elegant-text-gradient">
             Uma Mensagem Especial
           </h2>
-          <p className="text-gray-600 max-w-3xl mx-auto">
+          <div className="w-16 h-1 bg-gradient-to-r from-pink-200 to-rose-200 mx-auto mb-8 rounded-full"></div>
+          <p className="text-body text-slate-600 max-w-4xl mx-auto leading-relaxed mb-6">
             "Queridos amigos e familiares, vocês já nos deram o maior presente:
             estar presentes em nossas vidas e celebrar conosco este momento
             especial. Se desejarem nos presentear, criamos esta lista com
             carinho, pensando em itens que nos ajudarão a construir nossa nova
             vida juntos."
           </p>
-          <p className="text-gray-600 mt-4 font-semibold">- Wilson & Erica</p>
+          <p className="text-body-medium text-slate-700 font-medium">
+            - Wilson & Erica
+          </p>
         </div>
 
         {/* Filter Buttons */}
-        <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
-          <h3 className="text-xl font-serif text-gray-800 mb-6 text-center">
+        <div className="elegant-card p-8 mb-12 elegant-animation-delay-2">
+          <h3 className="text-2xl text-elegant mb-8 text-center elegant-text-gradient">
             Filtre por Categoria
           </h3>
           <div className="flex flex-wrap justify-center gap-4">
             <button
               onClick={() => setSelectedCategory("all")}
-              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
+              className={`px-8 py-4 rounded-full text-body-medium elegant-transition transform hover:scale-105 ${
                 selectedCategory === "all"
-                  ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  ? "elegant-button"
+                  : "elegant-button-secondary"
               }`}
             >
               🎁 Todos os Presentes
@@ -175,10 +184,10 @@ export default function Presentes() {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.name)}
-                className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
+                className={`px-8 py-4 rounded-full text-body-medium elegant-transition transform hover:scale-105 ${
                   selectedCategory === category.name
-                    ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? "elegant-button"
+                    : "elegant-button-secondary"
                 }`}
               >
                 {category.icon} {category.name}
@@ -188,44 +197,49 @@ export default function Presentes() {
         </div>
 
         {/* Gift Items Grid */}
-        <div className="bg-white p-8 rounded-lg shadow-lg mb-16">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl font-serif text-gray-800 mb-2">
+        <div className="elegant-card p-12 mb-20 elegant-animation-delay-3">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl text-elegant mb-4 elegant-text-gradient">
               {selectedCategory === "all"
                 ? "Todos os Presentes"
                 : selectedCategory}
             </h2>
-            <p className="text-gray-600">
+            <div className="w-12 h-1 bg-gradient-to-r from-pink-200 to-rose-200 mx-auto mb-4 rounded-full"></div>
+            <p className="text-body text-slate-600">
               {filteredItems.length}{" "}
               {filteredItems.length === 1 ? "item" : "itens"} encontrado
               {filteredItems.length === 1 ? "" : "s"}
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredItems.map((item, index) => (
               <div
                 key={index}
-                className={`border border-gray-200 rounded-lg p-6 hover:shadow-md transition-all duration-300 transform hover:scale-105 ${
+                className={`elegant-card p-8 elegant-card-hover ${
                   selectedCategory !== "all" ? "ring-2 ring-pink-200" : ""
                 }`}
               >
                 {/* Category Badge */}
                 {selectedCategory === "all" && (
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="text-lg">{item.categoryIcon}</span>
-                    <span className="text-xs bg-pink-100 text-pink-800 px-2 py-1 rounded-full font-medium">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="text-2xl">{item.categoryIcon}</span>
+                    <span className="text-sm bg-gradient-to-r from-pink-100 to-rose-100 text-pink-800 px-3 py-1 rounded-full font-medium">
                       {item.category}
                     </span>
                   </div>
                 )}
 
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                <h3 className="text-xl text-elegant mb-3 elegant-text-gradient">
                   {item.name}
                 </h3>
-                <p className="text-pink-600 font-semibold mb-2">{item.price}</p>
-                <p className="text-gray-600 text-sm mb-4">{item.description}</p>
-                <button className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-2 px-4 rounded-lg hover:from-pink-600 hover:to-rose-600 transition-colors">
+                <p className="text-lg text-pink-600 font-semibold mb-3">
+                  {item.price}
+                </p>
+                <p className="text-body text-slate-600 mb-6">
+                  {item.description}
+                </p>
+                <button className="w-full elegant-button">
                   Reservar Presente
                 </button>
               </div>
@@ -234,12 +248,17 @@ export default function Presentes() {
 
           {/* No items message */}
           {filteredItems.length === 0 && (
-            <div className="text-center py-12">
-              <div className="text-6xl mb-4">🎁</div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+            <div className="text-center py-16">
+              <div
+                className="text-8xl mb-6 animate-bounce"
+                style={{ animationDuration: "2s" }}
+              >
+                🎁
+              </div>
+              <h3 className="text-2xl text-elegant mb-4 elegant-text-gradient">
                 Nenhum item encontrado
               </h3>
-              <p className="text-gray-600">
+              <p className="text-body text-slate-600">
                 Tente selecionar uma categoria diferente.
               </p>
             </div>
@@ -247,34 +266,45 @@ export default function Presentes() {
         </div>
 
         {/* Alternative Gifts */}
-        <div className="bg-gradient-to-r from-pink-400 to-rose-400 p-8 rounded-lg text-white mt-16">
+        <div className="elegant-gradient-pink p-12 rounded-3xl text-gray-600 mb-20 elegant-animation-delay-4">
           <div className="text-center">
-            <h2 className="text-3xl font-serif mb-6">
+            <h2 className="text-4xl text-elegant mb-8">
               Outras Opções de Presente
             </h2>
-            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+            <div className="w-16 h-1 bg-white/30 mx-auto mb-12 rounded-full"></div>
+            <div className="grid md:grid-cols-3 gap-12 max-w-5xl mx-auto">
               <div className="text-center">
-                <div className="text-4xl mb-4">🎁</div>
-                <h3 className="text-xl font-semibold mb-2">
+                <div className="text-6xl mb-6 animate-pulse">🎁</div>
+                <h3 className="text-2xl text-elegant mb-4">
                   Presente Surpresa
                 </h3>
-                <p className="text-sm">
+                <p className="text-body-light">
                   Se preferir, pode nos dar uma surpresa! Qualquer presente
                   escolhido com carinho será muito bem-vindo.
                 </p>
               </div>
               <div className="text-center">
-                <div className="text-4xl mb-4">💌</div>
-                <h3 className="text-xl font-semibold mb-2">Cartão Presente</h3>
-                <p className="text-sm">
+                <div
+                  className="text-6xl mb-6 animate-pulse"
+                  style={{ animationDelay: "0.5s" }}
+                >
+                  💌
+                </div>
+                <h3 className="text-2xl text-elegant mb-4">Cartão Presente</h3>
+                <p className="text-body-light">
                   Cartões-presente de lojas como Magazine Luiza, Americanas ou
                   Amazon são sempre úteis.
                 </p>
               </div>
               <div className="text-center">
-                <div className="text-4xl mb-4">💝</div>
-                <h3 className="text-xl font-semibold mb-2">Contribuição</h3>
-                <p className="text-sm">
+                <div
+                  className="text-6xl mb-6 animate-pulse"
+                  style={{ animationDelay: "1s" }}
+                >
+                  💝
+                </div>
+                <h3 className="text-2xl text-elegant mb-4">Contribuição</h3>
+                <p className="text-body-light">
                   Contribuições para nossa lua de mel ou para mobiliar nossa
                   casa são muito apreciadas.
                 </p>
@@ -284,51 +314,70 @@ export default function Presentes() {
         </div>
 
         {/* Contact Info */}
-        <div className="bg-white p-8 rounded-lg shadow-lg mt-16">
-          <h2 className="text-3xl font-serif text-center text-gray-800 mb-8">
+        <div className="elegant-card p-12 mb-12">
+          <h2 className="text-4xl text-elegant text-center mb-12 elegant-text-gradient">
             Como Entregar os Presentes
           </h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">
+          <div className="w-16 h-1 bg-gradient-to-r from-pink-200 to-rose-200 mx-auto mb-12 rounded-full"></div>
+          <div className="grid md:grid-cols-2 gap-12">
+            <div className="elegant-card p-8 elegant-card-hover">
+              <h3 className="text-2xl text-elegant mb-6 elegant-text-gradient">
                 📦 No Dia do Casamento
               </h3>
-              <p className="text-gray-600 mb-4">
+              <p className="text-body text-slate-600 mb-6">
                 Você pode trazer o presente no dia do casamento. Teremos uma
                 mesa especial para receber os presentes.
               </p>
-              <ul className="text-gray-600 space-y-2">
-                <li>• Local: Espaço de Eventos Flores</li>
-                <li>• Horário: A partir das 18:00</li>
-                <li>• Mesa de presentes na entrada</li>
+              <ul className="text-body text-slate-600 space-y-3">
+                <li className="flex items-center gap-3">
+                  <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
+                  Local: Espaço de Eventos Flores
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
+                  Horário: A partir das 18:00
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
+                  Mesa de presentes na entrada
+                </li>
               </ul>
             </div>
-            <div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">
+            <div className="elegant-card p-8 elegant-card-hover">
+              <h3 className="text-2xl text-elegant mb-6 elegant-text-gradient">
                 🏠 Antecipadamente
               </h3>
-              <p className="text-gray-600 mb-4">
+              <p className="text-body text-slate-600 mb-6">
                 Se preferir, pode entregar antes do casamento. Entre em contato
                 conosco para combinar.
               </p>
-              <ul className="text-gray-600 space-y-2">
-                <li>• WhatsApp: (11) 99999-9999</li>
-                <li>• Email: wilson.erica@email.com</li>
-                <li>• Endereço: Rua das Flores, 123</li>
+              <ul className="text-body text-slate-600 space-y-3">
+                <li className="flex items-center gap-3">
+                  <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
+                  WhatsApp: (11) 99999-9999
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
+                  Email: wilson.erica@email.com
+                </li>
+                <li className="flex items-center gap-3">
+                  <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
+                  Endereço: Rua das Flores, 123
+                </li>
               </ul>
             </div>
           </div>
         </div>
 
         {/* Important Note */}
-        <div className="bg-yellow-50 border border-yellow-200 p-6 rounded-lg mt-8">
-          <div className="flex items-start gap-4">
-            <div className="text-2xl">💡</div>
+        <div className="elegant-card p-8 border-l-4 border-yellow-400">
+          <div className="flex items-start gap-6">
+            <div className="text-4xl animate-pulse">💡</div>
             <div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              <h3 className="text-2xl text-elegant mb-4 elegant-text-gradient">
                 Nota Importante
               </h3>
-              <p className="text-gray-600">
+              <p className="text-body text-slate-600 leading-relaxed">
                 Lembre-se: sua presença é o nosso maior presente! Não se sinta
                 obrigado a trazer algo material. O mais importante é celebrar
                 conosco este momento especial.
