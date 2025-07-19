@@ -3,10 +3,65 @@ import { useState, useEffect } from "react";
 export default function Historia() {
   const [activeStep, setActiveStep] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [currentImage, setCurrentImage] = useState(0);
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
+
+  // Auto-play carousel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      nextImage();
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Carousel images data
+  const carouselImages = [
+    {
+      title: "Nosso Primeiro Encontro",
+      date: "Janeiro 2020",
+      icon: "☕",
+    },
+    {
+      title: "Primeiro Teatro Juntos",
+      date: "Março 2020",
+      icon: "🎭",
+    },
+    {
+      title: "Morando Juntos",
+      date: "Setembro 2021",
+      icon: "🏠",
+    },
+    {
+      title: "Viagem para Paris",
+      date: "Janeiro 2022",
+      icon: "✈️",
+    },
+    {
+      title: "O Pedido de Casamento",
+      date: "Dezembro 2023",
+      icon: "💍",
+    },
+    {
+      title: "Ensaio de Casamento",
+      date: "Janeiro 2024",
+      icon: "📸",
+    },
+  ];
+
+  // Carousel navigation functions
+  const nextImage = () => {
+    setCurrentImage((prev) => (prev + 1) % carouselImages.length);
+  };
+
+  const prevImage = () => {
+    setCurrentImage(
+      (prev) => (prev - 1 + carouselImages.length) % carouselImages.length
+    );
+  };
 
   const timelineData = [
     {
@@ -232,7 +287,7 @@ export default function Historia() {
           </div>
         </div>
 
-        {/* Photo Gallery */}
+        {/* Photo Carousel */}
         <div
           className={`mt-20 transition-all duration-1000 delay-1200 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -241,15 +296,88 @@ export default function Historia() {
           <h2 className="text-3xl font-serif text-center text-slate-800 mb-12">
             Nossos Momentos Especiais
           </h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+
+          {/* Carousel Container */}
+          <div className="relative max-w-4xl mx-auto">
+            {/* Carousel Track */}
+            <div className="overflow-hidden rounded-2xl shadow-2xl">
               <div
-                key={i}
-                className="aspect-square bg-gradient-to-br from-slate-200 to-gray-300 rounded-xl flex items-center justify-center hover:scale-105 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-xl"
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{ transform: `translateX(-${currentImage * 100}%)` }}
               >
-                <span className="text-3xl opacity-80">📸</span>
+                {carouselImages.map((image, index) => (
+                  <div key={index} className="w-full flex-shrink-0">
+                    <div className="relative aspect-[4/3] bg-gradient-to-br from-slate-200 to-gray-300">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-8xl opacity-80">
+                          {image.icon}
+                        </span>
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-6">
+                        <h3 className="text-white text-xl font-serif mb-2">
+                          {image.title}
+                        </h3>
+                        <p className="text-gray-200 text-sm">{image.date}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+
+            {/* Navigation Buttons */}
+            <button
+              onClick={prevImage}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-slate-800 w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 z-10"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+
+            <button
+              onClick={nextImage}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-slate-800 w-12 h-12 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 z-10"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+
+            {/* Dots Indicator */}
+            <div className="flex justify-center mt-6 space-x-2">
+              {carouselImages.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentImage(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    currentImage === index
+                      ? "bg-slate-800 scale-125"
+                      : "bg-slate-300 hover:bg-slate-400"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
 

@@ -435,31 +435,6 @@ export default function Contato() {
             </div>
           </div>
         </div>
-
-        {/* Social Media */}
-        <div className="mt-16 bg-gradient-to-r from-slate-50 to-gray-600 p-8 rounded-lg text-white text-center">
-          <h2 className="text-3xl font-serif mb-6">Siga Nossa Jornada</h2>
-          <p className="text-lg mb-8">
-            Acompanhe os preparativos e momentos especiais nas redes sociais
-          </p>
-          <div className="flex justify-center space-x-6">
-            <div className="text-center">
-              <div className="text-3xl mb-2">📸</div>
-              <p className="font-semibold">Instagram</p>
-              <p className="text-sm">@wilson.erica.casamento</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl mb-2">📘</div>
-              <p className="font-semibold">Facebook</p>
-              <p className="text-sm">Wilson & Erica Wedding</p>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl mb-2">📱</div>
-              <p className="font-semibold">WhatsApp</p>
-              <p className="text-sm">Grupo dos Convidados</p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
