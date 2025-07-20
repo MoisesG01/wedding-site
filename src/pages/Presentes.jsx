@@ -2,6 +2,8 @@ import { useState } from "react";
 
 export default function Presentes() {
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   const giftCategories = [
     {
@@ -124,6 +126,19 @@ export default function Presentes() {
       ? allItems
       : allItems.filter((item) => item.category === selectedCategory);
 
+  // Paginação
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+  const paginatedItems = filteredItems.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  // Resetar página ao trocar categoria
+  const handleCategoryChange = (cat) => {
+    setSelectedCategory(cat);
+    setCurrentPage(1);
+  };
+
   return (
     <div className="min-h-screen elegant-gradient-rose">
       <div className="max-w-6xl mx-auto px-4 py-24">
@@ -171,7 +186,7 @@ export default function Presentes() {
           </h3>
           <div className="flex flex-wrap justify-center gap-4">
             <button
-              onClick={() => setSelectedCategory("all")}
+              onClick={() => handleCategoryChange("all")}
               className={`px-8 py-4 rounded-full text-body-medium elegant-transition transform hover:scale-105 ${
                 selectedCategory === "all"
                   ? "elegant-button"
@@ -183,7 +198,7 @@ export default function Presentes() {
             {giftCategories.map((category) => (
               <button
                 key={category.id}
-                onClick={() => setSelectedCategory(category.name)}
+                onClick={() => handleCategoryChange(category.name)}
                 className={`px-8 py-4 rounded-full text-body-medium elegant-transition transform hover:scale-105 ${
                   selectedCategory === category.name
                     ? "elegant-button"
@@ -213,7 +228,7 @@ export default function Presentes() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredItems.map((item, index) => (
+            {paginatedItems.map((item, index) => (
               <div
                 key={index}
                 className={`elegant-card p-8 elegant-card-hover ${
@@ -245,6 +260,37 @@ export default function Presentes() {
               </div>
             ))}
           </div>
+
+          {/* Paginação */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-4 mt-12">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className={`px-6 py-3 rounded-full font-medium elegant-transition border border-pink-200 bg-white/80 hover:bg-pink-50 ${
+                  currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                }`}
+              >
+                Anterior
+              </button>
+              <span className="text-lg text-elegant">
+                Página {currentPage} de {totalPages}
+              </span>
+              <button
+                onClick={() =>
+                  setCurrentPage((p) => Math.min(totalPages, p + 1))
+                }
+                disabled={currentPage === totalPages}
+                className={`px-6 py-3 rounded-full font-medium elegant-transition border border-pink-200 bg-white/80 hover:bg-pink-50 ${
+                  currentPage === totalPages
+                    ? "opacity-50 cursor-not-allowed"
+                    : ""
+                }`}
+              >
+                Próxima
+              </button>
+            </div>
+          )}
 
           {/* No items message */}
           {filteredItems.length === 0 && (
