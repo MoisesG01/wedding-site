@@ -177,6 +177,36 @@
   }
 }
 
+@keyframes elegantFloat-delay {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(-6deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(-6deg);
+  }
+}
+
+@keyframes elegantFloat-delay-2 {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(3deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(3deg);
+  }
+}
+
+@keyframes elegantFloat-delay-3 {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(-12deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(-12deg);
+  }
+}
+
 @keyframes elegantPulse {
   0%,
   100% {
@@ -185,6 +215,29 @@
   50% {
     transform: scale(1.05);
   }
+}
+
+.animate-float {
+  animation: elegantFloat 3s ease-in-out infinite;
+}
+
+.animate-float-delay {
+  animation: elegantFloat-delay 4s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.animate-float-delay-2 {
+  animation: elegantFloat-delay-2 3.5s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.animate-float-delay-3 {
+  animation: elegantFloat-delay-3 4.5s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+.animate-pulse {
+  animation: elegantPulse 2s ease-in-out infinite;
 }
 
 /* Utilitários elegantes */
@@ -229,4 +282,59 @@
   .elegant-transition-fast {
     transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
   }
+}
+
+/* Custom background image responsiveness */
+@media (max-width: 768px) {
+  .bg-fixed {
+    background-attachment: scroll;
+  }
+}
+
+/* Ensure background image covers properly on all devices */
+.hero-background {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 640px) {
+  .hero-background {
+    background-position: center 30%;
+  }
+}
+
+/* Better background positioning for the hero section */
+.hero-section {
+  background-size: cover;
+  background-position: center 25%;
+  background-repeat: no-repeat;
+}
+
+@media (max-width: 640px) {
+  .hero-section {
+    background-position: center 40%;
+  }
+}
+
+/* Line clamp utilities for text truncation */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
