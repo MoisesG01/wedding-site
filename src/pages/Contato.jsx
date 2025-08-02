@@ -130,7 +130,7 @@ export default function Contato() {
                       Email
                     </h3>
                     <p className="text-body text-slate-600 mb-2">
-                      wilson.erica@email.com
+                      erica.junior@email.com
                     </p>
                     <p className="text-body-light text-slate-500">
                       Resposta em até 24 horas

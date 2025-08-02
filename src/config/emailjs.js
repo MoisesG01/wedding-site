@@ -21,7 +21,7 @@ export const initEmailJS = () => {
 // Função para enviar confirmação de presença
 export const sendRSVPEmail = async (formData) => {
   const templateParams = {
-    to_name: "Wilson & Erica",
+    to_name: "Erica & Junior",
     from_name: formData.name,
     from_email: formData.email,
     phone: formData.phone || "Não informado",
@@ -51,7 +51,7 @@ export const sendRSVPEmail = async (formData) => {
 // Função para enviar mensagem de contato
 export const sendContactEmail = async (formData) => {
   const templateParams = {
-    to_name: "Wilson & Erica",
+    to_name: "Erica & Junior",
     from_name: formData.name,
     from_email: formData.email,
     subject: formData.subject,

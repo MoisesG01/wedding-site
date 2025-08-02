@@ -1,4 +1,4 @@
-# 💕 Wilson & Erica - Site de Casamento
+# 💕 Erica & Junior - Site de Casamento
 
 Um site de casamento moderno e responsivo criado com React, Vite e Tailwind CSS.
 
@@ -156,4 +156,4 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalh
 
 ---
 
-**Wilson & Erica** - Unidos pelo amor, celebrando a vida juntos! 💕
+**Erica & Junior** - Unidos pelo amor, celebrando a vida juntos! 💕

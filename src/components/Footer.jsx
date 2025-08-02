@@ -9,7 +9,7 @@ export default function Footer() {
           {/* Couple Info */}
           <div className="text-center md:text-left">
             <h3 className="text-2xl text-elegant mb-3 oklch(95.6% 0.045 203.388)">
-              Wilson & Erica
+              Erica & Junior
             </h3>
             <div className="w-12 h-1 bg-gradient-to-r from-pink-300 to-rose-300 mx-auto md:mx-0 mb-4 rounded-full"></div>
             <p className="text-body-light text-gray-300">
@@ -74,7 +74,7 @@ export default function Footer() {
               </div>
               <div className="text-center">
                 <div className="text-2xl mb-2">📧</div>
-                <p className="text-body-light">wilson.erica@email.com</p>
+                <p className="text-body-light">erica.junior@email.com</p>
               </div>
             </div>
           </div>
@@ -83,7 +83,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-white/20 pt-6 text-center">
           <p className="text-body text-gray-300 mb-3">
-            © {currentYear} Wilson & Erica. Feito com 💕 para celebrar nosso
+            © {currentYear} Erica & Junior. Feito com 💕 para celebrar nosso
             amor.
           </p>
           <div className="flex justify-center gap-2">

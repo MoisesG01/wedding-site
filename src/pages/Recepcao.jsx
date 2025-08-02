@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export default function Cerimonia() {
+export default function Recepcao() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -17,12 +17,12 @@ export default function Cerimonia() {
           }`}
         >
           <h1 className="text-5xl font-serif text-slate-800 mb-6 elegant-text-gradient">
-            Cerimônia
+            Recepção
           </h1>
           <div className="w-24 h-1 bg-gradient-to-r from-pink-300 to-rose-300 mx-auto mb-8 rounded-full"></div>
         </div>
 
-        {/* Church Photo */}
+        {/* Reception Venue */}
         <div
           className={`mb-12 transition-all duration-1000 ${
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -30,15 +30,15 @@ export default function Cerimonia() {
         >
           <div className="text-center mb-6">
             <h2 className="text-3xl font-serif text-slate-800 mb-4 elegant-text-gradient">
-              Igreja Nossa Senhora da Conceição
+              Mansão Jaraguá
             </h2>
           </div>
 
-          {/* Church Image */}
+          {/* Venue Image */}
           <div className="mb-8">
             <img
-              src="/src/assets/igreja.png"
-              alt="Igreja Nossa Senhora da Conceição"
+              src="src/assets/mansao.jpg"
+              alt="Mansão Jaraguá"
               className="w-full h-96 object-cover rounded-2xl shadow-lg"
             />
           </div>
@@ -46,24 +46,25 @@ export default function Cerimonia() {
           {/* Special Text */}
           <div className="text-center space-y-6">
             <p className="text-lg text-slate-700 leading-relaxed max-w-4xl mx-auto">
-              O verdadeiro sentido de tudo isso, está aqui. Mais do que uma
-              celebração, o que realmente importa é ver nossa união sendo selada
-              e abençoada diante de Deus. E nada será mais especial do que viver
-              esse momento único ao lado de cada um de vocês.
-            </p>
-
-            <p className="text-lg text-slate-700 leading-relaxed max-w-4xl mx-auto">
-              Contamos com sua presença, e que chegue com antecedência!
+              Depois de dizer o "sim", é hora de comemorar! Você está super
+              convidado(a) para brindar, dançar e celebrar com a gente esse
+              momento tão especial!
             </p>
 
             <div className="bg-gradient-to-r from-pink-50 to-rose-50 p-6 rounded-2xl">
               <p className="text-xl font-medium text-slate-800 mb-2">
-                22 de novembro de 2025, às 16h
+                A recepção será no mesmo dia, a partir das 18h
               </p>
-              <p className="text-lg text-slate-700">
-                Rua Nossa Sra. da Conceição, 117 – Jaraguá, São Paulo – SP,
-                05181-280
+              <p className="text-lg text-slate-700 mb-4">
+                Rua Comendador J. de Matos, 429 – Vila Clarice, São Paulo – SP,
+                05177-100
               </p>
+              <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+                <p className="text-slate-700 font-medium">
+                  <span className="text-yellow-600">⚠️</span> Taxa de
+                  estacionamento/manobrista: R$ 30,00 por veículo
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -81,7 +82,7 @@ export default function Cerimonia() {
           </div>
 
           <iframe
-            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=Rua+Nossa+Sra.+da+Conceição,+117+-+Jaraguá,+São+Paulo+-+SP,+05181-280"
+            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=Rua+Comendador+J.+de+Matos,+429+-+Vila+Clarice,+São+Paulo+-+SP,+05177-100"
             width="100%"
             height="400"
             style={{ border: 0 }}
@@ -89,7 +90,7 @@ export default function Cerimonia() {
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             className="rounded-2xl shadow-lg"
-            title="Localização da Igreja Nossa Senhora da Conceição"
+            title="Localização da Mansão Jaraguá"
           ></iframe>
         </div>
       </div>

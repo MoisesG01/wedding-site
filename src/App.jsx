@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Historia from "./pages/Historia";
 import Cerimonia from "./pages/Cerimonia";
+import Recepcao from "./pages/Recepcao";
 import Confirmacao from "./pages/Confirmacao";
 import Presentes from "./pages/Presentes";
 import Contato from "./pages/Contato";
@@ -33,6 +34,7 @@ export default function App() {
         "home",
         "historia",
         "cerimonia",
+        "recepcao",
         "presentes",
         "confirmacao",
         "contato",
@@ -74,6 +76,10 @@ export default function App() {
 
         <section id="cerimonia">
           <Cerimonia />
+        </section>
+
+        <section id="recepcao">
+          <Recepcao />
         </section>
 
         <section id="presentes">
