@@ -1,3 +1,4 @@
+import igreja from "../assets/igreja.png";
 import { useState, useEffect } from "react";
 
 export default function Cerimonia() {
@@ -37,7 +38,7 @@ export default function Cerimonia() {
           {/* Church Image */}
           <div className="mb-8">
             <img
-              src="/src/assets/igreja.png"
+              src={igreja}
               alt="Igreja Nossa Senhora da Conceição"
               className="w-full h-96 object-cover rounded-2xl shadow-lg"
             />
