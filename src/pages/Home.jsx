@@ -1,3 +1,5 @@
+import logo from "../assets/logo.jpg";
+
 export default function Home() {
   return (
     <div className="min-h-screen">
@@ -23,7 +25,7 @@ export default function Home() {
           {/* Logo do casal */}
           <div className="mb-8">
             <img
-              src="/src/assets/logo.jpg"
+              src={logo}
               alt="Logo Erica & Junior"
               className="w-48 h-48 mx-auto rounded-full object-cover border-4 border-white/30 shadow-2xl"
             />

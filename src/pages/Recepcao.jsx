@@ -1,3 +1,4 @@
+import mansao from "../assets/mansao.jpg";
 import { useState, useEffect } from "react";
 
 export default function Recepcao() {
@@ -37,7 +38,7 @@ export default function Recepcao() {
           {/* Venue Image */}
           <div className="mb-8">
             <img
-              src="src/assets/mansao.jpg"
+              src={mansao}
               alt="Mansão Jaraguá"
               className="w-full h-96 object-cover rounded-2xl shadow-lg"
             />

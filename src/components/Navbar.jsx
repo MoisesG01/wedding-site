@@ -1,3 +1,4 @@
+import logo from "../assets/logo.jpg";
 import { useState } from "react";
 
 export default function Navbar({ activeSection, scrollToSection }) {
@@ -20,7 +21,7 @@ export default function Navbar({ activeSection, scrollToSection }) {
           >
             <div className="w-10 h-10 rounded-full overflow-hidden shadow-lg group-hover:scale-110 elegant-transition">
               <img
-                src="/src/assets/logo.jpg"
+                src={logo}
                 alt="Logo Erica & Junior"
                 className="w-full h-full object-cover"
               />
