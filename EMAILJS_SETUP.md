@@ -1,34 +1,30 @@
-# 📧 Configuração do EmailJS - Site de Casamento
+# 📧 Configuração do EmailJS
 
-Este guia explica como configurar o EmailJS para enviar emails reais através dos formulários do site.
+Este guia explica como configurar o EmailJS para enviar emails através dos formulários do site.
 
 ## 🚀 Passo a Passo
 
 ### 1. Criar Conta no EmailJS
 
 1. Acesse [https://www.emailjs.com/](https://www.emailjs.com/)
-2. Clique em "Sign Up" e crie uma conta gratuita
-3. Faça login na sua conta
+2. Clique em **"Sign Up"** e crie uma conta gratuita
+3. Faça login no dashboard
 
 ### 2. Configurar Serviço de Email
 
 1. No dashboard, vá para **"Email Services"**
 2. Clique em **"Add New Service"**
-3. Escolha seu provedor de email:
-   - **Gmail** (recomendado)
-   - **Outlook**
-   - **Yahoo**
-   - **Outros**
-4. Siga as instruções para conectar sua conta
+3. Escolha seu provedor de email (Gmail, Outlook, etc.)
+4. Configure a autenticação
 5. **Anote o Service ID** (ex: `service_gvf7pkf`)
 
-### 3. Criar Templates de Email
+### 3. Criar Templates
 
-#### Template para Confirmação de Presença (RSVP)
+#### Template para Confirmação de Presença
 
 1. Vá para **"Email Templates"**
 2. Clique em **"Create New Template"**
-3. Configure o template:
+3. Configure:
 
 **Assunto:**
 
@@ -55,19 +51,19 @@ Confirmação de Presença - {{from_name}}
         style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;"
       >
         <h2 style="color: #333;">Olá {{to_name}}!</h2>
-        <p>Recebemos uma confirmação de presença para nosso casamento.</p>
+        <p>Você recebeu uma confirmação de presença para o casamento.</p>
       </div>
 
       <div
         style="background: white; padding: 20px; border: 1px solid #ddd; border-radius: 10px; margin: 20px 0;"
       >
-        <h3 style="color: #e91e63;">📝 Informações do Convidado</h3>
+        <h3 style="color: #e91e63;">👥 Informações do Convidado</h3>
         <ul style="list-style: none; padding: 0;">
           <li><strong>Nome:</strong> {{from_name}}</li>
           <li><strong>Email:</strong> {{from_email}}</li>
           <li><strong>Telefone:</strong> {{phone}}</li>
           <li><strong>Número de Convidados:</strong> {{guests}}</li>
-          <li><strong>Confirmou Presença:</strong> {{attending}}</li>
+          <li><strong>Confirmará Presença:</strong> {{attending}}</li>
           <li>
             <strong>Restrições Alimentares:</strong> {{dietary_restrictions}}
           </li>
@@ -83,7 +79,7 @@ Confirmação de Presença - {{from_name}}
 
       <div style="text-align: center; margin: 30px 0;">
         <p style="color: #666;">Com amor,</p>
-        <h2 style="color: #e91e63;">Wilson & Erica</h2>
+        <h2 style="color: #e91e63;">Erica & Junior</h2>
       </div>
     </div>
   </body>
@@ -143,7 +139,7 @@ Mensagem do Site - {{subject}}
 
       <div style="text-align: center; margin: 30px 0;">
         <p style="color: #666;">Com amor,</p>
-        <h2 style="color: #e91e63;">Wilson & Erica</h2>
+        <h2 style="color: #e91e63;">Erica & Junior</h2>
       </div>
     </div>
   </body>

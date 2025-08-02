@@ -175,7 +175,7 @@ export default function Presentes() {
             vida juntos."
           </p>
           <p className="text-body-medium text-slate-700 font-medium">
-            - Wilson & Erica
+            - Erica & Junior
           </p>
         </div>
 
@@ -404,7 +404,7 @@ export default function Presentes() {
                 </li>
                 <li className="flex items-center gap-3">
                   <span className="w-2 h-2 bg-pink-400 rounded-full"></span>
-                  Email: wilson.erica@email.com
+                  Email: erica.junior@email.com
                 </li>
                 <li className="flex items-center gap-3">
                   <span className="w-2 h-2 bg-pink-400 rounded-full"></span>

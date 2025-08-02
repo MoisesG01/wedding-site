@@ -301,7 +301,7 @@ export default function Confirmacao() {
                   onChange={handleChange}
                   rows="4"
                   className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent elegant-transition text-body resize-none"
-                  placeholder="Deixe uma mensagem especial para Wilson e Erica..."
+                  placeholder="Deixe uma mensagem especial para Erica e Junior..."
                 ></textarea>
               </div>
             </div>
@@ -461,7 +461,7 @@ export default function Confirmacao() {
               <div className="elegant-glass p-6 rounded-2xl">
                 <div className="text-4xl mb-3">📧</div>
                 <h3 className="text-lg text-elegant mb-2">Email</h3>
-                <p className="text-body-light">wilson.erica@email.com</p>
+                <p className="text-body-light">erica.junior@email.com</p>
               </div>
             </div>
           </div>
