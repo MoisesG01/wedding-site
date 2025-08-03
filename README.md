@@ -1,21 +1,70 @@
 # 💕 Erica & Junior - Site de Casamento
 
-Um site de casamento moderno e responsivo criado com React, Vite e Tailwind CSS.
+Um site de casamento moderno, elegante e totalmente responsivo criado com React, Vite e Tailwind CSS. Design sofisticado com animações suaves e funcionalidades completas.
 
 ## ✨ Características
 
-- **Design Responsivo**: Funciona perfeitamente em desktop, tablet e mobile
-- **Navegação Intuitiva**: Menu de navegação com indicadores de página ativa
-- **Páginas Completas**:
-  - 🏠 **Home**: Página principal com informações do casal e contagem regressiva
-  - 📖 **História**: Timeline da história de amor do casal
-  - 💒 **Cerimônia**: Detalhes completos sobre o evento
-  - ✅ **Confirmação**: Formulário para RSVP dos convidados
-  - 🎁 **Presentes**: Lista de presentes organizada por categorias
-  - 📞 **Contato**: Informações de contato e formulário de mensagem
-- **Formulários Funcionais**: Formulários de confirmação e contato
-- **Design Elegante**: Interface moderna com gradientes e animações
-- **SEO Otimizado**: Estrutura semântica e meta tags
+- **🎨 Design Elegante**: Interface moderna com gradientes suaves, glassmorphism e animações
+- **📱 Totalmente Responsivo**: Otimizado para desktop, tablet e mobile com navegação adaptativa
+- **🏠 Single Page Application (SPA)**: Navegação suave com scroll automático entre seções
+- **📧 Formulários Funcionais**: Integração com EmailJS para envio real de emails
+- **🎯 Navegação Intuitiva**: Menu mobile com sidebar elegante e indicadores de seção ativa
+- **⚡ Performance Otimizada**: Carregamento rápido e animações fluidas
+
+## 🏠 Seções do Site
+
+### **Home**
+
+- Hero section com imagem de fundo responsiva
+- Logo do casal em destaque
+- Botão de confirmação de presença
+- Design limpo e elegante
+
+### **História**
+
+- Mensagem de boas-vindas personalizada
+- Contagem regressiva funcional para o casamento
+- Seção "O Casal" com fotos lado a lado
+- Carrossel 3D interativo com galeria de fotos
+- Thumbnails responsivos com navegação
+
+### **Cerimônia**
+
+- Informações detalhadas sobre a cerimônia
+- Imagem da igreja em destaque
+- Mapa interativo do Google Maps
+- Design responsivo com cards elegantes
+
+### **Recepção**
+
+- Detalhes da recepção com imagem da mansão
+- Informações sobre horário e local
+- Aviso sobre taxa de estacionamento
+- Mapa interativo da localização
+
+### **Presentes**
+
+- Lista única de presentes com imagens
+- Modal PIX com QR code e informações de pagamento
+- Paginação responsiva (6 itens por página)
+- Cards elegantes com categorias e preços
+- Layout otimizado para mobile (2 cards por linha)
+
+### **Confirmação**
+
+- Formulário simplificado e funcional
+- Campos: Nome, Telefone, Número de Convidados, Confirmação, Mensagem
+- Integração com EmailJS para envio real
+- Feedback visual de sucesso/erro
+- Design responsivo e acessível
+
+### **Contato**
+
+- Informações de contato organizadas
+- Formulário simplificado (Nome, Assunto, Mensagem)
+- Seção FAQ com perguntas frequentes
+- Integração com EmailJS
+- Cards interativos com hover effects
 
 ## 🚀 Como Executar
 
@@ -37,111 +86,195 @@ cd wedding-site
 
 ```bash
 npm install
-# ou
-yarn install
 ```
 
-3. Execute o servidor de desenvolvimento:
+3. Configure o EmailJS (opcional):
+
+   - Crie uma conta em [EmailJS](https://www.emailjs.com/)
+   - Configure os templates conforme `EMAILJS_SETUP.md`
+   - Atualize as configurações em `src/config/emailjs.js`
+
+4. Execute o servidor de desenvolvimento:
 
 ```bash
 npm run dev
-# ou
-yarn dev
 ```
 
-4. Abra o navegador em `http://localhost:5173`
+5. Abra o navegador em `http://localhost:5173`
 
 ## 📁 Estrutura do Projeto
 
 ```
 src/
 ├── components/
-│   ├── Navbar.jsx      # Navegação principal
-│   └── Footer.jsx      # Rodapé do site
+│   ├── Navbar.jsx          # Navegação principal com sidebar mobile
+│   └── Footer.jsx          # Rodapé elegante com informações
 ├── pages/
-│   ├── Home.jsx        # Página inicial
-│   ├── Historia.jsx    # História do casal
-│   ├── Cerimonia.jsx   # Informações da cerimônia
-│   ├── Confirmacao.jsx # Formulário de RSVP
-│   ├── Presentes.jsx   # Lista de presentes
-│   └── Contato.jsx     # Página de contato
-├── App.jsx             # Componente principal
-├── main.jsx           # Ponto de entrada
-└── index.css          # Estilos globais
+│   ├── Home.jsx            # Página inicial com hero section
+│   ├── Historia.jsx        # História do casal com carrossel
+│   ├── Cerimonia.jsx       # Informações da cerimônia
+│   ├── Recepcao.jsx        # Detalhes da recepção
+│   ├── Presentes.jsx       # Lista de presentes com modal PIX
+│   ├── Confirmacao.jsx     # Formulário de RSVP
+│   └── Contato.jsx         # Página de contato com FAQ
+├── config/
+│   └── emailjs.js          # Configuração do EmailJS
+├── assets/
+│   ├── logo.jpg            # Logo do casal
+│   ├── igreja.png          # Imagem da igreja
+│   └── mansao.jpg          # Imagem da mansão
+├── App.jsx                 # Componente principal (SPA)
+├── main.jsx               # Ponto de entrada
+└── index.css              # Estilos globais e animações
 ```
 
-## 🎨 Personalização
+## 🎨 Design e Estilo
 
-### Cores e Tema
+### **Paleta de Cores**
 
-O site usa um tema rosa/rosa escuro. Para alterar as cores, edite as classes do Tailwind CSS nos componentes.
+- **Primária**: Tons de rosa e rosa escuro (`pink-300`, `rose-500`)
+- **Secundária**: Tons de slate e cinza (`slate-50`, `gray-100`)
+- **Acentos**: Gradientes elegantes e transparências
 
-### Conteúdo
+### **Tipografia**
 
-- **Informações do Casal**: Edite os nomes, datas e informações em cada página
-- **Fotos**: Substitua os emojis por imagens reais
-- **Local e Horário**: Atualize as informações do evento
-- **Lista de Presentes**: Modifique os itens e categorias
+- **Títulos**: Playfair Display (elegante e sofisticada)
+- **Corpo**: Inter (moderna e legível)
+- **Destaque**: Dancing Script (romântica para elementos especiais)
 
-### Formulários
+### **Animações**
 
-Os formulários estão configurados para exibir mensagens de sucesso. Para integrar com um backend:
+- **Entrada**: Fade-in com translate suave
+- **Hover**: Scale e shadow effects
+- **Carrossel**: Transições 3D fluidas
+- **Loading**: Spinners elegantes
 
-1. Modifique as funções `handleSubmit` nos componentes
-2. Adicione validação de dados
-3. Configure o envio para sua API
+## 📧 Configuração do EmailJS
 
-## 🛠️ Tecnologias Utilizadas
+### **Templates Necessários**
 
-- **React 19**: Biblioteca JavaScript para interfaces
-- **Vite**: Build tool rápida e moderna
-- **React Router**: Navegação entre páginas
-- **Tailwind CSS**: Framework CSS utilitário
-- **PostCSS**: Processador CSS
-- **ESLint**: Linter para qualidade do código
+#### **RSVP Template** (`template_4dmzovs`)
+
+```html
+<h2>Nova Confirmação de Presença</h2>
+<p><strong>Nome:</strong> {{from_name}}</p>
+<p><strong>Telefone:</strong> {{phone}}</p>
+<p><strong>Convidados:</strong> {{guests}}</p>
+<p><strong>Vai comparecer:</strong> {{attending}}</p>
+<p><strong>Mensagem:</strong> {{message}}</p>
+```
+
+#### **Contact Template** (`template_y4m5ijg`)
+
+```html
+<h2>Nova Mensagem de Contato</h2>
+<p><strong>Nome:</strong> {{from_name}}</p>
+<p><strong>Assunto:</strong> {{subject}}</p>
+<p><strong>Mensagem:</strong> {{message}}</p>
+```
+
+### **Configuração**
+
+1. Crie uma conta no [EmailJS](https://www.emailjs.com/)
+2. Configure um serviço de email (Gmail, Outlook, etc.)
+3. Crie os templates acima
+4. Atualize `src/config/emailjs.js` com seus IDs
 
 ## 📱 Responsividade
 
-O site é totalmente responsivo e inclui:
+### **Breakpoints**
 
-- Menu mobile com hamburger
-- Layout adaptativo para diferentes tamanhos de tela
-- Imagens e textos otimizados para mobile
-- Touch-friendly em dispositivos móveis
+- **Mobile**: < 640px (1 coluna, cards empilhados)
+- **Tablet**: 640px - 1024px (2 colunas, layout adaptativo)
+- **Desktop**: > 1024px (3 colunas, layout completo)
+
+### **Recursos Mobile**
+
+- **Sidebar Navigation**: Menu hamburger com overlay
+- **Touch-friendly**: Botões e elementos otimizados para toque
+- **Imagens Responsivas**: Otimizadas para diferentes tamanhos
+- **Texto Adaptativo**: Tamanhos ajustados para legibilidade
+
+## 🛠️ Tecnologias Utilizadas
+
+- **React 19.1.0**: Biblioteca JavaScript para interfaces
+- **Vite 7.0.4**: Build tool rápida e moderna
+- **Tailwind CSS 3.4.3**: Framework CSS utilitário
+- **@emailjs/browser**: Integração com EmailJS
+- **Google Fonts**: Tipografia elegante
+- **Google Maps**: Mapas interativos
 
 ## 🚀 Deploy
 
-### Vercel (Recomendado)
+### **Vercel (Recomendado)**
 
-1. Conecte seu repositório ao Vercel
-2. Configure o build command: `npm run build`
-3. Configure o output directory: `dist`
-4. Deploy automático a cada push
+```bash
+npm run build
+# Conecte ao Vercel e configure:
+# Build Command: npm run build
+# Output Directory: dist
+```
 
-### Netlify
+### **Netlify**
 
-1. Conecte seu repositório ao Netlify
-2. Configure o build command: `npm run build`
-3. Configure o publish directory: `dist`
+```bash
+npm run build
+# Conecte ao Netlify e configure:
+# Build Command: npm run build
+# Publish Directory: dist
+```
 
-### GitHub Pages
+### **GitHub Pages**
 
-1. Execute `npm run build`
-2. Configure o GitHub Actions para deploy automático
+```bash
+npm run build
+# Configure GitHub Actions para deploy automático
+```
 
 ## 📝 Scripts Disponíveis
 
-- `npm run dev` - Inicia o servidor de desenvolvimento
-- `npm run build` - Cria a versão de produção
-- `npm run preview` - Visualiza a versão de produção
-- `npm run lint` - Executa o linter
+- `npm run dev` - Servidor de desenvolvimento
+- `npm run build` - Build de produção
+- `npm run preview` - Preview da build
+- `npm run lint` - Verificação de código
+
+## 🎯 Funcionalidades Principais
+
+### **Formulários**
+
+- ✅ Validação client-side
+- ✅ Integração com EmailJS
+- ✅ Backup no localStorage
+- ✅ Feedback visual de status
+- ✅ Design responsivo
+
+### **Navegação**
+
+- ✅ SPA com scroll suave
+- ✅ Detecção de seção ativa
+- ✅ Sidebar mobile elegante
+- ✅ Indicadores visuais
+
+### **Carrossel**
+
+- ✅ Navegação 3D
+- ✅ Autoplay com pause
+- ✅ Thumbnails interativos
+- ✅ Responsivo
+
+### **Presentes**
+
+- ✅ Modal PIX funcional
+- ✅ Paginação
+- ✅ Filtros por categoria
+- ✅ Layout responsivo
 
 ## 🤝 Contribuição
 
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature (`git checkout -b feature/AmazingFeature`)
-3. Commit suas mudanças (`git commit -m 'Add some AmazingFeature'`)
-4. Push para a branch (`git push origin feature/AmazingFeature`)
+1. Fork o projeto
+2. Crie uma branch (`git checkout -b feature/NovaFeature`)
+3. Commit suas mudanças (`git commit -m 'Adiciona nova feature'`)
+4. Push para a branch (`git push origin feature/NovaFeature`)
 5. Abra um Pull Request
 
 ## 📄 Licença
@@ -150,10 +283,13 @@ Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalh
 
 ## 💝 Agradecimentos
 
-- Criado com 💕 para celebrar o amor
-- Inspirado em casamentos reais
-- Design moderno e elegante para momentos especiais
+- Criado com 💕 para celebrar o amor de Erica & Junior
+- Design inspirado em casamentos reais
+- Tecnologias modernas para momentos especiais
+- Comunidade React e Tailwind CSS
 
 ---
 
 **Erica & Junior** - Unidos pelo amor, celebrando a vida juntos! 💕
+
+_22 de Novembro de 2025_

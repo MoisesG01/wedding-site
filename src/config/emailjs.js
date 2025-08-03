@@ -23,13 +23,10 @@ export const sendRSVPEmail = async (formData) => {
   const templateParams = {
     to_name: "Erica & Junior",
     from_name: formData.name,
-    from_email: formData.email,
     phone: formData.phone || "Não informado",
     guests: formData.guests,
     attending: formData.attending === "yes" ? "Sim" : "Não",
-    dietary_restrictions: formData.dietaryRestrictions || "Nenhuma",
     message: formData.message || "Nenhuma mensagem",
-    reply_to: formData.email,
   };
 
   try {
@@ -53,10 +50,8 @@ export const sendContactEmail = async (formData) => {
   const templateParams = {
     to_name: "Erica & Junior",
     from_name: formData.name,
-    from_email: formData.email,
     subject: formData.subject,
     message: formData.message,
-    reply_to: formData.email,
   };
 
   try {
