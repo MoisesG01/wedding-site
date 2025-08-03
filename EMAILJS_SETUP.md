@@ -60,13 +60,9 @@ Confirmação de Presença - {{from_name}}
         <h3 style="color: #e91e63;">👥 Informações do Convidado</h3>
         <ul style="list-style: none; padding: 0;">
           <li><strong>Nome:</strong> {{from_name}}</li>
-          <li><strong>Email:</strong> {{from_email}}</li>
           <li><strong>Telefone:</strong> {{phone}}</li>
           <li><strong>Número de Convidados:</strong> {{guests}}</li>
           <li><strong>Confirmará Presença:</strong> {{attending}}</li>
-          <li>
-            <strong>Restrições Alimentares:</strong> {{dietary_restrictions}}
-          </li>
         </ul>
       </div>
 
@@ -125,7 +121,6 @@ Mensagem do Site - {{subject}}
         <h3 style="color: #e91e63;">📝 Informações do Remetente</h3>
         <ul style="list-style: none; padding: 0;">
           <li><strong>Nome:</strong> {{from_name}}</li>
-          <li><strong>Email:</strong> {{from_email}}</li>
           <li><strong>Assunto:</strong> {{subject}}</li>
         </ul>
       </div>
@@ -172,6 +167,8 @@ export const EMAILJS_CONFIG = {
 1. Execute o site: `npm run dev`
 2. Teste os formulários de confirmação e contato
 3. Verifique se os emails chegam na caixa de entrada
+
+**Nota**: Os formulários foram simplificados e não incluem mais os campos de email e restrições alimentares.
 
 ## 🔧 Configurações Avançadas
 
