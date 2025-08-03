@@ -1,11 +1,11 @@
-import logo from "../assets/logo.jpg";
+import logo from "../assets/logo2.png";
 
 export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
       <div
-        className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 hero-section"
+        className="relative min-h-screen flex items-center justify-center px-2 sm:px-6 hero-section"
         style={{
           backgroundImage:
             "url('https://odebate.com.br/wp-content/uploads/2019/03/08032019casal.jpg')",
@@ -15,7 +15,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/40"></div>
 
         {/* Content */}
-        <div className="relative z-10 text-center max-w-4xl mx-auto">
+        <div className="relative z-10 text-center max-w-4xl mx-auto px-2 sm:px-4 md:px-6">
           {/* Floating decorative elements - hidden on mobile */}
           <div className="hidden sm:block absolute -top-8 -left-8 w-16 h-16 bg-white/10 rounded-full blur-xl animate-pulse"></div>
           <div className="hidden sm:block absolute -bottom-8 -right-8 w-20 h-20 bg-pink-300/20 rounded-full blur-xl animate-pulse delay-1000"></div>
@@ -23,22 +23,42 @@ export default function Home() {
           <div className="hidden sm:block absolute top-1/4 -right-8 w-12 h-12 bg-pink-200/40 rounded-full blur-lg animate-pulse delay-500"></div>
 
           {/* Logo do casal */}
-          <div className="mb-6 sm:mb-8">
+          <div className="mb-6 sm:mb-8 relative group">
             <img
               src={logo}
               alt="Logo Erica & Junior"
-              className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mx-auto rounded-full object-cover border-4 border-white/30 shadow-2xl"
+              className="relative mx-auto w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-72 lg:h-72 group-hover:scale-105 transition-all duration-500 transform-gpu"
+              style={{
+                filter: "brightness(0) invert(1) contrast(1.1)",
+                opacity: 1,
+              }}
             />
           </div>
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl mb-4 sm:mb-6 text-elegant font-light tracking-wider text-white drop-shadow-2xl leading-tight">
+          <h1
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-4 sm:mb-6 font-light tracking-widest text-white drop-shadow-2xl leading-tight"
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontWeight: 300,
+              letterSpacing: "0.1em",
+            }}
+          >
             Erica & Junior
           </h1>
 
           <div className="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-pink-300 to-rose-300 mx-auto mb-6 sm:mb-8 rounded-full"></div>
 
-          <div className="text-base sm:text-lg md:text-xl text-body-light mb-8 sm:mb-12 space-y-2">
-            <p className="font-medium text-white">22 de Novembro de 2025</p>
+          <div className="text-lg sm:text-xl md:text-2xl text-body-light mb-8 sm:mb-12 space-y-2">
+            <p
+              className="font-medium text-white"
+              style={{
+                fontFamily: "'Cormorant Garamond', serif",
+                fontWeight: 500,
+                letterSpacing: "0.02em",
+              }}
+            >
+              22 de Novembro de 2025
+            </p>
           </div>
 
           <div className="elegant-animation-delay-1">
@@ -50,7 +70,7 @@ export default function Home() {
                   confirmacaoSection.scrollIntoView({ behavior: "smooth" });
                 }
               }}
-              className="group relative px-8 sm:px-10 md:px-12 py-3 sm:py-4 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-medium text-base sm:text-lg overflow-hidden transition-all duration-500 hover:bg-white/20 hover:scale-105 hover:shadow-2xl transform-gpu w-full sm:w-auto"
+              className="group relative px-0 sm:px-3 md:px-5 py-2 sm:py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-medium text-xs sm:text-sm overflow-hidden transition-all duration-500 hover:bg-white/20 hover:scale-105 hover:shadow-2xl transform-gpu w-48 sm:w-auto"
               style={{
                 boxShadow:
                   "0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)",

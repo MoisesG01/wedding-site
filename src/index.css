@@ -217,6 +217,15 @@
   }
 }
 
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .animate-float {
   animation: elegantFloat 3s ease-in-out infinite;
 }
@@ -238,6 +247,10 @@
 
 .animate-pulse {
   animation: elegantPulse 2s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
 }
 
 /* Utilitários elegantes */
