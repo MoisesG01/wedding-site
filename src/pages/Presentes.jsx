@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
+import QRCode from "qrcode";
 
 export default function Presentes() {
   const [showModal, setShowModal] = useState(false);
   const [selectedGift, setSelectedGift] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [isVisible, setIsVisible] = useState(false);
+  const [qrCodeUrl, setQrCodeUrl] = useState("");
   const itemsPerPage = 6;
 
   useEffect(() => {
@@ -176,11 +178,37 @@ export default function Presentes() {
   const handleGiftClick = (gift) => {
     setSelectedGift(gift);
     setShowModal(true);
+    // Generate QR Code when modal opens
+    setTimeout(() => generateQRCode(), 100);
   };
 
   const closeModal = () => {
     setShowModal(false);
     setSelectedGift(null);
+  };
+
+  // Generate QR Code for PIX
+  const generateQRCode = async () => {
+    try {
+      const pixKey = "erica.junior@email.com";
+
+      // Create PIX string (simplified version)
+      const pixString = `00020126580014br.gov.bcb.pix0136${pixKey}52040000530398654040.005802BR5913Erica Silva Santos6009SAO PAULO62070503***6304`;
+
+      const qrCodeDataUrl = await QRCode.toDataURL(pixString, {
+        width: 200,
+        margin: 2,
+        color: {
+          dark: "#000000",
+          light: "#FFFFFF",
+        },
+      });
+
+      setQrCodeUrl(qrCodeDataUrl);
+    } catch (error) {
+      console.error("Erro ao gerar QR Code:", error);
+      toast.error("Erro ao gerar QR Code. Tente novamente.");
+    }
   };
 
   return (
@@ -356,7 +384,7 @@ export default function Presentes() {
                 </div>
               )}
 
-              {/* QR Code Placeholder */}
+              {/* QR Code */}
               <div className="mb-3 sm:mb-4 md:mb-6 p-3 sm:p-4 md:p-6 bg-white rounded-lg sm:rounded-xl border-2 border-dashed border-pink-200">
                 <div className="text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3 md:mb-4">
                   📱
@@ -364,8 +392,20 @@ export default function Presentes() {
                 <p className="text-xs sm:text-sm text-slate-600 mb-2 sm:mb-3 md:mb-4">
                   QR Code do PIX do casal
                 </p>
-                <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 mx-auto bg-gradient-to-br from-pink-100 to-rose-100 rounded-lg flex items-center justify-center">
-                  <span className="text-2xl sm:text-4xl md:text-6xl">📱</span>
+                <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 mx-auto bg-white rounded-lg flex items-center justify-center p-2">
+                  {qrCodeUrl ? (
+                    <img
+                      src={qrCodeUrl}
+                      alt="QR Code PIX"
+                      className="w-full h-full object-contain"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-pink-100 to-rose-100 rounded-lg flex items-center justify-center">
+                      <span className="text-2xl sm:text-4xl md:text-6xl">
+                        📱
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
 
