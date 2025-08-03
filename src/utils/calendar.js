@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+
 // Utility functions for calendar integration
 export const generateCalendarEvent = () => {
   const title = "Casamento Erica & Junior";
@@ -72,14 +74,12 @@ export const downloadCalendarEvent = () => {
 
     console.log("Download iniciado com sucesso!");
 
-    setTimeout(() => {
-      alert(
-        "Arquivo de calendário baixado com sucesso! Abra o arquivo .ics para adicionar ao seu calendário."
-      );
-    }, 100);
+    toast.success(
+      "Arquivo de calendário baixado com sucesso! Abra o arquivo .ics para adicionar ao seu calendário."
+    );
   } catch (error) {
     console.error("Erro ao gerar arquivo de calendário:", error);
-    alert("Erro ao gerar arquivo de calendário. Tente novamente.");
+    toast.error("Erro ao gerar arquivo de calendário. Tente novamente.");
   }
 };
 
@@ -119,14 +119,12 @@ export const addToGoogleCalendar = () => {
     window.open(googleCalendarUrl, "_blank");
     console.log("Google Calendar aberto!");
 
-    setTimeout(() => {
-      alert(
-        "Google Calendar aberto! O evento foi pré-preenchido. Clique em 'Salvar' para adicionar ao seu calendário."
-      );
-    }, 500);
+    toast.success(
+      "Google Calendar aberto! O evento foi pré-preenchido. Clique em 'Salvar' para adicionar ao seu calendário."
+    );
   } catch (error) {
     console.error("Erro ao abrir Google Calendar:", error);
-    alert("Erro ao abrir Google Calendar. Tente novamente.");
+    toast.error("Erro ao abrir Google Calendar. Tente novamente.");
   }
 };
 
@@ -151,13 +149,11 @@ export const addToOutlookCalendar = () => {
     window.open(outlookUrl, "_blank");
     console.log("Outlook Calendar aberto!");
 
-    setTimeout(() => {
-      alert(
-        "Outlook Calendar aberto! O evento foi pré-preenchido. Clique em 'Salvar' para adicionar ao seu calendário."
-      );
-    }, 500);
+    toast.success(
+      "Outlook Calendar aberto! O evento foi pré-preenchido. Clique em 'Salvar' para adicionar ao seu calendário."
+    );
   } catch (error) {
     console.error("Erro ao abrir Outlook Calendar:", error);
-    alert("Erro ao abrir Outlook Calendar. Tente novamente.");
+    toast.error("Erro ao abrir Outlook Calendar. Tente novamente.");
   }
 };

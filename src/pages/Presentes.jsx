@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function Presentes() {
   const [showModal, setShowModal] = useState(false);
@@ -401,7 +402,9 @@ export default function Presentes() {
                   onClick={() => {
                     // Copy PIX key to clipboard
                     navigator.clipboard.writeText("erica.junior@email.com");
-                    alert("Chave PIX copiada!");
+                    toast.success(
+                      "Chave PIX copiada para a área de transferência!"
+                    );
                   }}
                   className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-2 sm:py-2.5 md:py-3 px-3 sm:px-4 md:px-6 rounded-full text-xs sm:text-sm md:text-base font-medium hover:from-pink-600 hover:to-rose-600 transition-all duration-300"
                 >

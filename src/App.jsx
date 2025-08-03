@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
@@ -63,6 +64,44 @@ export default function App() {
 
   return (
     <div className="App">
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: "#fff",
+            color: "#333",
+            border: "1px solid #e5e7eb",
+            borderRadius: "12px",
+            boxShadow: "0 10px 25px rgba(0, 0, 0, 0.1)",
+            fontSize: "14px",
+            padding: "16px",
+          },
+          success: {
+            iconTheme: {
+              primary: "#10b981",
+              secondary: "#fff",
+            },
+            style: {
+              background: "#f0fdf4",
+              color: "#065f46",
+              border: "1px solid #bbf7d0",
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: "#ef4444",
+              secondary: "#fff",
+            },
+            style: {
+              background: "#fef2f2",
+              color: "#991b1b",
+              border: "1px solid #fecaca",
+            },
+          },
+        }}
+      />
+
       <Navbar activeSection={activeSection} scrollToSection={scrollToSection} />
 
       <main>
