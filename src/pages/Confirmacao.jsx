@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { sendRSVPEmail } from "../config/emailjs";
+import CalendarModal from "../components/CalendarModal";
 
 export default function Confirmacao() {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ export default function Confirmacao() {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [lastSubmittedData, setLastSubmittedData] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [showCalendarModal, setShowCalendarModal] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -297,7 +299,7 @@ export default function Confirmacao() {
           {/* Status Messages */}
           {submitStatus === "success" && lastSubmittedData && (
             <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-green-50 border border-green-200 rounded-xl transition-all duration-1000">
-              <div className="flex items-center gap-3 sm:gap-4">
+              <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
                 <div className="text-2xl sm:text-3xl">
                   {lastSubmittedData.attending === "yes" ? "✅" : "💝"}
                 </div>
@@ -314,6 +316,26 @@ export default function Confirmacao() {
                   </p>
                 </div>
               </div>
+
+              {/* Calendar Integration - Only show for confirmed attendees */}
+              {lastSubmittedData.attending === "yes" && (
+                <div className="border-t border-green-200 pt-4 sm:pt-6">
+                  <h4 className="text-sm sm:text-base font-medium text-slate-800 mb-3 sm:mb-4">
+                    📅 Adicione o evento ao seu calendário:
+                  </h4>
+                  <div className="text-center">
+                    <button
+                      onClick={() => setShowCalendarModal(true)}
+                      className="px-6 sm:px-8 py-3 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white text-sm sm:text-base rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg"
+                    >
+                      📅 Adicionar ao Calendário
+                    </button>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-2 sm:mt-3 text-center">
+                    Clique para ver todas as opções de calendário disponíveis
+                  </p>
+                </div>
+              )}
             </div>
           )}
 
@@ -335,6 +357,12 @@ export default function Confirmacao() {
           )}
         </div>
       </div>
+
+      {/* Calendar Modal */}
+      <CalendarModal
+        isOpen={showCalendarModal}
+        onClose={() => setShowCalendarModal(false)}
+      />
     </div>
   );
 }
