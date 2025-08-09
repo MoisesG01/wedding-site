@@ -7,6 +7,10 @@ export default function Confirmacao() {
     name: "",
     phone: "",
     guests: "",
+    bringingGuests: "no",
+    guestNames: [],
+    guestRelations: [],
+    guestRelationOthers: [],
     attending: "yes",
     message: "",
   });
@@ -22,10 +26,205 @@ export default function Confirmacao() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData((previous) => {
+      // Base update
+      let updated = { ...previous, [name]: value };
+
+      // If attendance changed to "no", clear guests data
+      if (name === "attending" && value === "no") {
+        updated = {
+          ...updated,
+          bringingGuests: "no",
+          guests: "",
+          guestNames: [],
+          guestRelations: [],
+          guestRelationOthers: [],
+        };
+      }
+
+      // Bringing guests toggle
+      if (name === "bringingGuests") {
+        if (value === "no") {
+          updated.guests = "";
+          updated.guestNames = [];
+          updated.guestRelations = [];
+          updated.guestRelationOthers = [];
+        } else if (value === "yes") {
+          const hasGuests = parseInt(previous.guests || "0", 10) > 0;
+          updated.guests = hasGuests ? previous.guests : "1";
+          updated.guestNames = hasGuests
+            ? previous.guestNames && previous.guestNames.length > 0
+              ? previous.guestNames
+              : [""]
+            : [""];
+          updated.guestRelations = hasGuests
+            ? previous.guestRelations && previous.guestRelations.length > 0
+              ? previous.guestRelations
+              : [""]
+            : [""];
+          updated.guestRelationOthers = hasGuests
+            ? previous.guestRelationOthers &&
+              previous.guestRelationOthers.length > 0
+              ? previous.guestRelationOthers
+              : [""]
+            : [""];
+        }
+      }
+
+      // Guests count changed: adjust guestNames array length
+      if (name === "guests") {
+        const desiredCount = parseInt(value || "0", 10);
+        const currentNames = Array.isArray(previous.guestNames)
+          ? [...previous.guestNames]
+          : [];
+        const currentRelations = Array.isArray(previous.guestRelations)
+          ? [...previous.guestRelations]
+          : [];
+        const currentRelationOthers = Array.isArray(
+          previous.guestRelationOthers
+        )
+          ? [...previous.guestRelationOthers]
+          : [];
+        if (desiredCount <= 0) {
+          updated.guestNames = [];
+          updated.guestRelations = [];
+          updated.guestRelationOthers = [];
+        } else if (currentNames.length > desiredCount) {
+          updated.guestNames = currentNames.slice(0, desiredCount);
+          updated.guestRelations = currentRelations.slice(0, desiredCount);
+          updated.guestRelationOthers = currentRelationOthers.slice(
+            0,
+            desiredCount
+          );
+        } else if (currentNames.length < desiredCount) {
+          updated.guestNames = [
+            ...currentNames,
+            ...Array.from(
+              { length: desiredCount - currentNames.length },
+              () => ""
+            ),
+          ];
+          updated.guestRelations = [
+            ...currentRelations,
+            ...Array.from(
+              { length: desiredCount - currentRelations.length },
+              () => ""
+            ),
+          ];
+          updated.guestRelationOthers = [
+            ...currentRelationOthers,
+            ...Array.from(
+              { length: desiredCount - currentRelationOthers.length },
+              () => ""
+            ),
+          ];
+        }
+      }
+
+      return updated;
+    });
+  };
+
+  const handleGuestNameChange = (index, value) => {
+    setFormData((previous) => {
+      const names = Array.isArray(previous.guestNames)
+        ? [...previous.guestNames]
+        : [];
+      names[index] = value;
+      return { ...previous, guestNames: names };
+    });
+  };
+
+  const handleGuestRelationChange = (index, value) => {
+    setFormData((previous) => {
+      const relations = Array.isArray(previous.guestRelations)
+        ? [...previous.guestRelations]
+        : [];
+      relations[index] = value;
+      // If relation is not "Outro", clear the corresponding other value
+      const relationOthers = Array.isArray(previous.guestRelationOthers)
+        ? [...previous.guestRelationOthers]
+        : [];
+      if (value !== "Outro") {
+        relationOthers[index] = "";
+      }
+      return {
+        ...previous,
+        guestRelations: relations,
+        guestRelationOthers: relationOthers,
+      };
+    });
+  };
+
+  const handleGuestRelationOtherChange = (index, value) => {
+    setFormData((previous) => {
+      const relationOthers = Array.isArray(previous.guestRelationOthers)
+        ? [...previous.guestRelationOthers]
+        : [];
+      relationOthers[index] = value;
+      return { ...previous, guestRelationOthers: relationOthers };
+    });
+  };
+
+  const setGuestsCount = (count) => {
+    const bounded = Math.max(1, Math.min(5, parseInt(count || "0", 10)));
+    setFormData((previous) => {
+      const currentNames = Array.isArray(previous.guestNames)
+        ? [...previous.guestNames]
+        : [];
+      const currentRelations = Array.isArray(previous.guestRelations)
+        ? [...previous.guestRelations]
+        : [];
+      const currentRelationOthers = Array.isArray(previous.guestRelationOthers)
+        ? [...previous.guestRelationOthers]
+        : [];
+      let nextNames = currentNames;
+      let nextRelations = currentRelations;
+      let nextRelationOthers = currentRelationOthers;
+      if (bounded <= 0) {
+        nextNames = [];
+        nextRelations = [];
+        nextRelationOthers = [];
+      } else if (currentNames.length > bounded) {
+        nextNames = currentNames.slice(0, bounded);
+        nextRelations = currentRelations.slice(0, bounded);
+        nextRelationOthers = currentRelationOthers.slice(0, bounded);
+      } else if (currentNames.length < bounded) {
+        nextNames = [
+          ...currentNames,
+          ...Array.from({ length: bounded - currentNames.length }, () => ""),
+        ];
+        nextRelations = [
+          ...currentRelations,
+          ...Array.from(
+            { length: bounded - currentRelations.length },
+            () => ""
+          ),
+        ];
+        nextRelationOthers = [
+          ...currentRelationOthers,
+          ...Array.from(
+            { length: bounded - currentRelationOthers.length },
+            () => ""
+          ),
+        ];
+      }
+      return {
+        ...previous,
+        guests: String(bounded),
+        guestNames: nextNames,
+        guestRelations: nextRelations,
+        guestRelationOthers: nextRelationOthers,
+      };
+    });
+  };
+
+  const incrementGuests = () => {
+    setGuestsCount((parseInt(formData.guests || "0", 10) || 0) + 1);
+  };
+
+  const decrementGuests = () => {
+    setGuestsCount((parseInt(formData.guests || "0", 10) || 1) - 1);
   };
 
   const handleSubmit = async (e) => {
@@ -55,6 +254,9 @@ export default function Confirmacao() {
           name: "",
           phone: "",
           guests: "",
+          bringingGuests: "no",
+          guestNames: [],
+          guestRelations: [],
           attending: "yes",
           message: "",
         });
@@ -155,40 +357,7 @@ export default function Confirmacao() {
                   />
                 </div>
 
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="guests"
-                    className="block text-sm sm:text-base font-medium text-slate-700 mb-2 sm:mb-3"
-                  >
-                    Número de Convidados{" "}
-                    {formData.attending === "yes" ? "*" : ""}
-                  </label>
-                  <select
-                    id="guests"
-                    name="guests"
-                    value={formData.guests}
-                    onChange={handleChange}
-                    required={formData.attending === "yes"}
-                    disabled={formData.attending === "no"}
-                    className={`w-full px-3 sm:px-4 py-2 sm:py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300 text-sm sm:text-base ${
-                      formData.attending === "no"
-                        ? "bg-gray-100 cursor-not-allowed"
-                        : ""
-                    }`}
-                  >
-                    <option value="">Selecione...</option>
-                    <option value="1">1 pessoa</option>
-                    <option value="2">2 pessoas</option>
-                    <option value="3">3 pessoas</option>
-                    <option value="4">4 pessoas</option>
-                    <option value="5">5 pessoas</option>
-                  </select>
-                  {formData.attending === "no" && (
-                    <p className="text-xs sm:text-sm text-gray-500 mt-2">
-                      Campo não necessário quando não vai comparecer
-                    </p>
-                  )}
-                </div>
+                {/* Acompanhantes será exibido na seção de Confirmação */}
               </div>
             </div>
 
@@ -241,6 +410,195 @@ export default function Confirmacao() {
                     </label>
                   </div>
                 </div>
+
+                {formData.attending === "yes" && (
+                  <div className="mt-4 sm:mt-6">
+                    <div className="bg-white/70 backdrop-blur-sm border border-slate-200 rounded-xl p-4 sm:p-6 transition-all duration-300">
+                      <div className="flex items-center justify-between flex-wrap gap-3">
+                        <div>
+                          <h4 className="text-base sm:text-lg font-medium text-slate-800">
+                            Acompanhantes
+                          </h4>
+                          <p className="text-xs sm:text-sm text-slate-600">
+                            Informe se levará acompanhantes e os nomes.
+                          </p>
+                        </div>
+                        <div className="inline-flex rounded-lg overflow-hidden border border-slate-200">
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleChange({
+                                target: { name: "bringingGuests", value: "no" },
+                              })
+                            }
+                            className={`px-4 py-2 text-sm sm:text-base transition-colors ${
+                              formData.bringingGuests === "no"
+                                ? "bg-pink-500 text-white"
+                                : "bg-white hover:bg-pink-50 text-slate-700"
+                            }`}
+                            aria-pressed={formData.bringingGuests === "no"}
+                          >
+                            Não
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() =>
+                              handleChange({
+                                target: {
+                                  name: "bringingGuests",
+                                  value: "yes",
+                                },
+                              })
+                            }
+                            className={`px-4 py-2 text-sm sm:text-base border-l border-slate-200 transition-colors ${
+                              formData.bringingGuests === "yes"
+                                ? "bg-pink-500 text-white"
+                                : "bg-white hover:bg-pink-50 text-slate-700"
+                            }`}
+                            aria-pressed={formData.bringingGuests === "yes"}
+                          >
+                            Sim
+                          </button>
+                        </div>
+                      </div>
+
+                      {formData.bringingGuests === "yes" && (
+                        <div className="mt-4 space-y-4">
+                          <div>
+                            <label className="block text-sm sm:text-base font-medium text-slate-700 mb-2">
+                              Quantos acompanhantes? *
+                            </label>
+                            <div className="flex items-center gap-3">
+                              <button
+                                type="button"
+                                onClick={decrementGuests}
+                                className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-pink-50 hover:border-pink-300 transition"
+                                aria-label="Diminuir"
+                              >
+                                −
+                              </button>
+                              <input
+                                type="number"
+                                min="1"
+                                max="5"
+                                value={parseInt(formData.guests || "1", 10)}
+                                onChange={(e) => setGuestsCount(e.target.value)}
+                                className="w-16 text-center px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
+                              />
+                              <button
+                                type="button"
+                                onClick={incrementGuests}
+                                className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-pink-50 hover:border-pink-300 transition"
+                                aria-label="Aumentar"
+                              >
+                                +
+                              </button>
+                            </div>
+                            <p className="text-xs text-slate-500 mt-2">
+                              Máximo de 5 acompanhantes.
+                            </p>
+                          </div>
+
+                          {formData.guests &&
+                            parseInt(formData.guests, 10) > 0 && (
+                              <div className="space-y-3">
+                                <label className="block text-sm sm:text-base font-medium text-slate-700">
+                                  Detalhes dos acompanhantes *
+                                </label>
+                                <div className="grid grid-cols-1 gap-3">
+                                  {Array.from({
+                                    length: parseInt(
+                                      formData.guests || "0",
+                                      10
+                                    ),
+                                  }).map((_, index) => (
+                                    <div
+                                      key={index}
+                                      className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start"
+                                    >
+                                      <input
+                                        type="text"
+                                        value={formData.guestNames[index] || ""}
+                                        onChange={(e) =>
+                                          handleGuestNameChange(
+                                            index,
+                                            e.target.value
+                                          )
+                                        }
+                                        required
+                                        className="w-full md:col-span-6 px-3 sm:px-4 py-2 sm:py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
+                                        placeholder={`Nome do(a) acompanhante ${
+                                          index + 1
+                                        }`}
+                                      />
+                                      <div className="relative w-full md:col-span-3">
+                                        <select
+                                          value={
+                                            formData.guestRelations?.[index] ||
+                                            ""
+                                          }
+                                          onChange={(e) =>
+                                            handleGuestRelationChange(
+                                              index,
+                                              e.target.value
+                                            )
+                                          }
+                                          required
+                                          className="appearance-none w-full px-3 sm:px-4 py-2 sm:py-3 pr-10 border border-slate-300 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
+                                        >
+                                          <option value="">Relação</option>
+                                          <option>Amigo(a)</option>
+                                          <option>Família</option>
+                                          <option>Colega</option>
+                                          <option>Criança</option>
+                                          <option>Parceiro(a)</option>
+                                          <option>Outro</option>
+                                        </select>
+                                        <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-slate-500">
+                                          <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            className="h-4 w-4"
+                                            viewBox="0 0 20 20"
+                                            fill="currentColor"
+                                          >
+                                            <path
+                                              fillRule="evenodd"
+                                              d="M5.23 7.21a.75.75 0 011.06.02L10 11.187l3.71-3.956a.75.75 0 111.08 1.04l-4.24 4.52a.75.75 0 01-1.08 0l-4.24-4.52a.75.75 0 01.02-1.06z"
+                                              clipRule="evenodd"
+                                            />
+                                          </svg>
+                                        </div>
+                                      </div>
+                                      {formData.guestRelations?.[index] ===
+                                        "Outro" && (
+                                        <input
+                                          type="text"
+                                          value={
+                                            formData.guestRelationOthers?.[
+                                              index
+                                            ] || ""
+                                          }
+                                          onChange={(e) =>
+                                            handleGuestRelationOtherChange(
+                                              index,
+                                              e.target.value
+                                            )
+                                          }
+                                          required
+                                          className="w-full md:col-span-3 px-3 sm:px-4 py-2 sm:py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
+                                          placeholder="Outro (qual)"
+                                        />
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
