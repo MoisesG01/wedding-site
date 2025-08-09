@@ -25,6 +25,28 @@ export const sendRSVPEmail = async (formData) => {
     from_name: formData.name,
     phone: formData.phone || "Não informado",
     guests: formData.guests,
+    bringing_guests: formData.bringingGuests === "yes" ? "Sim" : "Não",
+    guest_names:
+      Array.isArray(formData.guestNames) && formData.guestNames.length > 0
+        ? formData.guestNames.filter(Boolean).join(", ")
+        : "Nenhum",
+    guest_details:
+      Array.isArray(formData.guestNames) &&
+      Array.isArray(formData.guestRelations)
+        ? formData.guestNames
+            .map((name, idx) => {
+              if (!name) return null;
+              const relation = formData.guestRelations[idx] || "";
+              const other = Array.isArray(formData.guestRelationOthers)
+                ? formData.guestRelationOthers[idx] || ""
+                : "";
+              const relationLabel =
+                relation === "Outro" && other ? other : relation;
+              return relationLabel ? `${name} (${relationLabel})` : name;
+            })
+            .filter(Boolean)
+            .join(", ")
+        : "Nenhum",
     attending: formData.attending === "yes" ? "Sim" : "Não",
     message: formData.message || "Nenhuma mensagem",
   };
