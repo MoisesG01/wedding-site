@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import QRCode from "qrcode";
+import Divisor from "../components/Divisor";
 
 export default function Presentes() {
   const [showModal, setShowModal] = useState(false);
@@ -212,119 +213,118 @@ export default function Presentes() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100 py-8 sm:py-16">
-      <div className="max-w-6xl mx-auto px-4">
-        {/* Header */}
-        <div
-          className={`text-center mb-12 sm:mb-16 transition-all duration-1000 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-slate-800 mb-4 sm:mb-6 elegant-text-gradient">
-            Lista de Presentes
-          </h1>
-          <div className="w-16 sm:w-24 h-1 bg-gradient-to-r from-pink-300 to-rose-300 mx-auto mb-6 sm:mb-8 rounded-full"></div>
-          <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed px-4">
-            O seu carinho é o que mais importa pra nós.
-            <br />
-            E caso queira nos ajudar a montar nosso lar com amor, deixamos aqui
-            algumas sugestões pensadas com o coração.
-            <br />
-            Sinta-se à vontade para escolher algo especial ou contribuir da
-            forma que quiser, cada gesto será lembrado com muito amor.
-          </p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
+      <Divisor />
 
-        {/* Gift Items Grid */}
-        <div
-          className={`transition-all duration-1000 ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
-          <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-2xl sm:text-3xl font-serif text-slate-800 mb-3 sm:mb-4 elegant-text-gradient">
-              Nossos Presentes
-            </h2>
-            <div className="w-12 sm:w-16 h-1 bg-gradient-to-r from-pink-200 to-rose-200 mx-auto mb-3 sm:mb-4 rounded-full"></div>
-            <p className="text-base sm:text-lg text-slate-600">
-              {gifts.length} itens disponíveis
-            </p>
+      <div className="py-2 sm:py-4 md:py-6">
+        <div className="max-w-6xl mx-auto px-4">
+          {/* Header */}
+          <div
+            className={`text-center mb-8 sm:mb-12 md:mb-16 transition-all duration-1000 ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
+            }`}
+          >
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-slate-800 mb-4 sm:mb-6 elegant-text-gradient">
+              Lista de Presentes
+            </h1>
+            <div className="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-pink-300 to-rose-300 mx-auto mb-6 sm:mb-8 rounded-full"></div>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-6 xl:gap-8 mb-8 sm:mb-12">
-            {paginatedGifts.map((gift) => (
-              <div
-                key={gift.id}
-                className="bg-white rounded-lg sm:rounded-xl md:rounded-2xl shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:scale-105 overflow-hidden"
-                onClick={() => handleGiftClick(gift)}
-              >
-                {/* Gift Image */}
-                <div className="relative h-28 sm:h-40 md:h-48 lg:h-56 overflow-hidden">
-                  <img
-                    src={gift.image}
-                    alt={gift.name}
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
-                  />
-                  {/* Category Badge Overlay */}
-                  <div className="absolute top-1 sm:top-2 md:top-3 left-1 sm:left-2 md:left-3 flex items-center gap-1">
-                    <span className="text-sm sm:text-lg md:text-xl lg:text-2xl bg-white/90 rounded-full p-0.5 sm:p-1 shadow-md">
-                      {gift.icon}
-                    </span>
-                    <span className="text-xs bg-white/90 text-pink-800 px-1 sm:px-1.5 md:px-2 lg:px-3 py-0.5 sm:py-1 rounded-full font-medium shadow-md">
-                      {gift.category}
-                    </span>
+          {/* Gift Items Grid */}
+          <div
+            className={`transition-all duration-1000 ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
+            }`}
+          >
+            <div className="text-center mb-8 sm:mb-12">
+              <h2 className="text-2xl sm:text-3xl font-serif text-slate-800 mb-3 sm:mb-4 elegant-text-gradient">
+                Nossos Presentes
+              </h2>
+              <div className="w-12 sm:w-16 h-1 bg-gradient-to-r from-pink-200 to-rose-200 mx-auto mb-3 sm:mb-4 rounded-full"></div>
+              <p className="text-base sm:text-lg text-slate-600">
+                {gifts.length} itens disponíveis
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-6 xl:gap-8 mb-8 sm:mb-12">
+              {paginatedGifts.map((gift) => (
+                <div
+                  key={gift.id}
+                  className="bg-white rounded-lg sm:rounded-xl md:rounded-2xl shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:scale-105 overflow-hidden"
+                  onClick={() => handleGiftClick(gift)}
+                >
+                  {/* Gift Image */}
+                  <div className="relative h-28 sm:h-40 md:h-48 lg:h-56 overflow-hidden">
+                    <img
+                      src={gift.image}
+                      alt={gift.name}
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                    />
+                    {/* Category Badge Overlay */}
+                    <div className="absolute top-1 sm:top-2 md:top-3 left-1 sm:left-2 md:left-3 flex items-center gap-1">
+                      <span className="text-sm sm:text-lg md:text-xl lg:text-2xl bg-white/90 rounded-full p-0.5 sm:p-1 shadow-md">
+                        {gift.icon}
+                      </span>
+                      <span className="text-xs bg-white/90 text-pink-800 px-1 sm:px-1.5 md:px-2 lg:px-3 py-0.5 sm:py-1 rounded-full font-medium shadow-md">
+                        {gift.category}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Gift Info */}
+                  <div className="p-2 sm:p-3 md:p-4 lg:p-6">
+                    <h3 className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-serif text-slate-800 mb-1 sm:mb-1.5 md:mb-2 lg:mb-3 elegant-text-gradient line-clamp-2">
+                      {gift.name}
+                    </h3>
+                    <p className="text-xs sm:text-sm md:text-base lg:text-lg text-pink-600 font-semibold mb-1 sm:mb-1.5 md:mb-2 lg:mb-3">
+                      {gift.price}
+                    </p>
+                    <p className="text-xs sm:text-xs md:text-sm lg:text-base text-slate-600 mb-2 sm:mb-3 md:mb-4 lg:mb-6 line-clamp-2">
+                      {gift.description}
+                    </p>
+                    <button className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-1.5 sm:py-2 md:py-2.5 lg:py-3 px-2 sm:px-3 md:px-4 lg:px-6 rounded-full text-xs sm:text-xs md:text-sm lg:text-base font-medium hover:from-pink-600 hover:to-rose-600 transition-all duration-300 transform hover:scale-105">
+                      Presentear
+                    </button>
                   </div>
                 </div>
-
-                {/* Gift Info */}
-                <div className="p-2 sm:p-3 md:p-4 lg:p-6">
-                  <h3 className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-serif text-slate-800 mb-1 sm:mb-1.5 md:mb-2 lg:mb-3 elegant-text-gradient line-clamp-2">
-                    {gift.name}
-                  </h3>
-                  <p className="text-xs sm:text-sm md:text-base lg:text-lg text-pink-600 font-semibold mb-1 sm:mb-1.5 md:mb-2 lg:mb-3">
-                    {gift.price}
-                  </p>
-                  <p className="text-xs sm:text-xs md:text-sm lg:text-base text-slate-600 mb-2 sm:mb-3 md:mb-4 lg:mb-6 line-clamp-2">
-                    {gift.description}
-                  </p>
-                  <button className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-1.5 sm:py-2 md:py-2.5 lg:py-3 px-2 sm:px-3 md:px-4 lg:px-6 rounded-full text-xs sm:text-xs md:text-sm lg:text-base font-medium hover:from-pink-600 hover:to-rose-600 transition-all duration-300 transform hover:scale-105">
-                    Presentear
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Paginação */}
-          {totalPages > 1 && (
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
-              <button
-                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 border border-pink-200 bg-white hover:bg-pink-50 ${
-                  currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-              >
-                Anterior
-              </button>
-              <span className="text-base sm:text-lg font-serif text-slate-800">
-                Página {currentPage} de {totalPages}
-              </span>
-              <button
-                onClick={() =>
-                  setCurrentPage((p) => Math.min(totalPages, p + 1))
-                }
-                disabled={currentPage === totalPages}
-                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 border border-pink-200 bg-white hover:bg-pink-50 ${
-                  currentPage === totalPages
-                    ? "opacity-50 cursor-not-allowed"
-                    : ""
-                }`}
-              >
-                Próxima
-              </button>
+              ))}
             </div>
-          )}
+
+            {/* Paginação */}
+            {totalPages > 1 && (
+              <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
+                <button
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  disabled={currentPage === 1}
+                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 border border-pink-200 bg-white hover:bg-pink-50 ${
+                    currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                  }`}
+                >
+                  Anterior
+                </button>
+                <span className="text-base sm:text-lg font-serif text-slate-800">
+                  Página {currentPage} de {totalPages}
+                </span>
+                <button
+                  onClick={() =>
+                    setCurrentPage((p) => Math.min(totalPages, p + 1))
+                  }
+                  disabled={currentPage === totalPages}
+                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 border border-pink-200 bg-white hover:bg-pink-50 ${
+                    currentPage === totalPages
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  }`}
+                >
+                  Próxima
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
