@@ -298,40 +298,40 @@ export default function Confirmacao() {
 
           {/* Form */}
           <div
-            className={`bg-white/80 backdrop-blur-sm border border-white/20 shadow-lg shadow-slate-200/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 lg:p-12 transition-all duration-1000 ${
+            className={`bg-white/90 backdrop-blur-md border border-white/30 shadow-xl shadow-slate-200/40 rounded-3xl p-6 sm:p-8 md:p-10 lg:p-12 transition-all duration-1000 ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-8"
             }`}
           >
-            <div className="text-center mb-8 sm:mb-12">
+            <div className="text-center mb-10 sm:mb-12">
               <div
-                className="text-4xl sm:text-5xl md:text-6xl mb-4 sm:mb-6 animate-bounce"
+                className="text-5xl sm:text-6xl md:text-7xl mb-6 sm:mb-8 animate-bounce"
                 style={{ animationDuration: "3s" }}
               >
                 💌
               </div>
-              <h2 className="text-2xl sm:text-3xl font-serif text-slate-800 mb-4 sm:mb-6 elegant-text-gradient">
-                Formulário de Confirmação
-              </h2>
-              <div className="w-12 sm:w-16 h-1 bg-gradient-to-r from-pink-200 to-rose-200 mx-auto mb-4 sm:mb-6 rounded-full"></div>
-              <p className="text-sm sm:text-base text-slate-600">
+
+              <div className="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-pink-300 to-rose-300 mx-auto mb-6 sm:mb-8 rounded-full"></div>
+              <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
                 Preencha os dados abaixo para confirmar sua presença em nosso
-                casamento.
+                casamento. Sua resposta é muito importante para nós!
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
+            <form onSubmit={handleSubmit} className="space-y-8 sm:space-y-10">
               {/* Personal Information */}
-              <div className="bg-gradient-to-r from-pink-50 to-rose-50 p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl">
-                <h3 className="text-lg sm:text-xl font-serif text-slate-800 mb-4 sm:mb-6 elegant-text-gradient">
-                  📝 Informações Pessoais
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                  <div>
+              <div className="bg-gradient-to-br from-slate-50 to-white border border-slate-200/50 p-6 sm:p-8 md:p-10 rounded-2xl shadow-lg shadow-slate-200/20 hover:shadow-xl transition-all duration-500">
+                <div className="flex items-center gap-3 mb-6 sm:mb-8">
+                  <h3 className="text-xl sm:text-2xl font-serif text-slate-800 elegant-text-gradient">
+                    Informações Pessoais
+                  </h3>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                  <div className="space-y-2">
                     <label
                       htmlFor="name"
-                      className="block text-sm sm:text-base font-medium text-slate-700 mb-2 sm:mb-3"
+                      className="block text-sm font-semibold text-slate-700 uppercase tracking-wide"
                     >
                       Nome Completo *
                     </label>
@@ -342,15 +342,15 @@ export default function Confirmacao() {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
+                      className="w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-pink-300 focus:border-pink-300 transition-all duration-300 text-base bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-md"
                       placeholder="Digite seu nome completo"
                     />
                   </div>
 
-                  <div>
+                  <div className="space-y-2">
                     <label
                       htmlFor="phone"
-                      className="block text-sm sm:text-base font-medium text-slate-700 mb-2 sm:mb-3"
+                      className="block text-sm font-semibold text-slate-700 uppercase tracking-wide"
                     >
                       Telefone
                     </label>
@@ -360,59 +360,61 @@ export default function Confirmacao() {
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
-                      className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
+                      className="w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-pink-300 focus:border-pink-300 transition-all duration-300 text-base bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-md"
                       placeholder="(11) 99999-9999"
                     />
                   </div>
-
-                  {/* Acompanhantes será exibido na seção de Confirmação */}
                 </div>
               </div>
 
               {/* Confirmation */}
-              <div className="bg-gradient-to-r from-pink-50 to-rose-50 p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl">
-                <h3 className="text-lg sm:text-xl font-serif text-slate-800 mb-4 sm:mb-6 elegant-text-gradient">
-                  ✅ Confirmação de Presença
-                </h3>
-                <div className="space-y-3 sm:space-y-4">
+              <div className="bg-gradient-to-br from-slate-50 to-white border border-slate-200/50 p-6 sm:p-8 md:p-10 rounded-2xl shadow-lg shadow-slate-200/20 hover:shadow-xl transition-all duration-500">
+                <div className="flex items-center gap-3 mb-6 sm:mb-8">
+                  <h3 className="text-xl sm:text-2xl font-serif text-slate-800 elegant-text-gradient">
+                    Confirmação de Presença
+                  </h3>
+                </div>
+                <div className="space-y-6">
                   <div>
-                    <label className="block text-sm sm:text-base font-medium text-slate-700 mb-3 sm:mb-4">
+                    <label className="block text-sm font-semibold text-slate-700 mb-4 uppercase tracking-wide">
                       Você irá comparecer ao nosso casamento? *
                     </label>
-                    <div className="space-y-3">
-                      <label className="flex items-center gap-3 p-3 sm:p-4 border border-slate-200 rounded-lg hover:bg-pink-50 transition-all duration-300 cursor-pointer">
+                    <div className="space-y-4">
+                      <label className="flex items-start gap-4 p-6 border-2 border-slate-200 rounded-xl hover:border-pink-300 hover:bg-pink-50/50 transition-all duration-300 cursor-pointer group">
                         <input
                           type="radio"
                           name="attending"
                           value="yes"
                           checked={formData.attending === "yes"}
                           onChange={handleChange}
-                          className="w-4 h-4 text-pink-600 focus:ring-pink-500"
+                          className="w-5 h-5 text-pink-600 focus:ring-pink-500 mt-1"
                         />
-                        <div>
-                          <span className="text-base sm:text-lg font-serif font-medium text-slate-800">
-                            Sim, estarei presente!
+                        <div className="flex-1">
+                          <span className="text-lg sm:text-xl font-serif font-semibold text-slate-800 group-hover:text-pink-700 transition-colors">
+                            Sim, estarei presente! 🎉
                           </span>
-                          <p className="text-sm sm:text-base text-slate-600">
-                            Mal posso esperar para celebrar com vocês!
+                          <p className="text-sm sm:text-base text-slate-600 mt-1">
+                            Mal posso esperar para celebrar com vocês neste dia
+                            tão especial!
                           </p>
                         </div>
                       </label>
-                      <label className="flex items-center gap-3 p-3 sm:p-4 border border-slate-200 rounded-lg hover:bg-pink-50 transition-all duration-300 cursor-pointer">
+                      <label className="flex items-start gap-4 p-6 border-2 border-slate-200 rounded-xl hover:border-slate-300 hover:bg-slate-50/50 transition-all duration-300 cursor-pointer group">
                         <input
                           type="radio"
                           name="attending"
                           value="no"
                           checked={formData.attending === "no"}
                           onChange={handleChange}
-                          className="w-4 h-4 text-pink-600 focus:ring-pink-500"
+                          className="w-5 h-5 text-slate-600 focus:ring-slate-500 mt-1"
                         />
-                        <div>
-                          <span className="text-base sm:text-lg font-serif font-medium text-slate-800">
-                            Infelizmente não poderei ir
+                        <div className="flex-1">
+                          <span className="text-lg sm:text-xl font-serif font-semibold text-slate-800 group-hover:text-slate-700 transition-colors">
+                            Infelizmente não poderei ir 💝
                           </span>
-                          <p className="text-sm sm:text-base text-slate-600">
-                            Entendo, mas ficaremos com saudades!
+                          <p className="text-sm sm:text-base text-slate-600 mt-1">
+                            Entendo, mas ficaremos com saudades! Sua presença em
+                            nossos corações é o que mais importa.
                           </p>
                         </div>
                       </label>
@@ -420,18 +422,20 @@ export default function Confirmacao() {
                   </div>
 
                   {formData.attending === "yes" && (
-                    <div className="mt-4 sm:mt-6">
-                      <div className="bg-white/70 backdrop-blur-sm border border-slate-200 rounded-xl p-4 sm:p-6 transition-all duration-300">
-                        <div className="flex items-center justify-between flex-wrap gap-3">
-                          <div>
-                            <h4 className="text-base sm:text-lg font-medium text-slate-800">
-                              Acompanhantes
-                            </h4>
-                            <p className="text-xs sm:text-sm text-slate-600">
-                              Informe se levará acompanhantes e os nomes.
-                            </p>
+                    <div className="mt-8">
+                      <div className="bg-white/80 backdrop-blur-sm border border-white/30 shadow-lg shadow-slate-200/30 rounded-2xl p-6 sm:p-8 transition-all duration-300 hover:shadow-xl">
+                        <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
+                          <div className="flex items-center gap-3">
+                            <div>
+                              <h4 className="text-lg sm:text-xl font-serif font-medium text-slate-800">
+                                Acompanhantes
+                              </h4>
+                              <p className="text-sm text-slate-600">
+                                Informe se levará acompanhantes e seus detalhes
+                              </p>
+                            </div>
                           </div>
-                          <div className="inline-flex rounded-lg overflow-hidden border border-slate-200">
+                          <div className="inline-flex rounded-xl overflow-hidden border border-slate-200 shadow-sm">
                             <button
                               type="button"
                               onClick={() =>
@@ -442,10 +446,10 @@ export default function Confirmacao() {
                                   },
                                 })
                               }
-                              className={`px-4 py-2 text-sm sm:text-base transition-colors ${
+                              className={`px-6 py-3 text-sm font-medium transition-all duration-300 ${
                                 formData.bringingGuests === "no"
-                                  ? "bg-pink-500 text-white"
-                                  : "bg-white hover:bg-pink-50 text-slate-700"
+                                  ? "bg-slate-700 text-white shadow-lg"
+                                  : "bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-800"
                               }`}
                               aria-pressed={formData.bringingGuests === "no"}
                             >
@@ -461,10 +465,10 @@ export default function Confirmacao() {
                                   },
                                 })
                               }
-                              className={`px-4 py-2 text-sm sm:text-base border-l border-slate-200 transition-colors ${
+                              className={`px-6 py-3 text-sm font-medium border-l border-slate-200 transition-all duration-300 ${
                                 formData.bringingGuests === "yes"
-                                  ? "bg-pink-500 text-white"
-                                  : "bg-white hover:bg-pink-50 text-slate-700"
+                                  ? "bg-slate-700 text-white shadow-lg"
+                                  : "bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-800"
                               }`}
                               aria-pressed={formData.bringingGuests === "yes"}
                             >
@@ -474,51 +478,73 @@ export default function Confirmacao() {
                         </div>
 
                         {formData.bringingGuests === "yes" && (
-                          <div className="mt-4 space-y-4">
-                            <div>
-                              <label className="block text-sm sm:text-base font-medium text-slate-700 mb-2">
+                          <div className="space-y-6">
+                            <div className="bg-slate-50 rounded-xl p-6">
+                              <label className="block text-sm font-semibold text-slate-700 mb-4 uppercase tracking-wide">
                                 Quantos acompanhantes? *
                               </label>
-                              <div className="flex items-center gap-3">
+                              <div className="flex items-center justify-center gap-4">
                                 <button
                                   type="button"
                                   onClick={decrementGuests}
-                                  className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-pink-50 hover:border-pink-300 transition"
+                                  className="w-12 h-12 flex items-center justify-center rounded-full border-2 border-slate-300 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-400 transition-all duration-300 shadow-sm hover:shadow-md"
                                   aria-label="Diminuir"
                                 >
-                                  −
+                                  <svg
+                                    className="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M20 12H4"
+                                    />
+                                  </svg>
                                 </button>
-                                <input
-                                  type="number"
-                                  min="1"
-                                  max="5"
-                                  value={parseInt(formData.guests || "1", 10)}
-                                  onChange={(e) =>
-                                    setGuestsCount(e.target.value)
-                                  }
-                                  className="w-16 text-center px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
-                                />
+                                <div className="w-20 h-12 bg-white border-2 border-slate-200 rounded-xl flex items-center justify-center">
+                                  <span className="text-xl font-bold text-slate-800">
+                                    {parseInt(formData.guests || "1", 10)}
+                                  </span>
+                                </div>
                                 <button
                                   type="button"
                                   onClick={incrementGuests}
-                                  className="w-10 h-10 flex items-center justify-center rounded-lg border border-slate-300 bg-white text-slate-700 hover:bg-pink-50 hover:border-pink-300 transition"
+                                  className="w-12 h-12 flex items-center justify-center rounded-full border-2 border-slate-300 bg-white text-slate-600 hover:bg-slate-50 hover:border-slate-400 transition-all duration-300 shadow-sm hover:shadow-md"
                                   aria-label="Aumentar"
                                 >
-                                  +
+                                  <svg
+                                    className="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M12 4v16m8-8H4"
+                                    />
+                                  </svg>
                                 </button>
                               </div>
-                              <p className="text-xs text-slate-500 mt-2">
-                                Máximo de 5 acompanhantes.
+                              <p className="text-xs text-slate-500 text-center mt-3">
+                                Máximo de 5 acompanhantes
                               </p>
                             </div>
 
                             {formData.guests &&
                               parseInt(formData.guests, 10) > 0 && (
-                                <div className="space-y-3">
-                                  <label className="block text-sm sm:text-base font-medium text-slate-700">
-                                    Detalhes dos acompanhantes *
-                                  </label>
-                                  <div className="grid grid-cols-1 gap-3">
+                                <div className="space-y-4">
+                                  <div className="flex items-center gap-2 mb-4">
+                                    <div className="w-2 h-2 bg-slate-400 rounded-full"></div>
+                                    <label className="text-sm font-semibold text-slate-700 uppercase tracking-wide">
+                                      Detalhes dos acompanhantes *
+                                    </label>
+                                  </div>
+                                  <div className="space-y-4">
                                     {Array.from({
                                       length: parseInt(
                                         formData.guests || "0",
@@ -527,84 +553,102 @@ export default function Confirmacao() {
                                     }).map((_, index) => (
                                       <div
                                         key={index}
-                                        className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start"
+                                        className="bg-white/60 backdrop-blur-sm border border-white/40 rounded-xl p-4 sm:p-6 shadow-sm hover:shadow-md transition-all duration-300"
                                       >
-                                        <input
-                                          type="text"
-                                          value={
-                                            formData.guestNames[index] || ""
-                                          }
-                                          onChange={(e) =>
-                                            handleGuestNameChange(
-                                              index,
-                                              e.target.value
-                                            )
-                                          }
-                                          required
-                                          className="w-full md:col-span-6 px-3 sm:px-4 py-2 sm:py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
-                                          placeholder={`Nome do(a) acompanhante ${
-                                            index + 1
-                                          }`}
-                                        />
-                                        <div className="relative w-full md:col-span-3">
-                                          <select
-                                            value={
-                                              formData.guestRelations?.[
-                                                index
-                                              ] || ""
-                                            }
-                                            onChange={(e) =>
-                                              handleGuestRelationChange(
-                                                index,
-                                                e.target.value
-                                              )
-                                            }
-                                            required
-                                            className="appearance-none w-full px-3 sm:px-4 py-2 sm:py-3 pr-10 border border-slate-300 rounded-lg bg-white shadow-sm focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
-                                          >
-                                            <option value="">Relação</option>
-                                            <option>Amigo(a)</option>
-                                            <option>Família</option>
-                                            <option>Colega</option>
-                                            <option>Criança</option>
-                                            <option>Parceiro(a)</option>
-                                            <option>Outro</option>
-                                          </select>
-                                          <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-slate-500">
-                                            <svg
-                                              xmlns="http://www.w3.org/2000/svg"
-                                              className="h-4 w-4"
-                                              viewBox="0 0 20 20"
-                                              fill="currentColor"
-                                            >
-                                              <path
-                                                fillRule="evenodd"
-                                                d="M5.23 7.21a.75.75 0 011.06.02L10 11.187l3.71-3.956a.75.75 0 111.08 1.04l-4.24 4.52a.75.75 0 01-1.08 0l-4.24-4.52a.75.75 0 01.02-1.06z"
-                                                clipRule="evenodd"
-                                              />
-                                            </svg>
+                                        <div className="flex items-center gap-2 mb-3">
+                                          <div className="w-6 h-6 bg-slate-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                            {index + 1}
                                           </div>
+                                          <span className="text-sm font-medium text-slate-700">
+                                            Acompanhante {index + 1}
+                                          </span>
                                         </div>
-                                        {formData.guestRelations?.[index] ===
-                                          "Outro" && (
-                                          <input
-                                            type="text"
-                                            value={
-                                              formData.guestRelationOthers?.[
-                                                index
-                                              ] || ""
-                                            }
-                                            onChange={(e) =>
-                                              handleGuestRelationOtherChange(
-                                                index,
-                                                e.target.value
-                                              )
-                                            }
-                                            required
-                                            className="w-full md:col-span-3 px-3 sm:px-4 py-2 sm:py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300 text-sm sm:text-base"
-                                            placeholder="Outro (qual)"
-                                          />
-                                        )}
+                                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+                                          <div className="lg:col-span-6">
+                                            <input
+                                              type="text"
+                                              value={
+                                                formData.guestNames[index] || ""
+                                              }
+                                              onChange={(e) =>
+                                                handleGuestNameChange(
+                                                  index,
+                                                  e.target.value
+                                                )
+                                              }
+                                              required
+                                              className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-300 focus:border-transparent transition-all duration-300 text-sm bg-white/80 backdrop-blur-sm"
+                                              placeholder="Nome completo"
+                                            />
+                                          </div>
+                                          <div className="lg:col-span-3">
+                                            <div className="relative">
+                                              <select
+                                                value={
+                                                  formData.guestRelations?.[
+                                                    index
+                                                  ] || ""
+                                                }
+                                                onChange={(e) =>
+                                                  handleGuestRelationChange(
+                                                    index,
+                                                    e.target.value
+                                                  )
+                                                }
+                                                required
+                                                className="appearance-none w-full px-4 py-3 pr-10 border border-slate-200 rounded-lg bg-white/80 backdrop-blur-sm shadow-sm focus:ring-2 focus:ring-slate-300 focus:border-transparent transition-all duration-300 text-sm"
+                                              >
+                                                <option value="">
+                                                  Relação
+                                                </option>
+                                                <option>Amigo(a)</option>
+                                                <option>Família</option>
+                                                <option>Colega</option>
+                                                <option>Criança</option>
+                                                <option>Parceiro(a)</option>
+                                                <option>Outro</option>
+                                              </select>
+                                              <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-slate-400">
+                                                <svg
+                                                  className="h-4 w-4"
+                                                  fill="none"
+                                                  stroke="currentColor"
+                                                  viewBox="0 0 24 24"
+                                                >
+                                                  <path
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                    strokeWidth={2}
+                                                    d="M19 9l-7 7-7-7"
+                                                  />
+                                                </svg>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          {formData.guestRelations?.[index] ===
+                                            "Outro" && (
+                                            <div className="lg:col-span-3">
+                                              <input
+                                                type="text"
+                                                value={
+                                                  formData
+                                                    .guestRelationOthers?.[
+                                                    index
+                                                  ] || ""
+                                                }
+                                                onChange={(e) =>
+                                                  handleGuestRelationOtherChange(
+                                                    index,
+                                                    e.target.value
+                                                  )
+                                                }
+                                                required
+                                                className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-slate-300 focus:border-transparent transition-all duration-300 text-sm bg-white/80 backdrop-blur-sm"
+                                                placeholder="Especifique"
+                                              />
+                                            </div>
+                                          )}
+                                        </div>
                                       </div>
                                     ))}
                                   </div>
@@ -619,14 +663,16 @@ export default function Confirmacao() {
               </div>
 
               {/* Message */}
-              <div className="bg-gradient-to-r from-pink-50 to-rose-50 p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl">
-                <h3 className="text-lg sm:text-xl font-serif text-slate-800 mb-4 sm:mb-6 elegant-text-gradient">
-                  💝 Mensagem para os Noivos
-                </h3>
-                <div>
+              <div className="bg-gradient-to-br from-slate-50 to-white border border-slate-200/50 p-6 sm:p-8 md:p-10 rounded-2xl shadow-lg shadow-slate-200/20 hover:shadow-xl transition-all duration-500">
+                <div className="flex items-center gap-3 mb-6 sm:mb-8">
+                  <h3 className="text-xl sm:text-2xl font-serif text-slate-800 elegant-text-gradient">
+                    Mensagem para os Noivos
+                  </h3>
+                </div>
+                <div className="space-y-2">
                   <label
                     htmlFor="message"
-                    className="block text-sm sm:text-base font-medium text-slate-700 mb-2 sm:mb-3"
+                    className="block text-sm font-semibold text-slate-700 uppercase tracking-wide"
                   >
                     Deixe uma mensagem especial (opcional)
                   </label>
@@ -636,35 +682,35 @@ export default function Confirmacao() {
                     value={formData.message}
                     onChange={handleChange}
                     rows="4"
-                    className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent transition-all duration-300 text-sm sm:text-base resize-none"
+                    className="w-full px-4 py-4 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-pink-300 focus:border-pink-300 transition-all duration-300 text-base bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-md resize-none"
                     placeholder="Deixe uma mensagem especial para Erica e Junior..."
                   ></textarea>
                 </div>
               </div>
 
-              <div className="text-center">
+              <div className="text-center pt-4">
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className={`px-8 sm:px-10 md:px-12 py-3 sm:py-4 rounded-full font-medium transition-all duration-300 transform hover:scale-105 text-sm sm:text-base md:text-lg ${
+                  className={`px-10 sm:px-12 md:px-16 py-4 sm:py-5 rounded-3xl font-semibold transition-all duration-300 transform hover:scale-105 text-base sm:text-lg md:text-xl shadow-lg hover:shadow-xl ${
                     isSubmitting ? "opacity-50 cursor-not-allowed" : ""
                   }`}
                   style={{
                     background:
                       "linear-gradient(135deg, #ec4899 0%, #f43f5e 100%)",
                     color: "white",
-                    boxShadow: "0 4px 15px rgba(236, 72, 153, 0.3)",
+                    boxShadow: "0 8px 25px rgba(236, 72, 153, 0.4)",
                   }}
                 >
                   {isSubmitting ? (
-                    <div className="flex items-center gap-2 sm:gap-3">
-                      <div className="w-4 h-4 sm:w-5 sm:h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-5 h-5 sm:w-6 sm:h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                       Enviando...
                     </div>
                   ) : formData.attending === "yes" ? (
-                    "Confirmar Presença"
+                    "✨ Confirmar Presença"
                   ) : (
-                    "Enviar Resposta"
+                    "💝 Enviar Resposta"
                   )}
                 </button>
               </div>

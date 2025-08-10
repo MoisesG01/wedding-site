@@ -3,14 +3,15 @@ import { sendContactEmail } from "../config/emailjs";
 import Divisor from "../components/Divisor";
 
 export default function Contato() {
+  const [isVisible, setIsVisible] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState(null);
+  const [openFAQ, setOpenFAQ] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     subject: "",
     message: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null);
-  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -61,6 +62,33 @@ export default function Contato() {
       setIsSubmitting(false);
     }
   };
+
+  const toggleFAQ = (index) => {
+    setOpenFAQ(openFAQ === index ? null : index);
+  };
+
+  const faqData = [
+    {
+      question: "Posso levar acompanhante?",
+      answer:
+        "Sim! Basta confirmar no formulário de confirmação de presença quantas pessoas irão acompanhá-lo.",
+    },
+    {
+      question: "Há estacionamento no local?",
+      answer:
+        "Sim! O Espaço de Eventos Flores oferece estacionamento gratuito com capacidade para 200 veículos.",
+    },
+    {
+      question: "Posso levar crianças?",
+      answer:
+        "Claro! É um evento familiar e as crianças são muito bem-vindas. Teremos atividades especiais para elas.",
+    },
+    {
+      question: "Qual o dress code?",
+      answer:
+        "Elegante Esportivo. Para mulheres: vestidos ou conjuntos elegantes. Para homens: terno ou camisa social com calça.",
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
@@ -169,10 +197,11 @@ export default function Contato() {
                         Endereço
                       </h3>
                       <p className="text-sm sm:text-base text-slate-600 mb-1 sm:mb-2">
-                        Rua das Flores, 123
+                        Igreja Nossa Senhora da Conceição
                       </p>
                       <p className="text-xs sm:text-sm text-slate-500">
-                        Jardim Europa - São Paulo, SP
+                        Rua Nossa Sra. da Conceição, 117 – Jaraguá, São Paulo –
+                        SP, 05181-280
                       </p>
                     </div>
                   </div>
@@ -345,59 +374,67 @@ export default function Contato() {
             </div>
           </div>
 
-          {/* FAQ Section */}
+          {/* FAQ Section - Accordion Style */}
           <div
-            className={`bg-white/80 backdrop-blur-sm border border-white/20 shadow-lg shadow-slate-200/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 lg:p-12 mt-8 sm:mt-12 md:mt-16 lg:mt-20 transition-all duration-1000 ${
+            className={`bg-white/80 backdrop-blur-sm border border-white/20 shadow-lg shadow-slate-200/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 mt-6 sm:mt-8 md:mt-12 transition-all duration-1000 ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif text-slate-800 text-center mb-8 sm:mb-12 elegant-text-gradient">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-serif text-slate-800 text-center mb-4 sm:mb-6 elegant-text-gradient">
               Perguntas Frequentes
             </h2>
-            <div className="w-12 sm:w-16 h-1 bg-gradient-to-r from-pink-200 to-rose-200 mx-auto mb-8 sm:mb-12 rounded-full"></div>
+            <div className="w-8 sm:w-12 h-1 bg-gradient-to-r from-pink-200 to-rose-200 mx-auto mb-4 sm:mb-6 rounded-full"></div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
-              <div className="bg-gradient-to-r from-pink-50 to-rose-50 p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl hover:shadow-lg transition-all duration-300">
-                <h3 className="text-lg sm:text-xl font-serif text-slate-800 mb-3 sm:mb-4 elegant-text-gradient">
-                  Posso levar acompanhante?
-                </h3>
-                <p className="text-sm sm:text-base text-slate-600">
-                  Sim! Basta confirmar no formulário de confirmação de presença
-                  quantas pessoas irão acompanhá-lo.
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-r from-pink-50 to-rose-50 p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl hover:shadow-lg transition-all duration-300">
-                <h3 className="text-lg sm:text-xl font-serif text-slate-800 mb-3 sm:mb-4 elegant-text-gradient">
-                  Há estacionamento no local?
-                </h3>
-                <p className="text-sm sm:text-base text-slate-600">
-                  Sim! O Espaço de Eventos Flores oferece estacionamento
-                  gratuito com capacidade para 200 veículos.
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-r from-pink-50 to-rose-50 p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl hover:shadow-lg transition-all duration-300">
-                <h3 className="text-lg sm:text-xl font-serif text-slate-800 mb-3 sm:mb-4 elegant-text-gradient">
-                  Posso levar crianças?
-                </h3>
-                <p className="text-sm sm:text-base text-slate-600">
-                  Claro! É um evento familiar e as crianças são muito
-                  bem-vindas. Teremos atividades especiais para elas.
-                </p>
-              </div>
-
-              <div className="bg-gradient-to-r from-pink-50 to-rose-50 p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl hover:shadow-lg transition-all duration-300">
-                <h3 className="text-lg sm:text-xl font-serif text-slate-800 mb-3 sm:mb-4 elegant-text-gradient">
-                  Qual o dress code?
-                </h3>
-                <p className="text-sm sm:text-base text-slate-600">
-                  Elegante Esportivo. Para mulheres: vestidos ou conjuntos
-                  elegantes. Para homens: terno ou camisa social com calça.
-                </p>
-              </div>
+            <div className="max-w-2xl mx-auto space-y-2">
+              {faqData.map((faq, index) => (
+                <div
+                  key={index}
+                  className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-lg border border-pink-200/50 overflow-hidden"
+                >
+                  <button
+                    onClick={() => toggleFAQ(index)}
+                    className="w-full px-4 py-3 sm:px-6 sm:py-4 text-left flex items-center justify-between hover:bg-pink-100/50 transition-all duration-300"
+                  >
+                    <h3 className="text-sm sm:text-base font-serif text-slate-800 font-medium">
+                      {faq.question}
+                    </h3>
+                    <div
+                      className={`transform transition-transform duration-300 ${
+                        openFAQ === index ? "rotate-180" : "rotate-0"
+                      }`}
+                    >
+                      <svg
+                        className="w-4 h-4 sm:w-5 sm:h-5 text-pink-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ${
+                      openFAQ === index
+                        ? "max-h-32 opacity-100"
+                        : "max-h-0 opacity-0"
+                    }`}
+                  >
+                    <div className="px-4 pb-3 sm:px-6 sm:pb-4">
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
