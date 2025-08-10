@@ -25,7 +25,7 @@ export default function Presentes() {
       category: "Casa e Decoração",
       icon: "🏠",
       image:
-        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=400&q=80",
+        "https://cdn.leroymerlin.com.br/products/jogo_de_panelas_antiaderente_ceramica_de_inducao_8_pecas_brin_1571793695_a2a8_600x600.jpg",
     },
     {
       id: 2,
@@ -34,8 +34,7 @@ export default function Presentes() {
       description: "Processador de alimentos 500W",
       category: "Eletrodomésticos",
       icon: "🔌",
-      image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=400&q=80",
+      image: "https://static.mundomax.com.br/produtos/50800/550/1.webp",
     },
     {
       id: 3,
@@ -45,7 +44,7 @@ export default function Presentes() {
       category: "Casa e Decoração",
       icon: "🏠",
       image:
-        "https://images.unsplash.com/photo-1582735689369-4fe89db7114c?auto=format&fit=crop&w=400&q=80",
+        "https://toalhashow.cdn.magazord.com.br/img/2023/10/produto/5218/colecao-egito-kit-toalhas-banho-gigante-plus-size-marrom-preta-toalha-show.jpg?ims=800x800",
     },
     {
       id: 4,
@@ -55,7 +54,7 @@ export default function Presentes() {
       category: "Casa e Decoração",
       icon: "🏠",
       image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=400&q=80",
+        "https://larmary.com/cdn/shop/files/vaso-decorativo-5_1.webp?v=1725967360",
     },
     {
       id: 5,
@@ -65,7 +64,7 @@ export default function Presentes() {
       category: "Eletrodomésticos",
       icon: "🔌",
       image:
-        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=400&q=80",
+        "https://lenoxx.com.au/cdn/shop/products/AF900lifestyle_c_1200x1200.jpg?v=1652316375",
     },
     {
       id: 6,
@@ -75,7 +74,7 @@ export default function Presentes() {
       category: "Eletrodomésticos",
       icon: "🔌",
       image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=400&q=80",
+        "https://cdn.awsli.com.br/2500x2500/2102/2102924/produto/237990248/liquidificador-preto-05-o4ctlct7d0.jpg",
     },
     {
       id: 7,
@@ -85,7 +84,7 @@ export default function Presentes() {
       category: "Eletrodomésticos",
       icon: "🔌",
       image:
-        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=400&q=80",
+        "https://cdn.sistemawbuy.com.br/arquivos/f8d1f4a04e988aeb5f9660e041392be7/produtos/65d7a1cf810ba/101db-cafeteira-eletrica-digital-15l-telefunken-venezia-110v-02-65d7a1d7d38aa.jpg",
     },
     {
       id: 8,
@@ -95,7 +94,7 @@ export default function Presentes() {
       category: "Eletrodomésticos",
       icon: "🔌",
       image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=400&q=80",
+        "https://s2-techtudo.glbimg.com/NuWlCrbc4es5M5vv2g12RMcLKDY=/0x0:1920x1080/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2024/0/d/C9HJAARdCKKaP2BmfByw/microondas.jpg",
     },
     {
       id: 9,
@@ -105,7 +104,7 @@ export default function Presentes() {
       category: "Viagem e Lazer",
       icon: "✈️",
       image:
-        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=400&q=80",
+        "https://images.tcdn.com.br/img/img_prod/812686/kit_com_3_malas_de_viagem_bordo_media_e_grande_com_cadeado_linha_genebra_1498_1_9171941207e584a392cb6cfde13120c6.jpg",
     },
     {
       id: 10,
@@ -115,7 +114,7 @@ export default function Presentes() {
       category: "Viagem e Lazer",
       icon: "✈️",
       image:
-        "https://images.unsplash.com/photo-1582735689369-4fe89db7114c?auto=format&fit=crop&w=400&q=80",
+        "https://cdn.awsli.com.br/2500x2500/1866/1866589/produto/18355333370f326a5c5.jpg",
     },
     {
       id: 11,
@@ -125,7 +124,7 @@ export default function Presentes() {
       category: "Viagem e Lazer",
       icon: "✈️",
       image:
-        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=400&q=80",
+        "https://s2-techtudo.glbimg.com/crCmKlzGec6CoeqSTuGM-R5c2L0=/0x0:1140x713/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2021/M/s/vnQQK9R4Ckp5JqVos4Zg/polaroid-now.jpg",
     },
     {
       id: 12,
@@ -135,7 +134,7 @@ export default function Presentes() {
       category: "Viagem e Lazer",
       icon: "✈️",
       image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=400&q=80",
+        "https://images.tcdn.com.br/img/img_prod/841504/agente_secreto_jogo_de_tabuleiro_brinquedo_educativo_de_detetive_256784_2_57a4e500de219f73668ae408ca4bcaf0.jpg",
     },
     {
       id: 13,
@@ -145,7 +144,7 @@ export default function Presentes() {
       category: "Contribuição",
       icon: "💝",
       image:
-        "https://images.unsplash.com/photo-1582735689369-4fe89db7114c?auto=format&fit=crop&w=400&q=80",
+        "https://i0.wp.com/planejandomeucasamento.com.br/wp-content/uploads/2023/07/cotas-lua-de-mel.jpg?fit=1200%2C675&ssl=1",
     },
     {
       id: 14,
@@ -155,7 +154,7 @@ export default function Presentes() {
       category: "Contribuição",
       icon: "💝",
       image:
-        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=400&q=80",
+        "https://midias.correiobraziliense.com.br/_midias/jpg/2022/04/08/675x450/1_casa1-7734260.jpg?20220408190329?20220408190329",
     },
     {
       id: 15,
@@ -165,7 +164,7 @@ export default function Presentes() {
       category: "Contribuição",
       icon: "💝",
       image:
-        "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=400&q=80",
+        "https://www.direcional.com.br/wp-content/uploads/2022/10/investimento-imobiliario-2.jpg",
     },
   ];
 

@@ -246,7 +246,7 @@ export default function Historia() {
               <div className="text-center">
                 <div className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 mx-auto elegant-card rounded-full flex items-center justify-center mb-4 sm:mb-6 elegant-card-hover shadow-2xl overflow-hidden">
                   <img
-                    src="/src/assets/logo.jpg"
+                    src="https://cdn6.campograndenews.com.br/uploads/noticias/2022/08/12/19a983cdd43d4f7c55038766870af1638d391f78.jpg"
                     alt="Erica"
                     className="w-full h-full object-cover"
                   />
@@ -257,7 +257,7 @@ export default function Historia() {
               <div className="text-center">
                 <div className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 mx-auto elegant-card rounded-full flex items-center justify-center mb-4 sm:mb-6 elegant-card-hover shadow-2xl overflow-hidden">
                   <img
-                    src="/src/assets/logo.jpg"
+                    src="https://cdn0.casamentos.com.br/usr/1/4/4/3/cfb_2x_1066813.jpg"
                     alt="Junior"
                     className="w-full h-full object-cover"
                   />
