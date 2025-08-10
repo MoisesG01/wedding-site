@@ -41,6 +41,9 @@ export default function Home() {
               fontFamily: "'Playfair Display', serif",
               fontWeight: 300,
               letterSpacing: "0.1em",
+              textShadow:
+                "0 0 10px rgba(93, 0, 255, 0.36), 0 0 20px rgba(255, 215, 0, 0.2)",
+              filter: "drop-shadow(0 0 5px rgba(255, 217, 0, 0.18))",
             }}
           >
             Erica & Junior
@@ -55,6 +58,9 @@ export default function Home() {
                 fontFamily: "'Cormorant Garamond', serif",
                 fontWeight: 500,
                 letterSpacing: "0.02em",
+                textShadow:
+                  "0 0 8px rgba(255, 255, 255, 0.3), 0 0 15px rgba(255, 255, 255, 0.1)",
+                filter: "drop-shadow(0 0 3px rgba(255, 255, 255, 0.2))",
               }}
             >
               22 de Novembro de 2025

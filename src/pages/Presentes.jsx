@@ -296,31 +296,33 @@ export default function Presentes() {
             {/* Paginação */}
             {totalPages > 1 && (
               <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
-                <button
-                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  disabled={currentPage === 1}
-                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 border border-pink-200 bg-white hover:bg-pink-50 ${
-                    currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                >
-                  Anterior
-                </button>
-                <span className="text-base sm:text-lg font-serif text-slate-800">
-                  Página {currentPage} de {totalPages}
-                </span>
-                <button
-                  onClick={() =>
-                    setCurrentPage((p) => Math.min(totalPages, p + 1))
-                  }
-                  disabled={currentPage === totalPages}
-                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 border border-pink-200 bg-white hover:bg-pink-50 ${
-                    currentPage === totalPages
-                      ? "opacity-50 cursor-not-allowed"
-                      : ""
-                  }`}
-                >
-                  Próxima
-                </button>
+                <div className="flex items-center justify-center gap-3 w-full sm:w-auto">
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                    className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 border border-pink-200 bg-white hover:bg-pink-50 ${
+                      currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                  >
+                    Anterior
+                  </button>
+                  <span className="text-base sm:text-lg font-serif text-slate-800 min-w-[120px] text-center">
+                    Página {currentPage} de {totalPages}
+                  </span>
+                  <button
+                    onClick={() =>
+                      setCurrentPage((p) => Math.min(totalPages, p + 1))
+                    }
+                    disabled={currentPage === totalPages}
+                    className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 border border-pink-200 bg-white hover:bg-pink-50 ${
+                      currentPage === totalPages
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
+                    }`}
+                  >
+                    Próxima
+                  </button>
+                </div>
               </div>
             )}
           </div>
