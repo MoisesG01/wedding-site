@@ -9,9 +9,12 @@ import Recepcao from "./pages/Recepcao";
 import Confirmacao from "./pages/Confirmacao";
 import Presentes from "./pages/Presentes";
 import Contato from "./pages/Contato";
+import MaintenancePage from "./components/MaintenancePage";
 import { initEmailJS } from "./config/emailjs";
 
 export default function App() {
+  // Controle para modo de manutenção - mude para false quando o site estiver pronto
+  const isMaintenanceMode = true;
   const [activeSection, setActiveSection] = useState("home");
 
   // Initialize EmailJS
@@ -61,6 +64,11 @@ export default function App() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Se estiver em modo de manutenção, mostrar apenas a página de manutenção
+  if (isMaintenanceMode) {
+    return <MaintenancePage />;
+  }
 
   return (
     <div className="App">
