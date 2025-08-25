@@ -34,29 +34,6 @@ export default function App() {
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, [devMode]);
 
-  // Sistema de senha - toque no canto superior direito para abrir modal
-  useEffect(() => {
-    const handleTap = (e) => {
-      const x = e.clientX || e.touches?.[0]?.clientX || 0;
-      const y = e.clientY || e.touches?.[0]?.clientY || 0;
-
-      // Verifica se o toque foi no canto superior direito (área de 50x50px)
-      if (x >= window.innerWidth - 50 && y <= 50) {
-        setShowPasswordModal(true);
-        setPassword("");
-      }
-    };
-
-    // Adiciona listeners para diferentes tipos de eventos de toque
-    document.addEventListener("click", handleTap);
-    document.addEventListener("touchstart", handleTap, { passive: true });
-
-    return () => {
-      document.removeEventListener("click", handleTap);
-      document.removeEventListener("touchstart", handleTap);
-    };
-  }, []);
-
   // Função para verificar senha
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
@@ -132,6 +109,15 @@ export default function App() {
           🛠️ DEV MODE
         </div>
       )}
+
+      {/* Botão de acesso desenvolvedor - sempre visível */}
+      <button
+        onClick={() => setShowPasswordModal(true)}
+        className="fixed bottom-4 right-4 z-40 w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center text-lg transition-all duration-300 hover:scale-110"
+        title="Acesso Desenvolvedor"
+      >
+        🔐
+      </button>
 
       {/* Modal de senha para modo desenvolvedor */}
       {showPasswordModal && (
