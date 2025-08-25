@@ -104,7 +104,7 @@ export default function App() {
         {/* Botão de acesso desenvolvedor - sempre visível */}
         <button
           onClick={() => setShowPasswordModal(true)}
-          className="fixed bottom-4 right-4 z-40 w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center text-lg transition-all duration-300 hover:scale-110"
+          className="fixed bottom-4 right-4 z-20 w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center text-lg transition-all duration-300 hover:scale-110"
           title="Acesso Desenvolvedor"
         >
           🔐
@@ -161,7 +161,7 @@ export default function App() {
     <div className="App">
       {/* Indicador de modo desenvolvedor */}
       {devMode && (
-        <div className="fixed top-4 right-4 z-50 bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+        <div className="fixed bottom-4 left-4 z-20 bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold shadow-lg">
           🛠️ DEV MODE
         </div>
       )}
@@ -169,7 +169,7 @@ export default function App() {
       {/* Botão de acesso desenvolvedor - sempre visível */}
       <button
         onClick={() => setShowPasswordModal(true)}
-        className="fixed bottom-4 right-4 z-40 w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center text-lg transition-all duration-300 hover:scale-110"
+        className="fixed bottom-4 right-4 z-20 w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center text-lg transition-all duration-300 hover:scale-110"
         title="Acesso Desenvolvedor"
       >
         🔐

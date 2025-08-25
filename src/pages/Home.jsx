@@ -1,14 +1,17 @@
 import logo from "../assets/logo2.png";
+import fundoHome from "../assets/fundoHome.jpg";
 
 export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
       <div
-        className="relative min-h-screen flex items-center justify-center px-2 sm:px-6 hero-section"
+        className="relative min-h-screen md:min-h-[120vh] flex items-center justify-center px-2 sm:px-6 hero-section"
         style={{
-          backgroundImage:
-            "url('https://odebate.com.br/wp-content/uploads/2019/03/08032019casal.jpg')",
+          backgroundImage: `url(${fundoHome})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center 30%",
+          backgroundRepeat: "no-repeat",
         }}
       >
         {/* Overlay */}
@@ -31,6 +34,7 @@ export default function Home() {
               style={{
                 filter: "brightness(0) invert(1) contrast(1.1)",
                 opacity: 1,
+                objectPosition: "center 50%",
               }}
             />
           </div>
