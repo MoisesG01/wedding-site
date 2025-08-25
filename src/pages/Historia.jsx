@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Divisor from "../components/Divisor";
+import casal from "../assets/casal.jpg";
 
 export default function Historia() {
   const [isVisible, setIsVisible] = useState(false);
@@ -240,28 +241,15 @@ export default function Historia() {
 
           {/* Couple Photo and Text */}
           <div className="mb-12 sm:mb-16 md:mb-20">
-            {/* Photos */}
-            <div className="grid grid-cols-2 gap-4 sm:gap-8 md:gap-12 mb-8 sm:mb-12 md:mb-16">
-              {/* Noiva */}
-              <div className="text-center">
-                <div className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 mx-auto elegant-card rounded-full flex items-center justify-center mb-4 sm:mb-6 elegant-card-hover shadow-2xl overflow-hidden">
-                  <img
-                    src="https://cdn6.campograndenews.com.br/uploads/noticias/2022/08/12/19a983cdd43d4f7c55038766870af1638d391f78.jpg"
-                    alt="Erica"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-
-              {/* Noivo */}
-              <div className="text-center">
-                <div className="w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 lg:w-80 lg:h-80 mx-auto elegant-card rounded-full flex items-center justify-center mb-4 sm:mb-6 elegant-card-hover shadow-2xl overflow-hidden">
-                  <img
-                    src="https://cdn0.casamentos.com.br/usr/1/4/4/3/cfb_2x_1066813.jpg"
-                    alt="Junior"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+            {/* Photo */}
+            <div className="text-center mb-10 sm:mb-14 md:mb-18">
+              <div className="w-56 h-56 sm:w-60 sm:h-60 md:w-80 md:h-80 lg:w-96 lg:h-96 mx-auto elegant-card rounded-full flex items-center justify-center mb-6 sm:mb-8 elegant-card-hover shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
+                <img
+                  src={casal}
+                  alt="Erica & Junior"
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: "center bottom" }}
+                />
               </div>
             </div>
 
