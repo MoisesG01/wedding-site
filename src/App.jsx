@@ -36,24 +36,42 @@ export default function App() {
   // Sistema de toques para mobile - 5 toques no canto superior esquerdo
   useEffect(() => {
     let tapCount = 0;
+    let lastTapTime = 0;
 
     const handleTap = (e) => {
-      const x = e.clientX;
-      const y = e.clientY;
+      const currentTime = new Date().getTime();
+      const x = e.clientX || e.touches?.[0]?.clientX || 0;
+      const y = e.clientY || e.touches?.[0]?.clientY || 0;
 
       // Verifica se o toque foi no canto superior esquerdo (área de 50x50px)
       if (x <= 50 && y <= 50) {
+        // Reset contador se passou muito tempo desde o último toque
+        if (currentTime - lastTapTime > 2000) {
+          tapCount = 0;
+        }
+
         tapCount += 1;
+        lastTapTime = currentTime;
+
+        console.log(`Toque ${tapCount}/5 no canto superior esquerdo`);
+
         if (tapCount >= 5) {
           setShowDevButton(true);
-          setTimeout(() => setShowDevButton(false), 3000); // Esconde após 3 segundos
+          setTimeout(() => setShowDevButton(false), 5000); // Esconde após 5 segundos
           tapCount = 0;
+          console.log("Botão de modo desenvolvedor ativado!");
         }
       }
     };
 
+    // Adiciona listeners para diferentes tipos de eventos de toque
     document.addEventListener("click", handleTap);
-    return () => document.removeEventListener("click", handleTap);
+    document.addEventListener("touchstart", handleTap, { passive: true });
+
+    return () => {
+      document.removeEventListener("click", handleTap);
+      document.removeEventListener("touchstart", handleTap);
+    };
   }, []);
 
   // Initialize EmailJS
