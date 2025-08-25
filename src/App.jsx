@@ -16,6 +16,45 @@ export default function App() {
   // Controle para modo de manutenção - mude para false quando o site estiver pronto
   const isMaintenanceMode = true;
   const [activeSection, setActiveSection] = useState("home");
+  const [devMode, setDevMode] = useState(false);
+  const [showDevButton, setShowDevButton] = useState(false);
+
+  // Sistema de modo desenvolvedor - ativar com Ctrl+Shift+D (desktop) ou toques (mobile)
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.ctrlKey && e.shiftKey && e.key === "D") {
+        e.preventDefault();
+        setDevMode((prev) => !prev);
+        console.log("Modo desenvolvedor:", !devMode ? "ativado" : "desativado");
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => window.removeEventListener("keydown", handleKeyPress);
+  }, [devMode]);
+
+  // Sistema de toques para mobile - 5 toques no canto superior esquerdo
+  useEffect(() => {
+    let tapCount = 0;
+
+    const handleTap = (e) => {
+      const x = e.clientX;
+      const y = e.clientY;
+
+      // Verifica se o toque foi no canto superior esquerdo (área de 50x50px)
+      if (x <= 50 && y <= 50) {
+        tapCount += 1;
+        if (tapCount >= 5) {
+          setShowDevButton(true);
+          setTimeout(() => setShowDevButton(false), 3000); // Esconde após 3 segundos
+          tapCount = 0;
+        }
+      }
+    };
+
+    document.addEventListener("click", handleTap);
+    return () => document.removeEventListener("click", handleTap);
+  }, []);
 
   // Initialize EmailJS
   useEffect(() => {
@@ -66,12 +105,34 @@ export default function App() {
   }, []);
 
   // Se estiver em modo de manutenção, mostrar apenas a página de manutenção
-  if (isMaintenanceMode) {
+  if (isMaintenanceMode && !devMode) {
     return <MaintenancePage />;
   }
 
   return (
     <div className="App">
+      {/* Indicador de modo desenvolvedor */}
+      {devMode && (
+        <div className="fixed top-4 right-4 z-50 bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+          🛠️ DEV MODE
+        </div>
+      )}
+
+      {/* Botão de modo desenvolvedor para mobile */}
+      {showDevButton && (
+        <div className="fixed top-4 left-4 z-50 bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg">
+          <button
+            onClick={() => {
+              setDevMode((prev) => !prev);
+              setShowDevButton(false);
+            }}
+            className="flex items-center gap-2"
+          >
+            🛠️ {devMode ? "Desativar" : "Ativar"} Dev Mode
+          </button>
+        </div>
+      )}
+
       <Toaster
         position="top-right"
         toastOptions={{

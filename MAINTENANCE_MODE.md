@@ -51,6 +51,33 @@ const isMaintenanceMode = true;
 const isMaintenanceMode = false;
 ```
 
+### Modo Desenvolvedor
+
+O site possui um modo desenvolvedor que permite acessar o conteúdo completo mesmo com o modo de manutenção ativo:
+
+#### Como ativar o modo desenvolvedor:
+
+**Desktop:**
+
+1. **Combinação de teclas**: Pressione `Ctrl + Shift + D`
+2. **Para desativar**: Pressione `Ctrl + Shift + D` novamente
+
+**Mobile:**
+
+1. **Toques secretos**: Toque 5 vezes no canto superior esquerdo da tela
+2. **Botão aparecerá**: Um botão azul "🛠️ Ativar Dev Mode" aparecerá no canto superior esquerdo
+3. **Clique no botão**: Para ativar/desativar o modo desenvolvedor
+4. **Auto-hide**: O botão desaparece automaticamente após 3 segundos
+
+**Indicador visual**: Quando ativo, aparece um badge "🛠️ DEV MODE" no canto superior direito
+
+#### Benefícios do modo desenvolvedor:
+
+- ✅ Permite testar o site completo durante o desenvolvimento
+- ✅ Não afeta o modo de manutenção para visitantes normais
+- ✅ Fácil de ativar/desativar
+- ✅ Indicador visual claro quando ativo
+
 ### Benefícios
 
 - ✅ Controle total sobre quando o site fica disponível
@@ -58,3 +85,4 @@ const isMaintenanceMode = false;
 - ✅ Fácil de ativar/desativar
 - ✅ Mantém o site no ar mesmo durante ajustes finais
 - ✅ Não afeta o SEO quando ativo
+- ✅ Modo desenvolvedor para testes
