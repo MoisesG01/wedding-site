@@ -64,7 +64,7 @@ O site possui um modo desenvolvedor que permite acessar o conteúdo completo mes
 
 **Mobile:**
 
-1. **Toque secreto**: Toque no canto superior direito da tela
+1. **Botão azul**: Clique no botão 🔐 no canto inferior direito da tela
 2. **Modal de senha**: Um modal aparecerá solicitando a senha
 3. **Digite a senha**: `dev2024`
 4. **Clique em "Acessar"**: Para ativar o modo desenvolvedor
