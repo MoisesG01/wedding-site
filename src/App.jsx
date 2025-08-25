@@ -17,7 +17,8 @@ export default function App() {
   const isMaintenanceMode = true;
   const [activeSection, setActiveSection] = useState("home");
   const [devMode, setDevMode] = useState(false);
-  const [showDevButton, setShowDevButton] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [password, setPassword] = useState("");
 
   // Sistema de modo desenvolvedor - ativar com Ctrl+Shift+D (desktop) ou toques (mobile)
   useEffect(() => {
@@ -33,34 +34,16 @@ export default function App() {
     return () => window.removeEventListener("keydown", handleKeyPress);
   }, [devMode]);
 
-  // Sistema de toques para mobile - 5 toques no canto superior esquerdo
+  // Sistema de senha - toque no canto superior direito para abrir modal
   useEffect(() => {
-    let tapCount = 0;
-    let lastTapTime = 0;
-
     const handleTap = (e) => {
-      const currentTime = new Date().getTime();
       const x = e.clientX || e.touches?.[0]?.clientX || 0;
       const y = e.clientY || e.touches?.[0]?.clientY || 0;
 
-      // Verifica se o toque foi no canto superior esquerdo (área de 50x50px)
-      if (x <= 50 && y <= 50) {
-        // Reset contador se passou muito tempo desde o último toque
-        if (currentTime - lastTapTime > 2000) {
-          tapCount = 0;
-        }
-
-        tapCount += 1;
-        lastTapTime = currentTime;
-
-        console.log(`Toque ${tapCount}/5 no canto superior esquerdo`);
-
-        if (tapCount >= 5) {
-          setShowDevButton(true);
-          setTimeout(() => setShowDevButton(false), 5000); // Esconde após 5 segundos
-          tapCount = 0;
-          console.log("Botão de modo desenvolvedor ativado!");
-        }
+      // Verifica se o toque foi no canto superior direito (área de 50x50px)
+      if (x >= window.innerWidth - 50 && y <= 50) {
+        setShowPasswordModal(true);
+        setPassword("");
       }
     };
 
@@ -73,6 +56,20 @@ export default function App() {
       document.removeEventListener("touchstart", handleTap);
     };
   }, []);
+
+  // Função para verificar senha
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault();
+    if (password === "dev2024") {
+      setDevMode(true);
+      setShowPasswordModal(false);
+      setPassword("");
+      console.log("Modo desenvolvedor ativado via senha!");
+    } else {
+      alert("Senha incorreta!");
+      setPassword("");
+    }
+  };
 
   // Initialize EmailJS
   useEffect(() => {
@@ -136,18 +133,47 @@ export default function App() {
         </div>
       )}
 
-      {/* Botão de modo desenvolvedor para mobile */}
-      {showDevButton && (
-        <div className="fixed top-4 left-4 z-50 bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-lg">
-          <button
-            onClick={() => {
-              setDevMode((prev) => !prev);
-              setShowDevButton(false);
-            }}
-            className="flex items-center gap-2"
-          >
-            🛠️ {devMode ? "Desativar" : "Ativar"} Dev Mode
-          </button>
+      {/* Modal de senha para modo desenvolvedor */}
+      {showPasswordModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+            <h3 className="text-lg font-bold text-slate-800 mb-4 text-center">
+              🔐 Acesso Desenvolvedor
+            </h3>
+            <form onSubmit={handlePasswordSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Senha:
+                </label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Digite a senha"
+                  autoFocus
+                />
+              </div>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowPasswordModal(false);
+                    setPassword("");
+                  }}
+                  className="flex-1 px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                >
+                  Acessar
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 
