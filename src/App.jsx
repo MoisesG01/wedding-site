@@ -98,7 +98,63 @@ export default function App() {
 
   // Se estiver em modo de manutenção, mostrar apenas a página de manutenção
   if (isMaintenanceMode && !devMode) {
-    return <MaintenancePage />;
+    return (
+      <div>
+        <MaintenancePage />
+        {/* Botão de acesso desenvolvedor - sempre visível */}
+        <button
+          onClick={() => setShowPasswordModal(true)}
+          className="fixed bottom-4 right-4 z-40 w-12 h-12 bg-blue-500 hover:bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center text-lg transition-all duration-300 hover:scale-110"
+          title="Acesso Desenvolvedor"
+        >
+          🔐
+        </button>
+
+        {/* Modal de senha para modo desenvolvedor */}
+        {showPasswordModal && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+              <h3 className="text-lg font-bold text-slate-800 mb-4 text-center">
+                🔐 Acesso Desenvolvedor
+              </h3>
+              <form onSubmit={handlePasswordSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Senha:
+                  </label>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Digite a senha"
+                    autoFocus
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setShowPasswordModal(false);
+                      setPassword("");
+                    }}
+                    className="flex-1 px-4 py-2 bg-slate-200 text-slate-700 rounded-lg hover:bg-slate-300 transition-colors"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+                  >
+                    Acessar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+      </div>
+    );
   }
 
   return (
