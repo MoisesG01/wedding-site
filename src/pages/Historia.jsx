@@ -145,19 +145,19 @@ export default function Historia() {
       </div>
 
       {/* Countdown Section - Full Width */}
-      <div className="bg-gradient-to-br from-amber-50 via-yellow-50 to-orange-50 py-8 sm:py-16 px-4 text-slate-800 relative overflow-hidden w-full">
+      <div className="bg-gradient-to-br from-gray-50 via-slate-50 to-gray-100 py-8 sm:py-16 px-4 text-slate-800 relative overflow-hidden w-full">
         {/* Background elements */}
         <div className="absolute inset-0">
-          <div className="absolute top-10 left-10 w-32 sm:w-64 h-32 sm:h-64 bg-amber-200/30 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 right-10 w-40 sm:w-80 h-40 sm:h-80 bg-yellow-200/30 rounded-full blur-3xl"></div>
-          <div className="absolute top-1/2 left-1/4 w-16 sm:w-32 h-16 sm:h-32 bg-orange-200/20 rounded-full blur-2xl"></div>
+          <div className="absolute top-10 left-10 w-32 sm:w-64 h-32 sm:h-64 bg-gray-200/30 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-10 right-10 w-40 sm:w-80 h-40 sm:h-80 bg-slate-200/30 rounded-full blur-3xl"></div>
+          <div className="absolute top-1/2 left-1/4 w-16 sm:w-32 h-16 sm:h-32 bg-gray-200/20 rounded-full blur-2xl"></div>
         </div>
 
         <div className="w-full text-center relative z-10">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif text-slate-800 mb-3 elegant-text-gradient">
             Contagem Regressiva
           </h2>
-          <div className="w-12 sm:w-16 h-1 bg-gradient-to-r from-amber-400 to-orange-400 mx-auto mb-6 sm:mb-8 rounded-full"></div>
+          <div className="w-12 sm:w-16 h-1 bg-gradient-to-r from-gray-400 to-slate-500 mx-auto mb-6 sm:mb-8 rounded-full"></div>
           <p className="text-base sm:text-lg text-slate-600 mb-8 sm:mb-12 max-w-2xl mx-auto px-4">
             Estamos ansiosos para celebrar esse momento especial com vocês!
           </p>
@@ -170,7 +170,7 @@ export default function Historia() {
               <div className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
                 Dias
               </div>
-              <div className="w-4 sm:w-6 md:w-8 h-1 bg-gradient-to-r from-amber-400 to-orange-400 mx-auto mt-1 sm:mt-2 md:mt-3 rounded-full"></div>
+              <div className="w-4 sm:w-6 md:w-8 h-1 bg-gradient-to-r from-gray-400 to-slate-500 mx-auto mt-1 sm:mt-2 md:mt-3 rounded-full"></div>
             </div>
             <div className="elegant-card rounded-xl sm:rounded-2xl p-2 sm:p-4 md:p-6 elegant-card-hover elegant-animation-delay-2 border border-white/50 shadow-xl">
               <div className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2 md:mb-3 elegant-text-gradient">
@@ -179,7 +179,7 @@ export default function Historia() {
               <div className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
                 Horas
               </div>
-              <div className="w-4 sm:w-6 md:w-8 h-1 bg-gradient-to-r from-amber-400 to-orange-400 mx-auto mt-1 sm:mt-2 md:mt-3 rounded-full"></div>
+              <div className="w-4 sm:w-6 md:w-8 h-1 bg-gradient-to-r from-gray-400 to-slate-500 mx-auto mt-1 sm:mt-2 md:mt-3 rounded-full"></div>
             </div>
             <div className="elegant-card rounded-xl sm:rounded-2xl p-2 sm:p-4 md:p-6 elegant-card-hover elegant-animation-delay-3 border border-white/50 shadow-xl">
               <div className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2 md:mb-3 elegant-text-gradient">
@@ -188,7 +188,7 @@ export default function Historia() {
               <div className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
                 Min
               </div>
-              <div className="w-4 sm:w-6 md:w-8 h-1 bg-gradient-to-r from-amber-400 to-orange-400 mx-auto mt-1 sm:mt-2 md:mt-3 rounded-full"></div>
+              <div className="w-4 sm:w-6 md:w-8 h-1 bg-gradient-to-r from-gray-400 to-slate-500 mx-auto mt-1 sm:mt-2 md:mt-3 rounded-full"></div>
             </div>
             <div className="elegant-card rounded-xl sm:rounded-2xl p-2 sm:p-4 md:p-6 elegant-card-hover elegant-animation-delay-4 border border-white/50 shadow-xl">
               <div className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-1 sm:mb-2 md:mb-3 elegant-text-gradient">
@@ -197,7 +197,7 @@ export default function Historia() {
               <div className="text-xs sm:text-sm md:text-base text-slate-600 font-medium">
                 Seg
               </div>
-              <div className="w-4 sm:w-6 md:w-8 h-1 bg-gradient-to-r from-amber-400 to-orange-400 mx-auto mt-1 sm:mt-2 md:mt-3 rounded-full"></div>
+              <div className="w-4 sm:w-6 md:w-8 h-1 bg-gradient-to-r from-gray-400 to-slate-500 mx-auto mt-1 sm:mt-2 md:mt-3 rounded-full"></div>
             </div>
           </div>
 

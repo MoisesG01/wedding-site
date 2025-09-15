@@ -44,12 +44,14 @@ export default function Cerimonia() {
             </div>
 
             {/* Church Image */}
-            <div className="mb-6 sm:mb-8">
-              <img
-                src={igreja}
-                alt="Igreja Nossa Senhora da Conceição"
-                className="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover rounded-xl sm:rounded-2xl shadow-lg"
-              />
+            <div className="mb-8 sm:mb-12">
+              <div className="max-w-3xl mx-auto">
+                <img
+                  src={igreja}
+                  alt="Igreja Nossa Senhora da Conceição"
+                  className="w-full h-72 sm:h-96 md:h-[28rem] lg:h-[32rem] object-cover object-center rounded-xl shadow-lg"
+                />
+              </div>
             </div>
 
             {/* Special Text */}
