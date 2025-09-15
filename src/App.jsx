@@ -10,6 +10,7 @@ import Confirmacao from "./pages/Confirmacao";
 import Presentes from "./pages/Presentes";
 import Contato from "./pages/Contato";
 import MaintenancePage from "./components/MaintenancePage";
+import AudioPlayer from "./components/AudioPlayer";
 import { initEmailJS } from "./config/emailjs";
 
 export default function App() {
@@ -161,7 +162,7 @@ export default function App() {
     <div className="App">
       {/* Indicador de modo desenvolvedor */}
       {devMode && (
-        <div className="fixed bottom-4 left-4 z-20 bg-yellow-500 text-black px-3 py-1 rounded-full text-xs font-bold shadow-lg">
+        <div className="fixed bottom-4 left-4 z-20 bg-gray-500 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg">
           🛠️ DEV MODE
         </div>
       )}
@@ -290,6 +291,9 @@ export default function App() {
       </main>
 
       <Footer />
+
+      {/* Player de música de fundo */}
+      <AudioPlayer />
     </div>
   );
 }

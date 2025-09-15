@@ -10,7 +10,7 @@ export default function Divisor() {
           className="mx-auto max-w-[200px] sm:max-w-[250px] md:max-w-[350px] h-auto opacity-90"
           style={{
             filter:
-              "brightness(0) saturate(80%) invert(43%) sepia(71%) saturate(238%) hue-rotate(359deg) brightness(103%) contrast(207%)",
+              "brightness(0) saturate(0%) invert(40%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%)",
           }}
         />
       </div>

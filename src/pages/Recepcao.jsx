@@ -44,12 +44,14 @@ export default function Recepcao() {
             </div>
 
             {/* Venue Image */}
-            <div className="mb-6 sm:mb-8">
-              <img
-                src={mansao}
-                alt="Mansão Jaraguá"
-                className="w-full h-48 sm:h-64 md:h-80 lg:h-96 object-cover rounded-xl sm:rounded-2xl shadow-lg"
-              />
+            <div className="mb-8 sm:mb-12">
+              <div className="max-w-3xl mx-auto">
+                <img
+                  src={mansao}
+                  alt="Mansão Jaraguá"
+                  className="w-full h-72 sm:h-96 md:h-[28rem] lg:h-[32rem] object-cover object-center rounded-xl shadow-lg"
+                />
+              </div>
             </div>
 
             {/* Special Text */}
@@ -68,9 +70,9 @@ export default function Recepcao() {
                   Rua Comendador J. de Matos, 429 – Vila Clarice, São Paulo –
                   SP, 05177-100
                 </p>
-                <div className="bg-yellow-50 border-l-4 border-yellow-400 p-3 sm:p-4 rounded">
+                <div className="bg-gray-50 border-l-4 border-gray-400 p-3 sm:p-4 rounded">
                   <p className="text-sm sm:text-base text-slate-700 font-medium">
-                    <span className="text-yellow-600">⚠️</span> Taxa de
+                    <span className="text-gray-600">⚠️</span> Taxa de
                     estacionamento/manobrista: R$ 30,00 por veículo
                   </p>
                 </div>
