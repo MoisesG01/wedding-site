@@ -8,6 +8,9 @@ export default function AudioPlayer() {
   const [activeSection, setActiveSection] = useState("home");
   const [youtubePlayer, setYoutubePlayer] = useState(null);
 
+  // Detectar se é mobile
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  
   const audioRef = useRef(null);
   const hideTimeoutRef = useRef(null);
   const youtubeContainerRef = useRef(null);
@@ -231,8 +234,8 @@ export default function AudioPlayer() {
           )}
         </button>
 
-        {/* Controles expandidos */}
-        {showControls && (
+        {/* Controles expandidos - apenas desktop */}
+        {showControls && !isMobile && (
           <div
             className={`backdrop-blur-md border rounded-2xl p-3 space-y-2 min-w-[200px] ${
               activeSection === "home"
