@@ -6,6 +6,7 @@ export default function AudioPlayer() {
   const [volume, setVolume] = useState(0.3); // Volume baixo por padrão
   const [showControls, setShowControls] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [showMobilePrompt, setShowMobilePrompt] = useState(false);
   const audioRef = useRef(null);
   const hideTimeoutRef = useRef(null);
 
@@ -13,12 +14,15 @@ export default function AudioPlayer() {
   const playAudio = async () => {
     if (audioRef.current) {
       try {
+        // Configurar para mobile
+        audioRef.current.volume = 0.1; // Volume mais baixo para mobile
         await audioRef.current.play();
         setIsPlaying(true);
       } catch (error) {
         console.log("Autoplay bloqueado pelo navegador:", error);
-        // Se o autoplay for bloqueado, mostra os controles
+        // Se o autoplay for bloqueado, mostra os controles e prompt para mobile
         setShowControls(true);
+        setShowMobilePrompt(true);
       }
     }
   };
@@ -32,6 +36,7 @@ export default function AudioPlayer() {
       } else {
         audioRef.current.play();
         setIsPlaying(true);
+        setShowMobilePrompt(false); // Esconder prompt quando usuário interage
       }
     }
   };
@@ -61,6 +66,28 @@ export default function AudioPlayer() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  // Efeito para detectar interação do usuário em mobile
+  useEffect(() => {
+    const handleUserInteraction = () => {
+      if (audioRef.current && !isPlaying) {
+        playAudio();
+      }
+    };
+
+    // Adicionar listeners para diferentes tipos de interação
+    document.addEventListener("touchstart", handleUserInteraction, {
+      once: true,
+    });
+    document.addEventListener("click", handleUserInteraction, { once: true });
+    document.addEventListener("keydown", handleUserInteraction, { once: true });
+
+    return () => {
+      document.removeEventListener("touchstart", handleUserInteraction);
+      document.removeEventListener("click", handleUserInteraction);
+      document.removeEventListener("keydown", handleUserInteraction);
+    };
+  }, [isPlaying]);
 
   // Efeito para detectar quando mudar as cores do player
   useEffect(() => {
@@ -129,7 +156,7 @@ export default function AudioPlayer() {
   return (
     <>
       {/* Elemento de áudio */}
-      <audio ref={audioRef} preload="auto" loop>
+      <audio ref={audioRef} preload="metadata" loop playsInline muted={false}>
         <source src="/musica-fundo.mp3" type="audio/mpeg" />
         <source src="/musica-fundo.ogg" type="audio/ogg" />
         Seu navegador não suporta o elemento de áudio.
@@ -297,6 +324,25 @@ export default function AudioPlayer() {
           </div>
         )}
       </div>
+
+      {/* Prompt para mobile quando autoplay é bloqueado */}
+      {showMobilePrompt && (
+        <div className="fixed bottom-32 right-4 z-40 bg-white/90 backdrop-blur-md border border-gray-300 rounded-xl p-3 max-w-xs shadow-lg">
+          <div className="flex items-center space-x-2">
+            <div className="text-2xl">🎵</div>
+            <div className="text-sm text-gray-700">
+              <p className="font-medium">Toque para ativar a música</p>
+              <p className="text-xs text-gray-500">Clique no botão de música</p>
+            </div>
+            <button
+              onClick={() => setShowMobilePrompt(false)}
+              className="text-gray-400 hover:text-gray-600 text-lg"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Estilos para o slider */}
       <style jsx>{`
