@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function AudioPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -6,97 +6,105 @@ export default function AudioPlayer() {
   const [volume, setVolume] = useState(0.3);
   const [showControls, setShowControls] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [youtubePlayer, setYoutubePlayer] = useState(null);
 
-  // Detectar se é mobile na inicialização
-  const isMobile =
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    );
   const audioRef = useRef(null);
   const hideTimeoutRef = useRef(null);
+  const youtubeContainerRef = useRef(null);
 
-  // Função simples para reproduzir
-  const playAudio = useCallback(async () => {
-    if (audioRef.current) {
-      try {
-        audioRef.current.volume = isMobile ? 0.1 : volume;
-        audioRef.current.muted = false;
-        setIsMuted(false);
-        await audioRef.current.play();
-        setIsPlaying(true);
-      } catch (error) {
-        console.log("Autoplay bloqueado:", error);
-        setShowControls(true);
-      }
+  // Inicializar YouTube Player
+  useEffect(() => {
+    if (!window.YT) {
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      const firstScriptTag = document.getElementsByTagName("script")[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     }
-  }, [volume, isMobile]);
+
+    window.onYouTubeIframeAPIReady = () => {
+      if (youtubeContainerRef.current && !youtubePlayer) {
+        new window.YT.Player(youtubeContainerRef.current, {
+          height: "0",
+          width: "0",
+          videoId: "u2ah9tWTkmk", // ID do vídeo que você quer
+          playerVars: {
+            autoplay: 0,
+            controls: 0,
+            disablekb: 1,
+            enablejsapi: 1,
+            fs: 0,
+            iv_load_policy: 3,
+            modestbranding: 1,
+            playsinline: 1,
+            rel: 0,
+            showinfo: 0,
+            loop: 1,
+            playlist: "u2ah9tWTkmk",
+          },
+          events: {
+            onReady: (event) => {
+              setYoutubePlayer(event.target);
+              event.target.setVolume(30);
+            },
+            onStateChange: (event) => {
+              if (event.data === window.YT.PlayerState.PLAYING) {
+                setIsPlaying(true);
+              } else if (event.data === window.YT.PlayerState.PAUSED) {
+                setIsPlaying(false);
+              }
+            },
+          },
+        });
+      }
+    };
+  }, [youtubePlayer]);
 
   // Função para pausar/retomar
-  const togglePlayPause = async () => {
-    if (audioRef.current) {
+  const togglePlayPause = () => {
+    if (youtubePlayer) {
       if (isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
+        youtubePlayer.pauseVideo();
       } else {
-        await playAudio();
+        youtubePlayer.playVideo();
       }
     }
   };
 
   // Função para mutar/desmutar
   const toggleMute = () => {
-    setIsMuted(!isMuted);
+    if (youtubePlayer) {
+      if (isMuted) {
+        youtubePlayer.unMute();
+        setIsMuted(false);
+      } else {
+        youtubePlayer.mute();
+        setIsMuted(true);
+      }
+    }
   };
 
   // Função para ajustar volume
   const handleVolumeChange = (e) => {
-    const newVolume = parseFloat(e.target.value);
-    setVolume(newVolume);
-    if (audioRef.current) {
-      audioRef.current.volume = newVolume;
+    const newVolume = parseFloat(e.target.value) * 100;
+    setVolume(newVolume / 100);
+    if (youtubePlayer) {
+      youtubePlayer.setVolume(newVolume);
     }
-    // Se estava mutado e agora tem volume, desmutar
     if (isMuted && newVolume > 0) {
       setIsMuted(false);
     }
   };
 
-  // Efeito para sincronizar mute com o elemento de áudio
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.muted = isMuted;
-    }
-  }, [isMuted]);
-
   // Efeito para tentar reproduzir automaticamente
   useEffect(() => {
     const timer = setTimeout(() => {
-      playAudio();
-    }, 1000);
+      if (youtubePlayer) {
+        youtubePlayer.playVideo();
+      }
+    }, 2000);
 
     return () => clearTimeout(timer);
-  }, [playAudio]);
-
-  // Efeito para detectar interação do usuário em mobile
-  useEffect(() => {
-    if (!isMobile) return;
-
-    const handleUserInteraction = () => {
-      if (audioRef.current && !isPlaying) {
-        playAudio();
-      }
-    };
-
-    document.addEventListener("touchstart", handleUserInteraction, {
-      once: true,
-    });
-    document.addEventListener("click", handleUserInteraction, { once: true });
-
-    return () => {
-      document.removeEventListener("touchstart", handleUserInteraction);
-      document.removeEventListener("click", handleUserInteraction);
-    };
-  }, [isPlaying, playAudio, isMobile]);
+  }, [youtubePlayer]);
 
   // Efeito para detectar quando mudar as cores do player
   useEffect(() => {
@@ -164,19 +172,8 @@ export default function AudioPlayer() {
 
   return (
     <>
-      {/* Elemento de áudio */}
-      <audio
-        ref={audioRef}
-        preload="metadata"
-        loop
-        playsInline
-        webkit-playsinline="true"
-        muted={isMuted}
-      >
-        <source src="/musica-fundo.mp3" type="audio/mpeg" />
-        <source src="/musica-fundo.ogg" type="audio/ogg" />
-        Seu navegador não suporta o elemento de áudio.
-      </audio>
+      {/* YouTube Player (invisível) */}
+      <div ref={youtubeContainerRef} style={{ display: "none" }}></div>
 
       {/* Controles de áudio */}
       <div
