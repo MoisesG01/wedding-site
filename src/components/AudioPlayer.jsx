@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 export default function AudioPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -11,11 +11,21 @@ export default function AudioPlayer() {
   const hideTimeoutRef = useRef(null);
 
   // Função para tentar reproduzir automaticamente
-  const playAudio = async () => {
+  const playAudio = useCallback(async () => {
     if (audioRef.current) {
       try {
-        // Configurar para mobile
-        audioRef.current.volume = 0.1; // Volume mais baixo para mobile
+        // Detectar se é mobile
+        const isMobile =
+          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+          );
+
+        if (isMobile) {
+          audioRef.current.volume = 0.1; // Volume mais baixo para mobile
+        } else {
+          audioRef.current.volume = volume; // Volume normal para desktop
+        }
+
         await audioRef.current.play();
         setIsPlaying(true);
       } catch (error) {
@@ -25,7 +35,7 @@ export default function AudioPlayer() {
         setShowMobilePrompt(true);
       }
     }
-  };
+  }, [volume]);
 
   // Função para pausar/retomar
   const togglePlayPause = () => {
@@ -65,29 +75,33 @@ export default function AudioPlayer() {
     }, 1000); // Aguarda 1 segundo antes de tentar reproduzir
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [playAudio]);
 
-  // Efeito para detectar interação do usuário em mobile
+  // Efeito para detectar interação do usuário em mobile (apenas se autoplay falhou)
   useEffect(() => {
     const handleUserInteraction = () => {
-      if (audioRef.current && !isPlaying) {
+      if (audioRef.current && !isPlaying && showMobilePrompt) {
         playAudio();
       }
     };
 
-    // Adicionar listeners para diferentes tipos de interação
-    document.addEventListener("touchstart", handleUserInteraction, {
-      once: true,
-    });
-    document.addEventListener("click", handleUserInteraction, { once: true });
-    document.addEventListener("keydown", handleUserInteraction, { once: true });
+    // Só adicionar listeners se o prompt mobile estiver ativo
+    if (showMobilePrompt) {
+      document.addEventListener("touchstart", handleUserInteraction, {
+        once: true,
+      });
+      document.addEventListener("click", handleUserInteraction, { once: true });
+      document.addEventListener("keydown", handleUserInteraction, {
+        once: true,
+      });
 
-    return () => {
-      document.removeEventListener("touchstart", handleUserInteraction);
-      document.removeEventListener("click", handleUserInteraction);
-      document.removeEventListener("keydown", handleUserInteraction);
-    };
-  }, [isPlaying]);
+      return () => {
+        document.removeEventListener("touchstart", handleUserInteraction);
+        document.removeEventListener("click", handleUserInteraction);
+        document.removeEventListener("keydown", handleUserInteraction);
+      };
+    }
+  }, [isPlaying, showMobilePrompt, playAudio]);
 
   // Efeito para detectar quando mudar as cores do player
   useEffect(() => {
