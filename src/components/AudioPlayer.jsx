@@ -7,6 +7,9 @@ export default function AudioPlayer() {
   const [showControls, setShowControls] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [showMobilePrompt, setShowMobilePrompt] = useState(false);
+  
+  // Detectar se é mobile na inicialização
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   const audioRef = useRef(null);
   const hideTimeoutRef = useRef(null);
 
@@ -14,12 +17,6 @@ export default function AudioPlayer() {
   const playAudio = useCallback(async () => {
     if (audioRef.current) {
       try {
-        // Detectar se é mobile
-        const isMobile =
-          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-            navigator.userAgent
-          );
-
         if (isMobile) {
           audioRef.current.volume = 0.1; // Volume mais baixo para mobile
         } else {
@@ -37,21 +34,33 @@ export default function AudioPlayer() {
         console.log("Autoplay bloqueado pelo navegador:", error);
         // Se o autoplay for bloqueado, mostra os controles e prompt para mobile
         setShowControls(true);
-        setShowMobilePrompt(true);
+        if (isMobile) {
+          setShowMobilePrompt(true);
+        }
       }
     }
-  }, [volume]);
+  }, [volume, isMobile]);
 
   // Função para pausar/retomar
-  const togglePlayPause = () => {
+  const togglePlayPause = async () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
         setIsPlaying(false);
       } else {
-        audioRef.current.play();
-        setIsPlaying(true);
-        setShowMobilePrompt(false); // Esconder prompt quando usuário interage
+        try {
+          // Garantir que não está mutado
+          audioRef.current.muted = false;
+          setIsMuted(false);
+          
+          await audioRef.current.play();
+          setIsPlaying(true);
+          setShowMobilePrompt(false); // Esconder prompt quando usuário interage
+        } catch (error) {
+          console.log("Erro ao reproduzir:", error);
+          // Se falhar, mostrar prompt mobile
+          setShowMobilePrompt(true);
+        }
       }
     }
   };
@@ -90,31 +99,27 @@ export default function AudioPlayer() {
     return () => clearTimeout(timer);
   }, [playAudio]);
 
-  // Efeito para detectar interação do usuário em mobile (apenas se autoplay falhou)
+  // Efeito para detectar interação do usuário em mobile
   useEffect(() => {
+    if (!isMobile) return; // Só funciona em mobile
+
     const handleUserInteraction = () => {
-      if (audioRef.current && !isPlaying && showMobilePrompt) {
+      if (audioRef.current && !isPlaying) {
         playAudio();
       }
     };
 
-    // Só adicionar listeners se o prompt mobile estiver ativo
-    if (showMobilePrompt) {
-      document.addEventListener("touchstart", handleUserInteraction, {
-        once: true,
-      });
-      document.addEventListener("click", handleUserInteraction, { once: true });
-      document.addEventListener("keydown", handleUserInteraction, {
-        once: true,
-      });
+    // Adicionar listeners para mobile
+    document.addEventListener("touchstart", handleUserInteraction, { once: true });
+    document.addEventListener("click", handleUserInteraction, { once: true });
+    document.addEventListener("keydown", handleUserInteraction, { once: true });
 
-      return () => {
-        document.removeEventListener("touchstart", handleUserInteraction);
-        document.removeEventListener("click", handleUserInteraction);
-        document.removeEventListener("keydown", handleUserInteraction);
-      };
-    }
-  }, [isPlaying, showMobilePrompt, playAudio]);
+    return () => {
+      document.removeEventListener("touchstart", handleUserInteraction);
+      document.removeEventListener("click", handleUserInteraction);
+      document.removeEventListener("keydown", handleUserInteraction);
+    };
+  }, [isPlaying, playAudio, isMobile]);
 
   // Efeito para detectar quando mudar as cores do player
   useEffect(() => {
@@ -354,19 +359,29 @@ export default function AudioPlayer() {
 
       {/* Prompt para mobile quando autoplay é bloqueado */}
       {showMobilePrompt && (
-        <div className="fixed bottom-32 right-4 z-40 bg-white/90 backdrop-blur-md border border-gray-300 rounded-xl p-3 max-w-xs shadow-lg">
-          <div className="flex items-center space-x-2">
-            <div className="text-2xl">🎵</div>
-            <div className="text-sm text-gray-700">
-              <p className="font-medium">Toque para ativar a música</p>
-              <p className="text-xs text-gray-500">Clique no botão de música</p>
+        <div className="fixed bottom-32 right-4 z-40 bg-white/95 backdrop-blur-md border border-gray-300 rounded-xl p-4 max-w-xs shadow-xl">
+          <div className="flex flex-col space-y-3">
+            <div className="flex items-center space-x-2">
+              <div className="text-2xl">🎵</div>
+              <div className="text-sm text-gray-700">
+                <p className="font-medium">Música bloqueada</p>
+                <p className="text-xs text-gray-500">Toque no botão abaixo para ativar</p>
+              </div>
             </div>
-            <button
-              onClick={() => setShowMobilePrompt(false)}
-              className="text-gray-400 hover:text-gray-600 text-lg"
-            >
-              ×
-            </button>
+            <div className="flex space-x-2">
+              <button
+                onClick={togglePlayPause}
+                className="flex-1 bg-pink-500 hover:bg-pink-600 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
+              >
+                ▶️ Tocar Música
+              </button>
+              <button
+                onClick={() => setShowMobilePrompt(false)}
+                className="text-gray-400 hover:text-gray-600 text-lg px-2"
+              >
+                ×
+              </button>
+            </div>
           </div>
         </div>
       )}
