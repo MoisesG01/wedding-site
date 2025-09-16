@@ -7,6 +7,7 @@ export default function AudioPlayer() {
   const [showControls, setShowControls] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [showMobilePrompt, setShowMobilePrompt] = useState(false);
+  const [useYouTube, setUseYouTube] = useState(false);
 
   // Detectar se é mobile na inicialização
   const isMobile =
@@ -79,9 +80,19 @@ export default function AudioPlayer() {
         console.log("Áudio mobile reproduzindo com volume 0");
       } catch (error2) {
         console.log("Falha total no mobile:", error2);
+        // Se falhar completamente, tentar YouTube
+        console.log("Tentando alternar para YouTube...");
+        setUseYouTube(true);
         setShowMobilePrompt(true);
       }
     }
+  }, []);
+
+  // Função para alternar para YouTube quando HTML5 falha
+  const switchToYouTube = useCallback(() => {
+    setUseYouTube(true);
+    setShowMobilePrompt(false);
+    console.log("Alternando para YouTube Player");
   }, []);
 
   // Função para pausar/retomar
@@ -99,7 +110,7 @@ export default function AudioPlayer() {
             // Garantir que não está mutado
             audioRef.current.muted = false;
             setIsMuted(false);
-            
+
             await audioRef.current.play();
             setIsPlaying(true);
             setShowMobilePrompt(false);
@@ -237,11 +248,11 @@ export default function AudioPlayer() {
   return (
     <>
       {/* Elemento de áudio */}
-      <audio 
-        ref={audioRef} 
-        preload="metadata" 
-        loop 
-        playsInline 
+      <audio
+        ref={audioRef}
+        preload="metadata"
+        loop
+        playsInline
         webkit-playsinline="true"
         muted={isMuted}
       >
@@ -413,8 +424,40 @@ export default function AudioPlayer() {
         )}
       </div>
 
+      {/* YouTube Player como fallback */}
+      {useYouTube && (
+        <div className="fixed bottom-4 right-4 z-50">
+          <div className="bg-white/95 backdrop-blur-md border border-gray-300 rounded-xl p-4 shadow-xl max-w-xs">
+            <div className="text-center">
+              <div className="text-2xl mb-2">🎵</div>
+              <p className="text-sm text-gray-700 mb-3">
+                Usando YouTube Player para melhor compatibilidade
+              </p>
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => {
+                    // Aqui você pode implementar o YouTube Player
+                    console.log("Iniciando YouTube Player...");
+                    setShowMobilePrompt(false);
+                  }}
+                  className="flex-1 bg-red-500 hover:bg-red-600 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
+                >
+                  ▶️ YouTube
+                </button>
+                <button
+                  onClick={() => setUseYouTube(false)}
+                  className="text-gray-400 hover:text-gray-600 text-lg px-2"
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Prompt para mobile quando autoplay é bloqueado */}
-      {showMobilePrompt && (
+      {showMobilePrompt && !useYouTube && (
         <div className="fixed bottom-32 right-4 z-40 bg-white/95 backdrop-blur-md border border-gray-300 rounded-xl p-4 max-w-xs shadow-xl">
           <div className="flex flex-col space-y-3">
             <div className="flex items-center space-x-2">
@@ -426,18 +469,26 @@ export default function AudioPlayer() {
                 </p>
               </div>
             </div>
-            <div className="flex space-x-2">
+            <div className="flex flex-col space-y-2">
+              <div className="flex space-x-2">
+                <button
+                  onClick={playAudioMobile}
+                  className="flex-1 bg-pink-500 hover:bg-pink-600 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
+                >
+                  ▶️ Tocar Música
+                </button>
+                <button
+                  onClick={() => setShowMobilePrompt(false)}
+                  className="text-gray-400 hover:text-gray-600 text-lg px-2"
+                >
+                  ×
+                </button>
+              </div>
               <button
-                onClick={playAudioMobile}
-                className="flex-1 bg-pink-500 hover:bg-pink-600 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
+                onClick={switchToYouTube}
+                className="w-full bg-gray-500 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded transition-colors"
               >
-                ▶️ Tocar Música
-              </button>
-              <button
-                onClick={() => setShowMobilePrompt(false)}
-                className="text-gray-400 hover:text-gray-600 text-lg px-2"
-              >
-                ×
+                🔄 Tentar YouTube Player
               </button>
             </div>
           </div>
