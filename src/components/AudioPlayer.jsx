@@ -87,7 +87,9 @@ export default function AudioPlayer() {
       }
     };
 
-    document.addEventListener("touchstart", handleUserInteraction, { once: true });
+    document.addEventListener("touchstart", handleUserInteraction, {
+      once: true,
+    });
     document.addEventListener("click", handleUserInteraction, { once: true });
 
     return () => {
@@ -338,7 +340,6 @@ export default function AudioPlayer() {
           </div>
         )}
       </div>
-
 
       {/* Estilos para o slider */}
       <style jsx>{`
