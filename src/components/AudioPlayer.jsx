@@ -7,9 +7,12 @@ export default function AudioPlayer() {
   const [showControls, setShowControls] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [showMobilePrompt, setShowMobilePrompt] = useState(false);
-  
+
   // Detectar se é mobile na inicialização
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+  const isMobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
   const audioRef = useRef(null);
   const hideTimeoutRef = useRef(null);
 
@@ -30,8 +33,9 @@ export default function AudioPlayer() {
         await audioRef.current.play();
         setIsPlaying(true);
         setShowMobilePrompt(false); // Esconder prompt se conseguir tocar
+        console.log("Áudio reproduzindo com sucesso");
       } catch (error) {
-        console.log("Autoplay bloqueado pelo navegador:", error);
+        console.log("Erro ao reproduzir áudio:", error);
         // Se o autoplay for bloqueado, mostra os controles e prompt para mobile
         setShowControls(true);
         if (isMobile) {
@@ -41,6 +45,45 @@ export default function AudioPlayer() {
     }
   }, [volume, isMobile]);
 
+  // Função específica para mobile com mais tentativas
+  const playAudioMobile = useCallback(async () => {
+    if (!audioRef.current) return;
+    
+    try {
+      // Configurações específicas para mobile
+      audioRef.current.volume = 0.1;
+      audioRef.current.muted = false;
+      setIsMuted(false);
+      
+      // Tentar reproduzir
+      await audioRef.current.play();
+      setIsPlaying(true);
+      setShowMobilePrompt(false);
+      console.log("Áudio mobile reproduzindo com sucesso");
+    } catch (error) {
+      console.log("Erro no mobile:", error);
+      // Tentar novamente com volume 0 e depois aumentar
+      try {
+        audioRef.current.volume = 0;
+        await audioRef.current.play();
+        setIsPlaying(true);
+        setShowMobilePrompt(false);
+        
+        // Aumentar volume gradualmente
+        setTimeout(() => {
+          if (audioRef.current) {
+            audioRef.current.volume = 0.1;
+          }
+        }, 100);
+        
+        console.log("Áudio mobile reproduzindo com volume 0");
+      } catch (error2) {
+        console.log("Falha total no mobile:", error2);
+        setShowMobilePrompt(true);
+      }
+    }
+  }, []);
+
   // Função para pausar/retomar
   const togglePlayPause = async () => {
     if (audioRef.current) {
@@ -48,18 +91,22 @@ export default function AudioPlayer() {
         audioRef.current.pause();
         setIsPlaying(false);
       } else {
-        try {
-          // Garantir que não está mutado
-          audioRef.current.muted = false;
-          setIsMuted(false);
-          
-          await audioRef.current.play();
-          setIsPlaying(true);
-          setShowMobilePrompt(false); // Esconder prompt quando usuário interage
-        } catch (error) {
-          console.log("Erro ao reproduzir:", error);
-          // Se falhar, mostrar prompt mobile
-          setShowMobilePrompt(true);
+        if (isMobile) {
+          // Usar função específica para mobile
+          await playAudioMobile();
+        } else {
+          try {
+            // Garantir que não está mutado
+            audioRef.current.muted = false;
+            setIsMuted(false);
+            
+            await audioRef.current.play();
+            setIsPlaying(true);
+            setShowMobilePrompt(false);
+          } catch (error) {
+            console.log("Erro ao reproduzir:", error);
+            setShowMobilePrompt(true);
+          }
         }
       }
     }
@@ -105,12 +152,14 @@ export default function AudioPlayer() {
 
     const handleUserInteraction = () => {
       if (audioRef.current && !isPlaying) {
-        playAudio();
+        playAudioMobile();
       }
     };
 
     // Adicionar listeners para mobile
-    document.addEventListener("touchstart", handleUserInteraction, { once: true });
+    document.addEventListener("touchstart", handleUserInteraction, {
+      once: true,
+    });
     document.addEventListener("click", handleUserInteraction, { once: true });
     document.addEventListener("keydown", handleUserInteraction, { once: true });
 
@@ -119,7 +168,7 @@ export default function AudioPlayer() {
       document.removeEventListener("click", handleUserInteraction);
       document.removeEventListener("keydown", handleUserInteraction);
     };
-  }, [isPlaying, playAudio, isMobile]);
+  }, [isPlaying, playAudioMobile, isMobile]);
 
   // Efeito para detectar quando mudar as cores do player
   useEffect(() => {
@@ -188,7 +237,14 @@ export default function AudioPlayer() {
   return (
     <>
       {/* Elemento de áudio */}
-      <audio ref={audioRef} preload="metadata" loop playsInline muted={isMuted}>
+      <audio 
+        ref={audioRef} 
+        preload="metadata" 
+        loop 
+        playsInline 
+        webkit-playsinline="true"
+        muted={isMuted}
+      >
         <source src="/musica-fundo.mp3" type="audio/mpeg" />
         <source src="/musica-fundo.ogg" type="audio/ogg" />
         Seu navegador não suporta o elemento de áudio.
@@ -365,12 +421,14 @@ export default function AudioPlayer() {
               <div className="text-2xl">🎵</div>
               <div className="text-sm text-gray-700">
                 <p className="font-medium">Música bloqueada</p>
-                <p className="text-xs text-gray-500">Toque no botão abaixo para ativar</p>
+                <p className="text-xs text-gray-500">
+                  Toque no botão abaixo para ativar
+                </p>
               </div>
             </div>
             <div className="flex space-x-2">
               <button
-                onClick={togglePlayPause}
+                onClick={playAudioMobile}
                 className="flex-1 bg-pink-500 hover:bg-pink-600 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
               >
                 ▶️ Tocar Música
