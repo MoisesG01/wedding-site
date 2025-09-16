@@ -26,8 +26,13 @@ export default function AudioPlayer() {
           audioRef.current.volume = volume; // Volume normal para desktop
         }
 
+        // Garantir que não está mutado
+        audioRef.current.muted = false;
+        setIsMuted(false);
+
         await audioRef.current.play();
         setIsPlaying(true);
+        setShowMobilePrompt(false); // Esconder prompt se conseguir tocar
       } catch (error) {
         console.log("Autoplay bloqueado pelo navegador:", error);
         // Se o autoplay for bloqueado, mostra os controles e prompt para mobile
@@ -53,10 +58,7 @@ export default function AudioPlayer() {
 
   // Função para mutar/desmutar
   const toggleMute = () => {
-    if (audioRef.current) {
-      audioRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
+    setIsMuted(!isMuted);
   };
 
   // Função para ajustar volume
@@ -66,7 +68,18 @@ export default function AudioPlayer() {
     if (audioRef.current) {
       audioRef.current.volume = newVolume;
     }
+    // Se estava mutado e agora tem volume, desmutar
+    if (isMuted && newVolume > 0) {
+      setIsMuted(false);
+    }
   };
+
+  // Efeito para sincronizar mute com o elemento de áudio
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
 
   // Efeito para tentar reproduzir automaticamente quando o componente monta
   useEffect(() => {
@@ -170,7 +183,7 @@ export default function AudioPlayer() {
   return (
     <>
       {/* Elemento de áudio */}
-      <audio ref={audioRef} preload="metadata" loop playsInline muted={false}>
+      <audio ref={audioRef} preload="metadata" loop playsInline muted={isMuted}>
         <source src="/musica-fundo.mp3" type="audio/mpeg" />
         <source src="/musica-fundo.ogg" type="audio/ogg" />
         Seu navegador não suporta o elemento de áudio.
