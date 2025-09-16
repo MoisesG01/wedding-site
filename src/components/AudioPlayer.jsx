@@ -3,11 +3,9 @@ import { useState, useEffect, useRef, useCallback } from "react";
 export default function AudioPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [volume, setVolume] = useState(0.3); // Volume baixo por padrão
+  const [volume, setVolume] = useState(0.3);
   const [showControls, setShowControls] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
-  const [showMobilePrompt, setShowMobilePrompt] = useState(false);
-  const [useYouTube, setUseYouTube] = useState(false);
 
   // Detectar se é mobile na inicialização
   const isMobile =
@@ -17,83 +15,21 @@ export default function AudioPlayer() {
   const audioRef = useRef(null);
   const hideTimeoutRef = useRef(null);
 
-  // Função para tentar reproduzir automaticamente
+  // Função simples para reproduzir
   const playAudio = useCallback(async () => {
     if (audioRef.current) {
       try {
-        if (isMobile) {
-          audioRef.current.volume = 0.1; // Volume mais baixo para mobile
-        } else {
-          audioRef.current.volume = volume; // Volume normal para desktop
-        }
-
-        // Garantir que não está mutado
+        audioRef.current.volume = isMobile ? 0.1 : volume;
         audioRef.current.muted = false;
         setIsMuted(false);
-
         await audioRef.current.play();
         setIsPlaying(true);
-        setShowMobilePrompt(false); // Esconder prompt se conseguir tocar
-        console.log("Áudio reproduzindo com sucesso");
       } catch (error) {
-        console.log("Erro ao reproduzir áudio:", error);
-        // Se o autoplay for bloqueado, mostra os controles e prompt para mobile
+        console.log("Autoplay bloqueado:", error);
         setShowControls(true);
-        if (isMobile) {
-          setShowMobilePrompt(true);
-        }
       }
     }
   }, [volume, isMobile]);
-
-  // Função específica para mobile com mais tentativas
-  const playAudioMobile = useCallback(async () => {
-    if (!audioRef.current) return;
-    
-    try {
-      // Configurações específicas para mobile
-      audioRef.current.volume = 0.1;
-      audioRef.current.muted = false;
-      setIsMuted(false);
-      
-      // Tentar reproduzir
-      await audioRef.current.play();
-      setIsPlaying(true);
-      setShowMobilePrompt(false);
-      console.log("Áudio mobile reproduzindo com sucesso");
-    } catch (error) {
-      console.log("Erro no mobile:", error);
-      // Tentar novamente com volume 0 e depois aumentar
-      try {
-        audioRef.current.volume = 0;
-        await audioRef.current.play();
-        setIsPlaying(true);
-        setShowMobilePrompt(false);
-        
-        // Aumentar volume gradualmente
-        setTimeout(() => {
-          if (audioRef.current) {
-            audioRef.current.volume = 0.1;
-          }
-        }, 100);
-        
-        console.log("Áudio mobile reproduzindo com volume 0");
-      } catch (error2) {
-        console.log("Falha total no mobile:", error2);
-        // Se falhar completamente, tentar YouTube
-        console.log("Tentando alternar para YouTube...");
-        setUseYouTube(true);
-        setShowMobilePrompt(true);
-      }
-    }
-  }, []);
-
-  // Função para alternar para YouTube quando HTML5 falha
-  const switchToYouTube = useCallback(() => {
-    setUseYouTube(true);
-    setShowMobilePrompt(false);
-    console.log("Alternando para YouTube Player");
-  }, []);
 
   // Função para pausar/retomar
   const togglePlayPause = async () => {
@@ -102,23 +38,7 @@ export default function AudioPlayer() {
         audioRef.current.pause();
         setIsPlaying(false);
       } else {
-        if (isMobile) {
-          // Usar função específica para mobile
-          await playAudioMobile();
-        } else {
-          try {
-            // Garantir que não está mutado
-            audioRef.current.muted = false;
-            setIsMuted(false);
-
-            await audioRef.current.play();
-            setIsPlaying(true);
-            setShowMobilePrompt(false);
-          } catch (error) {
-            console.log("Erro ao reproduzir:", error);
-            setShowMobilePrompt(true);
-          }
-        }
+        await playAudio();
       }
     }
   };
@@ -148,38 +68,33 @@ export default function AudioPlayer() {
     }
   }, [isMuted]);
 
-  // Efeito para tentar reproduzir automaticamente quando o componente monta
+  // Efeito para tentar reproduzir automaticamente
   useEffect(() => {
     const timer = setTimeout(() => {
       playAudio();
-    }, 1000); // Aguarda 1 segundo antes de tentar reproduzir
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [playAudio]);
 
   // Efeito para detectar interação do usuário em mobile
   useEffect(() => {
-    if (!isMobile) return; // Só funciona em mobile
+    if (!isMobile) return;
 
     const handleUserInteraction = () => {
       if (audioRef.current && !isPlaying) {
-        playAudioMobile();
+        playAudio();
       }
     };
 
-    // Adicionar listeners para mobile
-    document.addEventListener("touchstart", handleUserInteraction, {
-      once: true,
-    });
+    document.addEventListener("touchstart", handleUserInteraction, { once: true });
     document.addEventListener("click", handleUserInteraction, { once: true });
-    document.addEventListener("keydown", handleUserInteraction, { once: true });
 
     return () => {
       document.removeEventListener("touchstart", handleUserInteraction);
       document.removeEventListener("click", handleUserInteraction);
-      document.removeEventListener("keydown", handleUserInteraction);
     };
-  }, [isPlaying, playAudioMobile, isMobile]);
+  }, [isPlaying, playAudio, isMobile]);
 
   // Efeito para detectar quando mudar as cores do player
   useEffect(() => {
@@ -424,76 +339,6 @@ export default function AudioPlayer() {
         )}
       </div>
 
-      {/* YouTube Player como fallback */}
-      {useYouTube && (
-        <div className="fixed bottom-4 right-4 z-50">
-          <div className="bg-white/95 backdrop-blur-md border border-gray-300 rounded-xl p-4 shadow-xl max-w-xs">
-            <div className="text-center">
-              <div className="text-2xl mb-2">🎵</div>
-              <p className="text-sm text-gray-700 mb-3">
-                Usando YouTube Player para melhor compatibilidade
-              </p>
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => {
-                    // Aqui você pode implementar o YouTube Player
-                    console.log("Iniciando YouTube Player...");
-                    setShowMobilePrompt(false);
-                  }}
-                  className="flex-1 bg-red-500 hover:bg-red-600 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
-                >
-                  ▶️ YouTube
-                </button>
-                <button
-                  onClick={() => setUseYouTube(false)}
-                  className="text-gray-400 hover:text-gray-600 text-lg px-2"
-                >
-                  ×
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Prompt para mobile quando autoplay é bloqueado */}
-      {showMobilePrompt && !useYouTube && (
-        <div className="fixed bottom-32 right-4 z-40 bg-white/95 backdrop-blur-md border border-gray-300 rounded-xl p-4 max-w-xs shadow-xl">
-          <div className="flex flex-col space-y-3">
-            <div className="flex items-center space-x-2">
-              <div className="text-2xl">🎵</div>
-              <div className="text-sm text-gray-700">
-                <p className="font-medium">Música bloqueada</p>
-                <p className="text-xs text-gray-500">
-                  Toque no botão abaixo para ativar
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col space-y-2">
-              <div className="flex space-x-2">
-                <button
-                  onClick={playAudioMobile}
-                  className="flex-1 bg-pink-500 hover:bg-pink-600 text-white text-sm font-medium py-2 px-3 rounded-lg transition-colors"
-                >
-                  ▶️ Tocar Música
-                </button>
-                <button
-                  onClick={() => setShowMobilePrompt(false)}
-                  className="text-gray-400 hover:text-gray-600 text-lg px-2"
-                >
-                  ×
-                </button>
-              </div>
-              <button
-                onClick={switchToYouTube}
-                className="w-full bg-gray-500 hover:bg-gray-600 text-white text-xs font-medium py-1 px-2 rounded transition-colors"
-              >
-                🔄 Tentar YouTube Player
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Estilos para o slider */}
       <style jsx>{`
