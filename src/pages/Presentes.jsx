@@ -184,43 +184,51 @@ export default function Presentes() {
                     💰 Faixa de preço
                   </label>
                   <div className="bg-white/80 border border-slate-200 rounded-xl p-4 shadow-sm">
-                    <div className="text-center mb-3">
+                    <div className="text-center mb-4">
                       <span className="text-lg font-semibold text-slate-800">
-                        {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
+                        {formatPrice(priceRange[0])} -{" "}
+                        {formatPrice(priceRange[1])}
                       </span>
                     </div>
-                    <div className="space-y-4">
-                      <div className="relative">
+                    
+                    {/* Dual Range Slider */}
+                    <div className="relative">
+                      <div className="flex justify-between text-xs text-slate-500 mb-2">
+                        <span>{formatPrice(minPrice)}</span>
+                        <span>{formatPrice(maxPrice)}</span>
+                      </div>
+                      
+                      <div className="relative h-2 bg-slate-200 rounded-lg">
+                        {/* Active range background */}
+                        <div 
+                          className="absolute h-2 bg-gradient-to-r from-pink-400 to-rose-400 rounded-lg"
+                          style={{
+                            left: `${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%`,
+                            width: `${((priceRange[1] - priceRange[0]) / (maxPrice - minPrice)) * 100}%`
+                          }}
+                        ></div>
+                        
+                        {/* Min range input */}
                         <input
                           type="range"
                           min={minPrice}
                           max={maxPrice}
                           value={priceRange[0]}
                           onChange={(e) => handlePriceRangeChange(0, e.target.value)}
-                          className="w-full h-2 bg-gradient-to-r from-pink-200 to-rose-200 rounded-lg appearance-none cursor-pointer slider-thumb"
-                          style={{
-                            background: `linear-gradient(to right, #fbb6ce 0%, #fbb6ce ${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%, #e5e7eb ${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%, #e5e7eb 100%)`
-                          }}
+                          className="absolute w-full h-2 bg-transparent appearance-none cursor-pointer slider-thumb"
+                          style={{ zIndex: priceRange[0] > priceRange[1] - 10 ? 5 : 3 }}
                         />
-                        <div className="absolute top-3 left-0 text-xs text-slate-500">
-                          Min: {formatPrice(minPrice)}
-                        </div>
-                      </div>
-                      <div className="relative">
+                        
+                        {/* Max range input */}
                         <input
                           type="range"
                           min={minPrice}
                           max={maxPrice}
                           value={priceRange[1]}
                           onChange={(e) => handlePriceRangeChange(1, e.target.value)}
-                          className="w-full h-2 bg-gradient-to-r from-rose-200 to-pink-200 rounded-lg appearance-none cursor-pointer slider-thumb"
-                          style={{
-                            background: `linear-gradient(to right, #e5e7eb 0%, #e5e7eb ${((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100}%, #fbb6ce ${((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100}%, #fbb6ce 100%)`
-                          }}
+                          className="absolute w-full h-2 bg-transparent appearance-none cursor-pointer slider-thumb"
+                          style={{ zIndex: priceRange[1] < priceRange[0] + 10 ? 5 : 4 }}
                         />
-                        <div className="absolute top-3 right-0 text-xs text-slate-500">
-                          Max: {formatPrice(maxPrice)}
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -234,14 +242,18 @@ export default function Presentes() {
                     <div className="text-2xl font-bold text-pink-600">
                       {filteredGifts.length}
                     </div>
-                    <div className="text-xs text-slate-600">Presentes encontrados</div>
+                    <div className="text-xs text-slate-600">
+                      Presentes encontrados
+                    </div>
                   </div>
                   <div className="w-px h-8 bg-slate-300"></div>
                   <div className="text-center">
                     <div className="text-2xl font-bold text-slate-600">
                       {gifts.length}
                     </div>
-                    <div className="text-xs text-slate-600">Total disponível</div>
+                    <div className="text-xs text-slate-600">
+                      Total disponível
+                    </div>
                   </div>
                 </div>
               </div>
