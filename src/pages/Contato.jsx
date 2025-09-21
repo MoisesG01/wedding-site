@@ -177,7 +177,7 @@ export default function Contato() {
                       <h3 className="text-lg sm:text-xl font-serif text-slate-800 mb-2 sm:mb-3 elegant-text-gradient">
                         Local da Cerimônia
                       </h3>
-                      <a 
+                      <a
                         href="https://www.google.com/maps/search/?api=1&query=Rua+Nossa+Sra.+da+Conceição,+117+–+Jaraguá,+São+Paulo+–+SP,+05181-280"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -187,8 +187,8 @@ export default function Contato() {
                           Igreja Nossa Senhora da Conceição
                         </p>
                         <p className="text-xs sm:text-sm text-slate-500">
-                          Rua Nossa Sra. da Conceição, 117 – Jaraguá, São Paulo –
-                          SP, 05181-280
+                          Rua Nossa Sra. da Conceição, 117 – Jaraguá, São Paulo
+                          – SP, 05181-280
                         </p>
                       </a>
                     </div>
@@ -204,7 +204,7 @@ export default function Contato() {
                       <h3 className="text-lg sm:text-xl font-serif text-slate-800 mb-2 sm:mb-3 elegant-text-gradient">
                         Local da Recepção
                       </h3>
-                      <a 
+                      <a
                         href="https://www.google.com/maps/search/?api=1&query=Rua+Comendador+J.+de+Matos,+429+-+Vila+Clarice,+São+Paulo+-+SP,+05177-100"
                         target="_blank"
                         rel="noopener noreferrer"
