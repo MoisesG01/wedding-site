@@ -143,7 +143,8 @@ export default function Contato() {
                         Mansão Jaraguá
                       </p>
                       <p className="text-xs sm:text-sm text-slate-500">
-                        Rua Comendador J. de Matos, 429 – Vila Clarice, São Paulo – SP, 05177-100
+                        Rua Comendador J. de Matos, 429 – Vila Clarice, São
+                        Paulo – SP, 05177-100
                       </p>
                     </div>
                   </div>
@@ -159,7 +160,7 @@ export default function Contato() {
                         WhatsApp
                       </h3>
                       <p className="text-sm sm:text-base text-slate-600 mb-1 sm:mb-2">
-                        11 989123506
+                        (11) 98912-3506
                       </p>
                       <p className="text-xs sm:text-sm text-slate-500">
                         Resposta rápida via mensagem
