@@ -137,7 +137,7 @@ export default function AudioPlayer() {
         const timer = setTimeout(() => {
           setShowMobileModal(true);
           sessionStorage.setItem("mobileMusicModalShown", "true");
-        }, 3000);
+        }, 1500);
 
         return () => clearTimeout(timer);
       }
