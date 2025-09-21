@@ -18,9 +18,6 @@ export default function Presentes() {
         prevGifts.map((gift) => ({
           ...gift,
           reserved: reservedIds.includes(gift.id),
-          reservedBy: reservedIds.includes(gift.id)
-            ? localStorage.getItem(`gift_${gift.id}_reservedBy`) || "Alguém"
-            : null,
         }))
       );
     }
@@ -37,7 +34,7 @@ export default function Presentes() {
       setGifts((prevGifts) =>
         prevGifts.map((gift) =>
           gift.id === selectedGift.id
-            ? { ...gift, reserved: true, reservedBy: "Alguém" }
+            ? { ...gift, reserved: true }
             : gift
         )
       );
@@ -48,7 +45,6 @@ export default function Presentes() {
       );
       reservedGifts.push(selectedGift.id);
       localStorage.setItem("reservedGifts", JSON.stringify(reservedGifts));
-      localStorage.setItem(`gift_${selectedGift.id}_reservedBy`, "Alguém");
 
       // Close payment modal
       setShowPaymentModal(false);
@@ -125,9 +121,6 @@ export default function Presentes() {
                         <div className="text-center text-white">
                           <div className="text-2xl mb-2">✅</div>
                           <div className="text-sm font-medium">Reservado</div>
-                          <div className="text-xs opacity-80">
-                            por {gift.reservedBy}
-                          </div>
                         </div>
                       </div>
                     )}
