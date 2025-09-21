@@ -6,6 +6,7 @@ export default function Presentes() {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedGift, setSelectedGift] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [gifts, setGifts] = useState(giftsData);
   const [reservationData, setReservationData] = useState({
     name: "",
@@ -39,6 +40,14 @@ export default function Presentes() {
   const handleReserveGift = (e) => {
     e.preventDefault();
     if (selectedGift && reservationData.name && reservationData.phone) {
+      // Close reservation modal and show payment modal
+      setShowModal(false);
+      setShowPaymentModal(true);
+    }
+  };
+
+  const handlePaymentComplete = () => {
+    if (selectedGift) {
       // Update gift status
       setGifts((prevGifts) =>
         prevGifts.map((gift) =>
@@ -67,8 +76,8 @@ export default function Presentes() {
         reservationData.email
       );
 
-      // Close modal and reset form
-      setShowModal(false);
+      // Close payment modal and reset form
+      setShowPaymentModal(false);
       setSelectedGift(null);
       setReservationData({ name: "", phone: "", email: "" });
     }
@@ -290,10 +299,120 @@ export default function Presentes() {
                   type="submit"
                   className="flex-1 bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 px-4 rounded-xl font-medium hover:from-pink-600 hover:to-rose-600 transition-all transform hover:scale-105"
                 >
-                  Reservar
+                  Continuar
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Payment Modal */}
+      {showPaymentModal && selectedGift && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl p-6 mx-4 max-w-md w-full shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4">
+                💳
+              </div>
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                Pagamento
+              </h3>
+              <p className="text-gray-600 text-sm mb-4">{selectedGift.title}</p>
+              <div className="text-2xl font-bold text-green-600 mb-2">
+                {formatPrice(selectedGift.price)}
+              </div>
+              <p className="text-xs text-gray-500">
+                Reservado por: <strong>{reservationData.name}</strong>
+              </p>
+            </div>
+
+            {/* QR Code Section */}
+            <div className="bg-gray-50 rounded-xl p-6 mb-6">
+              <div className="text-center mb-4">
+                <h4 className="text-lg font-medium text-gray-800 mb-2">
+                  Escaneie o QR Code
+                </h4>
+                <p className="text-sm text-gray-600">
+                  Use seu app de pagamento para escanear
+                </p>
+              </div>
+
+              {/* QR Code Placeholder */}
+              <div className="bg-white rounded-lg p-4 mb-4 border-2 border-dashed border-gray-300">
+                <div className="w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="text-4xl mb-2">📱</div>
+                    <p className="text-sm text-gray-500">QR Code do PIX</p>
+                    <p className="text-xs text-gray-400 mt-1">
+                      Chave: (11) 98912-3506
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Payment Info */}
+              <div className="bg-white rounded-lg p-4 border border-gray-200">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-gray-600">Valor:</span>
+                  <span className="font-semibold text-gray-800">
+                    {formatPrice(selectedGift.price)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-gray-600">Método:</span>
+                  <span className="text-sm text-gray-800">PIX</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Status:</span>
+                  <span className="text-sm text-orange-600 font-medium">
+                    Aguardando pagamento
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Instructions */}
+            <div className="bg-blue-50 rounded-xl p-4 mb-6">
+              <h4 className="text-sm font-medium text-blue-800 mb-2">
+                📋 Instruções:
+              </h4>
+              <ul className="text-xs text-blue-700 space-y-1">
+                <li>• Escaneie o QR Code com seu app bancário</li>
+                <li>• Confirme o valor: {formatPrice(selectedGift.price)}</li>
+                <li>• Após o pagamento, clique em "Pagamento Realizado"</li>
+                <li>• Seu presente será reservado automaticamente</li>
+              </ul>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="space-y-3">
+              <button
+                onClick={handlePaymentComplete}
+                className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 px-4 rounded-xl font-medium hover:from-green-600 hover:to-emerald-600 transition-all transform hover:scale-105 shadow-lg"
+              >
+                ✅ Pagamento Realizado
+              </button>
+              <button
+                onClick={() => {
+                  setShowPaymentModal(false);
+                  setShowModal(true);
+                }}
+                className="w-full bg-gray-100 text-gray-600 py-3 px-4 rounded-xl font-medium hover:bg-gray-200 transition-colors"
+              >
+                ← Voltar para Dados
+              </button>
+              <button
+                onClick={() => {
+                  setShowPaymentModal(false);
+                  setSelectedGift(null);
+                  setReservationData({ name: "", phone: "", email: "" });
+                }}
+                className="w-full bg-red-100 text-red-600 py-3 px-4 rounded-xl font-medium hover:bg-red-200 transition-colors"
+              >
+                Cancelar Reserva
+              </button>
+            </div>
           </div>
         </div>
       )}
