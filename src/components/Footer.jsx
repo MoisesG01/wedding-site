@@ -120,17 +120,24 @@ export default function Footer() {
               <h3 className="text-xl font-serif text-white mb-4 font-semibold">
                 Entre em Contato
               </h3>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-3 gap-6">
                 <div className="text-center">
                   <div className="text-2xl mb-2">💬</div>
-                  <p className="text-sm text-gray-300">WhatsApp</p>
+                  <p className="text-sm font-medium text-white mb-1">WhatsApp</p>
                   <p className="text-sm text-gray-300">(11) 98912-3506</p>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl mb-2">📧</div>
-                  <p className="text-sm text-gray-300">Email</p>
+                  <p className="text-sm font-medium text-white mb-1">Email</p>
                   <p className="text-sm text-gray-300">
                     erica.junior@email.com
+                  </p>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl mb-2">📍</div>
+                  <p className="text-sm font-medium text-white mb-1">Local</p>
+                  <p className="text-sm text-gray-300">
+                    Mansão Jaraguá
                   </p>
                 </div>
               </div>
