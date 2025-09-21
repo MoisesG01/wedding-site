@@ -143,48 +143,108 @@ export default function Presentes() {
             </p>
           </div>
 
-          {/* Minimal Filters */}
+          {/* Elegant Filters */}
           <div
-            className={`mb-6 sm:mb-8 md:mb-12 transition-all duration-1000 ${
+            className={`mb-8 sm:mb-12 md:mb-16 transition-all duration-1000 ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-8"
             }`}
           >
-            <div className="flex flex-wrap items-center justify-center gap-3 text-sm">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="px-3 py-1 bg-white rounded-md border-0 text-slate-600 focus:outline-none focus:ring-1 focus:ring-pink-300"
-              >
-                <option value="name">Nome</option>
-                <option value="price-asc">Menor preço</option>
-                <option value="price-desc">Maior preço</option>
-              </select>
-              
-              <span className="text-slate-500">•</span>
-              
-              <span className="text-slate-600">
-                {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
-              </span>
-              
-              <input
-                type="range"
-                min={minPrice}
-                max={maxPrice}
-                value={priceRange[0]}
-                onChange={(e) => handlePriceRangeChange(0, e.target.value)}
-                className="w-16 h-1 bg-slate-200 rounded appearance-none cursor-pointer"
-              />
-              
-              <input
-                type="range"
-                min={minPrice}
-                max={maxPrice}
-                value={priceRange[1]}
-                onChange={(e) => handlePriceRangeChange(1, e.target.value)}
-                className="w-16 h-1 bg-slate-200 rounded appearance-none cursor-pointer"
-              />
+            <div className="bg-gradient-to-r from-white/95 to-white/90 backdrop-blur-md border border-white/40 rounded-2xl shadow-xl shadow-pink-500/10 p-6 sm:p-8">
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-serif text-slate-800 mb-2 elegant-text-gradient">
+                  ✨ Filtros Elegantes
+                </h3>
+                <p className="text-sm text-slate-600">
+                  Encontre o presente perfeito
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Sort Section */}
+                <div className="space-y-3">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    🎯 Ordenar por
+                  </label>
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="w-full px-4 py-3 bg-white/80 border border-slate-200 rounded-xl text-slate-700 focus:ring-2 focus:ring-pink-300 focus:border-pink-300 transition-all duration-200 shadow-sm hover:shadow-md"
+                  >
+                    <option value="name">📝 Nome (A-Z)</option>
+                    <option value="price-asc">💰 Menor preço</option>
+                    <option value="price-desc">💎 Maior preço</option>
+                  </select>
+                </div>
+
+                {/* Price Range Section */}
+                <div className="space-y-3">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    💰 Faixa de preço
+                  </label>
+                  <div className="bg-white/80 border border-slate-200 rounded-xl p-4 shadow-sm">
+                    <div className="text-center mb-3">
+                      <span className="text-lg font-semibold text-slate-800">
+                        {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
+                      </span>
+                    </div>
+                    <div className="space-y-4">
+                      <div className="relative">
+                        <input
+                          type="range"
+                          min={minPrice}
+                          max={maxPrice}
+                          value={priceRange[0]}
+                          onChange={(e) => handlePriceRangeChange(0, e.target.value)}
+                          className="w-full h-2 bg-gradient-to-r from-pink-200 to-rose-200 rounded-lg appearance-none cursor-pointer slider-thumb"
+                          style={{
+                            background: `linear-gradient(to right, #fbb6ce 0%, #fbb6ce ${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%, #e5e7eb ${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%, #e5e7eb 100%)`
+                          }}
+                        />
+                        <div className="absolute top-3 left-0 text-xs text-slate-500">
+                          Min: {formatPrice(minPrice)}
+                        </div>
+                      </div>
+                      <div className="relative">
+                        <input
+                          type="range"
+                          min={minPrice}
+                          max={maxPrice}
+                          value={priceRange[1]}
+                          onChange={(e) => handlePriceRangeChange(1, e.target.value)}
+                          className="w-full h-2 bg-gradient-to-r from-rose-200 to-pink-200 rounded-lg appearance-none cursor-pointer slider-thumb"
+                          style={{
+                            background: `linear-gradient(to right, #e5e7eb 0%, #e5e7eb ${((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100}%, #fbb6ce ${((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100}%, #fbb6ce 100%)`
+                          }}
+                        />
+                        <div className="absolute top-3 right-0 text-xs text-slate-500">
+                          Max: {formatPrice(maxPrice)}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Results Summary */}
+              <div className="mt-6 pt-4 border-t border-slate-200">
+                <div className="flex items-center justify-center space-x-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-pink-600">
+                      {filteredGifts.length}
+                    </div>
+                    <div className="text-xs text-slate-600">Presentes encontrados</div>
+                  </div>
+                  <div className="w-px h-8 bg-slate-300"></div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-slate-600">
+                      {gifts.length}
+                    </div>
+                    <div className="text-xs text-slate-600">Total disponível</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
