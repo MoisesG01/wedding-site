@@ -140,10 +140,10 @@ export default function Contato() {
                         Local da Festa
                       </h3>
                       <p className="text-sm sm:text-base text-slate-600 mb-1 sm:mb-2">
-                        Espaço de Eventos Flores
+                        Mansão Jaraguá
                       </p>
                       <p className="text-xs sm:text-sm text-slate-500">
-                        Rua das Flores, 123 - Jardim das Rosas, São Paulo - SP
+                        Rua Comendador J. de Matos, 429 – Vila Clarice, São Paulo – SP, 05177-100
                       </p>
                     </div>
                   </div>
