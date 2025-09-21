@@ -5,14 +5,8 @@ import Divisor from "../components/Divisor";
 export default function Presentes() {
   const [isVisible, setIsVisible] = useState(false);
   const [selectedGift, setSelectedGift] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [gifts, setGifts] = useState(giftsData);
-  const [reservationData, setReservationData] = useState({
-    name: "",
-    phone: "",
-    email: "",
-  });
 
   useEffect(() => {
     setIsVisible(true);
@@ -34,16 +28,7 @@ export default function Presentes() {
 
   const handleGiftClick = (gift) => {
     setSelectedGift(gift);
-    setShowModal(true);
-  };
-
-  const handleReserveGift = (e) => {
-    e.preventDefault();
-    if (selectedGift && reservationData.name && reservationData.phone) {
-      // Close reservation modal and show payment modal
-      setShowModal(false);
-      setShowPaymentModal(true);
-    }
+    setShowPaymentModal(true);
   };
 
   const handlePaymentComplete = () => {
@@ -52,7 +37,7 @@ export default function Presentes() {
       setGifts((prevGifts) =>
         prevGifts.map((gift) =>
           gift.id === selectedGift.id
-            ? { ...gift, reserved: true, reservedBy: reservationData.name }
+            ? { ...gift, reserved: true, reservedBy: "Alguém" }
             : gift
         )
       );
@@ -63,23 +48,11 @@ export default function Presentes() {
       );
       reservedGifts.push(selectedGift.id);
       localStorage.setItem("reservedGifts", JSON.stringify(reservedGifts));
-      localStorage.setItem(
-        `gift_${selectedGift.id}_reservedBy`,
-        reservationData.name
-      );
-      localStorage.setItem(
-        `gift_${selectedGift.id}_phone`,
-        reservationData.phone
-      );
-      localStorage.setItem(
-        `gift_${selectedGift.id}_email`,
-        reservationData.email
-      );
+      localStorage.setItem(`gift_${selectedGift.id}_reservedBy`, "Alguém");
 
-      // Close payment modal and reset form
+      // Close payment modal
       setShowPaymentModal(false);
       setSelectedGift(null);
-      setReservationData({ name: "", phone: "", email: "" });
     }
   };
 
@@ -213,100 +186,6 @@ export default function Presentes() {
         </div>
       </div>
 
-      {/* Reservation Modal */}
-      {showModal && selectedGift && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-2xl p-6 mx-4 max-w-md w-full shadow-2xl max-h-[90vh] overflow-y-auto">
-            <div className="text-center mb-6">
-              <div className="w-16 h-16 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4">
-                🎁
-              </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                Reservar Presente
-              </h3>
-              <p className="text-gray-600 text-sm mb-4">{selectedGift.title}</p>
-              <div className="text-lg font-bold text-pink-600">
-                {formatPrice(selectedGift.price)}
-              </div>
-            </div>
-
-            <form onSubmit={handleReserveGift} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Seu Nome *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={reservationData.name}
-                  onChange={(e) =>
-                    setReservationData({
-                      ...reservationData,
-                      name: e.target.value,
-                    })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent"
-                  placeholder="Digite seu nome completo"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  WhatsApp *
-                </label>
-                <input
-                  type="tel"
-                  required
-                  value={reservationData.phone}
-                  onChange={(e) =>
-                    setReservationData({
-                      ...reservationData,
-                      phone: e.target.value,
-                    })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent"
-                  placeholder="(11) 99999-9999"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email (opcional)
-                </label>
-                <input
-                  type="email"
-                  value={reservationData.email}
-                  onChange={(e) =>
-                    setReservationData({
-                      ...reservationData,
-                      email: e.target.value,
-                    })
-                  }
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent"
-                  placeholder="seu@email.com"
-                />
-              </div>
-
-              <div className="flex gap-3 pt-4">
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="flex-1 bg-gray-100 text-gray-600 py-3 px-4 rounded-xl font-medium hover:bg-gray-200 transition-colors"
-                >
-                  Cancelar
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 bg-gradient-to-r from-pink-500 to-rose-500 text-white py-3 px-4 rounded-xl font-medium hover:from-pink-600 hover:to-rose-600 transition-all transform hover:scale-105"
-                >
-                  Continuar
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
       {/* Payment Modal */}
       {showPaymentModal && selectedGift && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
@@ -322,9 +201,6 @@ export default function Presentes() {
               <div className="text-2xl font-bold text-green-600 mb-2">
                 {formatPrice(selectedGift.price)}
               </div>
-              <p className="text-xs text-gray-500">
-                Reservado por: <strong>{reservationData.name}</strong>
-              </p>
             </div>
 
             {/* QR Code Section */}
@@ -396,21 +272,11 @@ export default function Presentes() {
               <button
                 onClick={() => {
                   setShowPaymentModal(false);
-                  setShowModal(true);
-                }}
-                className="w-full bg-gray-100 text-gray-600 py-3 px-4 rounded-xl font-medium hover:bg-gray-200 transition-colors"
-              >
-                ← Voltar para Dados
-              </button>
-              <button
-                onClick={() => {
-                  setShowPaymentModal(false);
                   setSelectedGift(null);
-                  setReservationData({ name: "", phone: "", email: "" });
                 }}
                 className="w-full bg-red-100 text-red-600 py-3 px-4 rounded-xl font-medium hover:bg-red-200 transition-colors"
               >
-                Cancelar Reserva
+                Cancelar
               </button>
             </div>
           </div>
