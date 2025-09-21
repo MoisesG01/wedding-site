@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { giftsData } from "../data/gifts";
 import Divisor from "../components/Divisor";
+import reservationService from "../services/reservationService";
 
 export default function Presentes() {
   const [isVisible, setIsVisible] = useState(false);
@@ -10,17 +11,18 @@ export default function Presentes() {
 
   useEffect(() => {
     setIsVisible(true);
-    // Load reserved gifts from localStorage
-    const savedGifts = localStorage.getItem("reservedGifts");
-    if (savedGifts) {
-      const reservedIds = JSON.parse(savedGifts);
+    // Load reserved gifts using the reservation service
+    const loadReservations = async () => {
+      const reservedIds = reservationService.getReservations();
       setGifts((prevGifts) =>
         prevGifts.map((gift) => ({
           ...gift,
           reserved: reservedIds.includes(gift.id),
         }))
       );
-    }
+    };
+    
+    loadReservations();
   }, []);
 
   const handleGiftClick = (gift) => {
@@ -28,23 +30,19 @@ export default function Presentes() {
     setShowPaymentModal(true);
   };
 
-  const handlePaymentComplete = () => {
+  const handlePaymentComplete = async () => {
     if (selectedGift) {
-      // Update gift status
-      setGifts((prevGifts) =>
-        prevGifts.map((gift) =>
-          gift.id === selectedGift.id
-            ? { ...gift, reserved: true }
-            : gift
-        )
-      );
-
-      // Save to localStorage
-      const reservedGifts = JSON.parse(
-        localStorage.getItem("reservedGifts") || "[]"
-      );
-      reservedGifts.push(selectedGift.id);
-      localStorage.setItem("reservedGifts", JSON.stringify(reservedGifts));
+      // Save reservation using the service
+      const success = reservationService.saveReservation(selectedGift.id);
+      
+      if (success) {
+        // Update gift status
+        setGifts((prevGifts) =>
+          prevGifts.map((gift) =>
+            gift.id === selectedGift.id ? { ...gift, reserved: true } : gift
+          )
+        );
+      }
 
       // Close payment modal
       setShowPaymentModal(false);
@@ -106,7 +104,7 @@ export default function Presentes() {
                   {/* Gift Image */}
                   <div className="relative aspect-square overflow-hidden">
                     <img
-                      src={`/src/assets/presentes/${gift.image}`}
+                      src={gift.image}
                       alt={gift.title}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                       onError={(e) => {
