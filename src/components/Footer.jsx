@@ -46,7 +46,7 @@ export default function Footer() {
             <div className="flex justify-center gap-6">
               <div className="text-center">
                 <div className="text-lg mb-1">📞</div>
-                <p className="text-xs text-gray-300">(11) 99999-9999</p>
+                <p className="text-xs text-gray-300">(11) 98912-3506</p>
               </div>
               <div className="text-center">
                 <div className="text-lg mb-1">💬</div>
@@ -87,6 +87,7 @@ export default function Footer() {
               <div className="space-y-2 text-base text-gray-300">
                 <p>📅 22 de Novembro, 2025</p>
                 <p>📍 Igreja Nossa Senhora da Conceição</p>
+                <p>🎉 Mansão Jaraguá (Recepção)</p>
                 <p>👗 Dress Code: Elegante Esportivo</p>
               </div>
             </div>
@@ -129,7 +130,7 @@ export default function Footer() {
               <div className="grid grid-cols-3 gap-4">
                 <div className="text-center">
                   <div className="text-2xl mb-2">📞</div>
-                  <p className="text-sm text-gray-300">(11) 99999-9999</p>
+                  <p className="text-sm text-gray-300">(11) 98912-3506</p>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl mb-2">💬</div>
