@@ -8,6 +8,8 @@ export default function Presentes() {
   const [selectedGift, setSelectedGift] = useState(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [gifts, setGifts] = useState(giftsData);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12; // 12 presentes por página
 
   useEffect(() => {
     setIsVisible(true);
@@ -21,7 +23,7 @@ export default function Presentes() {
         }))
       );
     };
-    
+
     loadReservations();
   }, []);
 
@@ -34,7 +36,7 @@ export default function Presentes() {
     if (selectedGift) {
       // Save reservation using the service
       const success = reservationService.saveReservation(selectedGift.id);
-      
+
       if (success) {
         // Update gift status
         setGifts((prevGifts) =>
@@ -55,6 +57,52 @@ export default function Presentes() {
       style: "currency",
       currency: "BRL",
     }).format(price);
+  };
+
+  // Pagination logic
+  const totalPages = Math.ceil(gifts.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentGifts = gifts.slice(startIndex, endIndex);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    // Scroll to top when changing pages
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      const start = Math.max(1, currentPage - 2);
+      const end = Math.min(totalPages, start + maxVisiblePages - 1);
+      
+      if (start > 1) {
+        pages.push(1);
+        if (start > 2) {
+          pages.push('...');
+        }
+      }
+      
+      for (let i = start; i <= end; i++) {
+        pages.push(i);
+      }
+      
+      if (end < totalPages) {
+        if (end < totalPages - 1) {
+          pages.push('...');
+        }
+        pages.push(totalPages);
+      }
+    }
+    
+    return pages;
   };
 
   return (
@@ -91,7 +139,7 @@ export default function Presentes() {
                 : "opacity-0 translate-y-8"
             }`}
           >
-            {gifts.map((gift, index) => (
+            {currentGifts.map((gift, index) => (
               <div
                 key={gift.id}
                 className={`group cursor-pointer transition-all duration-300 transform hover:scale-105 ${
@@ -146,6 +194,86 @@ export default function Presentes() {
             ))}
           </div>
 
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div
+              className={`mt-8 sm:mt-12 md:mt-16 transition-all duration-1000 ${
+                isVisible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-8"
+              }`}
+            >
+              <div className="flex flex-col items-center space-y-4">
+                {/* Page Info */}
+                <div className="text-center">
+                  <p className="text-sm text-slate-600">
+                    Página {currentPage} de {totalPages}
+                  </p>
+                  <p className="text-xs text-slate-500">
+                    Mostrando {startIndex + 1}-{Math.min(endIndex, gifts.length)} de {gifts.length} presentes
+                  </p>
+                </div>
+
+                {/* Pagination Controls */}
+                <div className="flex items-center space-x-2">
+                  {/* Previous Button */}
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="px-3 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                  >
+                    ← Anterior
+                  </button>
+
+                  {/* Page Numbers */}
+                  <div className="flex space-x-1">
+                    {getPageNumbers().map((page, index) => (
+                      <button
+                        key={index}
+                        onClick={() => typeof page === 'number' && handlePageChange(page)}
+                        disabled={page === '...'}
+                        className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+                          page === currentPage
+                            ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg'
+                            : page === '...'
+                            ? 'text-slate-400 cursor-default'
+                            : 'text-slate-600 bg-white border border-slate-300 hover:bg-slate-50'
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Next Button */}
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                  >
+                    Próximo →
+                  </button>
+                </div>
+
+                {/* Quick Jump */}
+                <div className="flex items-center space-x-2 text-xs text-slate-500">
+                  <span>Ir para:</span>
+                  <select
+                    value={currentPage}
+                    onChange={(e) => handlePageChange(Number(e.target.value))}
+                    className="px-2 py-1 text-sm border border-slate-300 rounded bg-white focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                  >
+                    {Array.from({ length: totalPages }, (_, i) => (
+                      <option key={i + 1} value={i + 1}>
+                        Página {i + 1}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Footer Info */}
           <div
             className={`text-center mt-8 sm:mt-12 md:mt-16 transition-all duration-1000 ${
@@ -164,8 +292,8 @@ export default function Presentes() {
                   <p>Escolha o presente que mais combina com você</p>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl mb-2">📝</div>
-                  <p>Preencha seus dados para reservar</p>
+                  <div className="text-2xl mb-2">💳</div>
+                  <p>Pague via PIX usando o QR Code</p>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl mb-2">🎉</div>
