@@ -8,8 +8,16 @@ export default function Presentes() {
   const [selectedGift, setSelectedGift] = useState(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [gifts, setGifts] = useState(giftsData);
+  const [filteredGifts, setFilteredGifts] = useState(giftsData);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // 10 presentes por página
+  
+  // Filter states
+  const [showFilters, setShowFilters] = useState(false);
+  const [sortBy, setSortBy] = useState('name'); // name, price-asc, price-desc
+  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('all');
 
   useEffect(() => {
     setIsVisible(true);
@@ -47,11 +55,70 @@ export default function Presentes() {
     }).format(price);
   };
 
+  // Get unique categories
+  const categories = ['all', ...new Set(gifts.map(gift => gift.category))];
+  
+  // Get price range
+  const maxPrice = Math.max(...gifts.map(gift => gift.price));
+  const minPrice = Math.min(...gifts.map(gift => gift.price));
+
+  // Filter and sort gifts
+  useEffect(() => {
+    let filtered = [...gifts];
+
+    // Search filter
+    if (searchTerm) {
+      filtered = filtered.filter(gift =>
+        gift.title.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+
+    // Category filter
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(gift => gift.category === selectedCategory);
+    }
+
+    // Price range filter
+    filtered = filtered.filter(gift =>
+      gift.price >= priceRange[0] && gift.price <= priceRange[1]
+    );
+
+    // Sort
+    switch (sortBy) {
+      case 'price-asc':
+        filtered.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-desc':
+        filtered.sort((a, b) => b.price - a.price);
+        break;
+      case 'name':
+      default:
+        filtered.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+    }
+
+    setFilteredGifts(filtered);
+    setCurrentPage(1); // Reset to first page when filters change
+  }, [gifts, searchTerm, selectedCategory, priceRange, sortBy]);
+
+  const handlePriceRangeChange = (index, value) => {
+    const newRange = [...priceRange];
+    newRange[index] = parseInt(value);
+    setPriceRange(newRange);
+  };
+
+  const clearFilters = () => {
+    setSearchTerm('');
+    setSelectedCategory('all');
+    setPriceRange([minPrice, maxPrice]);
+    setSortBy('name');
+  };
+
   // Pagination logic
-  const totalPages = Math.ceil(gifts.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredGifts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentGifts = gifts.slice(startIndex, endIndex);
+  const currentGifts = filteredGifts.slice(startIndex, endIndex);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -99,6 +166,135 @@ export default function Presentes() {
               Escolha um presente que faça você sorrir e nos ajude a começar
               nossa vida juntos. 😄
             </p>
+          </div>
+
+          {/* Filters */}
+          <div
+            className={`mb-8 sm:mb-12 md:mb-16 transition-all duration-1000 ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
+            }`}
+          >
+            <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-6">
+              {/* Filter Toggle Button */}
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-slate-800">
+                  🔍 Filtros e Ordenação
+                </h3>
+                <button
+                  onClick={() => setShowFilters(!showFilters)}
+                  className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-lg hover:from-pink-600 hover:to-rose-600 transition-all duration-200"
+                >
+                  <span className="text-sm font-medium">
+                    {showFilters ? 'Ocultar' : 'Mostrar'} Filtros
+                  </span>
+                  <span className={`transform transition-transform duration-200 ${showFilters ? 'rotate-180' : ''}`}>
+                    ▼
+                  </span>
+                </button>
+              </div>
+
+              {/* Filter Controls */}
+              {showFilters && (
+                <div className="space-y-6">
+                  {/* Search */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      🔍 Buscar presente
+                    </label>
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      placeholder="Digite o nome do presente..."
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                    />
+                  </div>
+
+                  {/* Sort */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      📊 Ordenar por
+                    </label>
+                    <select
+                      value={sortBy}
+                      onChange={(e) => setSortBy(e.target.value)}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                    >
+                      <option value="name">Nome (A-Z)</option>
+                      <option value="price-asc">Menor preço</option>
+                      <option value="price-desc">Maior preço</option>
+                    </select>
+                  </div>
+
+                  {/* Category */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      🏷️ Categoria
+                    </label>
+                    <select
+                      value={selectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent"
+                    >
+                      <option value="all">Todas as categorias</option>
+                      {categories.slice(1).map(category => (
+                        <option key={category} value={category}>
+                          {category}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Price Range */}
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      💰 Faixa de preço: {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
+                    </label>
+                    <div className="space-y-3">
+                      <input
+                        type="range"
+                        min={minPrice}
+                        max={maxPrice}
+                        value={priceRange[0]}
+                        onChange={(e) => handlePriceRangeChange(0, e.target.value)}
+                        className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                      />
+                      <input
+                        type="range"
+                        min={minPrice}
+                        max={maxPrice}
+                        value={priceRange[1]}
+                        onChange={(e) => handlePriceRangeChange(1, e.target.value)}
+                        className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                      />
+                    </div>
+                    <div className="flex justify-between text-xs text-slate-500 mt-1">
+                      <span>{formatPrice(minPrice)}</span>
+                      <span>{formatPrice(maxPrice)}</span>
+                    </div>
+                  </div>
+
+                  {/* Clear Filters */}
+                  <div className="flex justify-center">
+                    <button
+                      onClick={clearFilters}
+                      className="px-6 py-2 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition-colors duration-200"
+                    >
+                      🗑️ Limpar Filtros
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Results Summary */}
+              <div className="mt-4 pt-4 border-t border-slate-200">
+                <p className="text-sm text-slate-600 text-center">
+                  Mostrando {filteredGifts.length} de {gifts.length} presentes
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Gift Grid */}
@@ -171,7 +367,7 @@ export default function Presentes() {
                 {/* Page Info */}
                 <div className="text-center">
                   <p className="text-sm text-slate-600">
-                    Página {currentPage} de {totalPages}
+                    Página {currentPage} de {totalPages} ({filteredGifts.length} presentes)
                   </p>
                 </div>
 
