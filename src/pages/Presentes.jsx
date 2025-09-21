@@ -1,214 +1,62 @@
 import { useState, useEffect } from "react";
-import toast from "react-hot-toast";
-import QRCode from "qrcode";
+import { giftsData } from "../data/gifts";
 import Divisor from "../components/Divisor";
 
 export default function Presentes() {
-  const [showModal, setShowModal] = useState(false);
-  const [selectedGift, setSelectedGift] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
   const [isVisible, setIsVisible] = useState(false);
-  const [qrCodeUrl, setQrCodeUrl] = useState("");
-  const itemsPerPage = 6;
+  const [selectedGift, setSelectedGift] = useState(null);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [gifts, setGifts] = useState(giftsData);
 
   useEffect(() => {
     setIsVisible(true);
+    // Load reserved gifts from localStorage
+    const savedGifts = localStorage.getItem("reservedGifts");
+    if (savedGifts) {
+      const reservedIds = JSON.parse(savedGifts);
+      setGifts((prevGifts) =>
+        prevGifts.map((gift) => ({
+          ...gift,
+          reserved: reservedIds.includes(gift.id),
+        }))
+      );
+    }
   }, []);
-
-  // Single consolidated gift list with images
-  const gifts = [
-    {
-      id: 1,
-      name: "Jogo de Panelas Tramontina",
-      price: "R$ 450,00",
-      description: "Conjunto de 5 peças em aço inox",
-      category: "Casa e Decoração",
-      icon: "🏠",
-      image:
-        "https://cdn.leroymerlin.com.br/products/jogo_de_panelas_antiaderente_ceramica_de_inducao_8_pecas_brin_1571793695_a2a8_600x600.jpg",
-    },
-    {
-      id: 2,
-      name: "Mixer Philips Walita",
-      price: "R$ 280,00",
-      description: "Processador de alimentos 500W",
-      category: "Eletrodomésticos",
-      icon: "🔌",
-      image: "https://static.mundomax.com.br/produtos/50800/550/1.webp",
-    },
-    {
-      id: 3,
-      name: "Jogo de Toalhas",
-      price: "R$ 120,00",
-      description: "Conjunto de 4 toalhas de banho",
-      category: "Casa e Decoração",
-      icon: "🏠",
-      image:
-        "https://toalhashow.cdn.magazord.com.br/img/2023/10/produto/5218/colecao-egito-kit-toalhas-banho-gigante-plus-size-marrom-preta-toalha-show.jpg?ims=800x800",
-    },
-    {
-      id: 4,
-      name: "Vaso Decorativo",
-      price: "R$ 180,00",
-      description: "Vaso de cerâmica artesanal",
-      category: "Casa e Decoração",
-      icon: "🏠",
-      image:
-        "https://larmary.com/cdn/shop/files/vaso-decorativo-5_1.webp?v=1725967360",
-    },
-    {
-      id: 5,
-      name: "Air Fryer",
-      price: "R$ 350,00",
-      description: "Fritadeira elétrica 4L",
-      category: "Eletrodomésticos",
-      icon: "🔌",
-      image:
-        "https://lenoxx.com.au/cdn/shop/products/AF900lifestyle_c_1200x1200.jpg?v=1652316375",
-    },
-    {
-      id: 6,
-      name: "Liquidificador",
-      price: "R$ 220,00",
-      description: "Liquidificador 1000W",
-      category: "Eletrodomésticos",
-      icon: "🔌",
-      image:
-        "https://cdn.awsli.com.br/2500x2500/2102/2102924/produto/237990248/liquidificador-preto-05-o4ctlct7d0.jpg",
-    },
-    {
-      id: 7,
-      name: "Cafeteira",
-      price: "R$ 180,00",
-      description: "Cafeteira automática",
-      category: "Eletrodomésticos",
-      icon: "🔌",
-      image:
-        "https://cdn.sistemawbuy.com.br/arquivos/f8d1f4a04e988aeb5f9660e041392be7/produtos/65d7a1cf810ba/101db-cafeteira-eletrica-digital-15l-telefunken-venezia-110v-02-65d7a1d7d38aa.jpg",
-    },
-    {
-      id: 8,
-      name: "Microondas",
-      price: "R$ 420,00",
-      description: "Microondas 20L",
-      category: "Eletrodomésticos",
-      icon: "🔌",
-      image:
-        "https://s2-techtudo.glbimg.com/NuWlCrbc4es5M5vv2g12RMcLKDY=/0x0:1920x1080/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2024/0/d/C9HJAARdCKKaP2BmfByw/microondas.jpg",
-    },
-    {
-      id: 9,
-      name: "Mala de Viagem",
-      price: "R$ 380,00",
-      description: 'Mala com rodinhas 29"',
-      category: "Viagem e Lazer",
-      icon: "✈️",
-      image:
-        "https://images.tcdn.com.br/img/img_prod/812686/kit_com_3_malas_de_viagem_bordo_media_e_grande_com_cadeado_linha_genebra_1498_1_9171941207e584a392cb6cfde13120c6.jpg",
-    },
-    {
-      id: 10,
-      name: "Jogo de Praia",
-      price: "R$ 150,00",
-      description: "Toalha, guarda-sol e esteira",
-      category: "Viagem e Lazer",
-      icon: "✈️",
-      image:
-        "https://cdn.awsli.com.br/2500x2500/1866/1866589/produto/18355333370f326a5c5.jpg",
-    },
-    {
-      id: 11,
-      name: "Câmera Polaroid",
-      price: "R$ 320,00",
-      description: "Câmera instantânea",
-      category: "Viagem e Lazer",
-      icon: "✈️",
-      image:
-        "https://s2-techtudo.glbimg.com/crCmKlzGec6CoeqSTuGM-R5c2L0=/0x0:1140x713/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2021/M/s/vnQQK9R4Ckp5JqVos4Zg/polaroid-now.jpg",
-    },
-    {
-      id: 12,
-      name: "Jogo de Tabuleiro",
-      price: "R$ 90,00",
-      description: "Coleção de jogos",
-      category: "Viagem e Lazer",
-      icon: "✈️",
-      image:
-        "https://images.tcdn.com.br/img/img_prod/841504/agente_secreto_jogo_de_tabuleiro_brinquedo_educativo_de_detetive_256784_2_57a4e500de219f73668ae408ca4bcaf0.jpg",
-    },
-    {
-      id: 13,
-      name: "Contribuição para Lua de Mel",
-      price: "Valor à escolha",
-      description: "Ajude-nos a realizar nosso sonho",
-      category: "Contribuição",
-      icon: "💝",
-      image:
-        "https://i0.wp.com/planejandomeucasamento.com.br/wp-content/uploads/2023/07/cotas-lua-de-mel.jpg?fit=1200%2C675&ssl=1",
-    },
-    {
-      id: 14,
-      name: "Contribuição para Casa",
-      price: "Valor à escolha",
-      description: "Para mobiliar nosso novo lar",
-      category: "Contribuição",
-      icon: "💝",
-      image:
-        "https://midias.correiobraziliense.com.br/_midias/jpg/2022/04/08/675x450/1_casa1-7734260.jpg?20220408190329?20220408190329",
-    },
-    {
-      id: 15,
-      name: "Contribuição para Investimento",
-      price: "Valor à escolha",
-      description: "Para nosso futuro juntos",
-      category: "Contribuição",
-      icon: "💝",
-      image:
-        "https://www.direcional.com.br/wp-content/uploads/2022/10/investimento-imobiliario-2.jpg",
-    },
-  ];
-
-  // Paginação
-  const totalPages = Math.ceil(gifts.length / itemsPerPage);
-  const paginatedGifts = gifts.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
 
   const handleGiftClick = (gift) => {
     setSelectedGift(gift);
-    setShowModal(true);
-    // Generate QR Code when modal opens
-    setTimeout(() => generateQRCode(), 100);
+    setShowPaymentModal(true);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-    setSelectedGift(null);
-  };
+  const handlePaymentComplete = () => {
+    if (selectedGift) {
+      // Update gift status
+      setGifts((prevGifts) =>
+        prevGifts.map((gift) =>
+          gift.id === selectedGift.id
+            ? { ...gift, reserved: true }
+            : gift
+        )
+      );
 
-  // Generate QR Code for PIX
-  const generateQRCode = async () => {
-    try {
-      const pixKey = "erica.junior@email.com";
+      // Save to localStorage
+      const reservedGifts = JSON.parse(
+        localStorage.getItem("reservedGifts") || "[]"
+      );
+      reservedGifts.push(selectedGift.id);
+      localStorage.setItem("reservedGifts", JSON.stringify(reservedGifts));
 
-      // Create PIX string (simplified version)
-      const pixString = `00020126580014br.gov.bcb.pix0136${pixKey}52040000530398654040.005802BR5913Erica Silva Santos6009SAO PAULO62070503***6304`;
-
-      const qrCodeDataUrl = await QRCode.toDataURL(pixString, {
-        width: 200,
-        margin: 2,
-        color: {
-          dark: "#000000",
-          light: "#FFFFFF",
-        },
-      });
-
-      setQrCodeUrl(qrCodeDataUrl);
-    } catch (error) {
-      console.error("Erro ao gerar QR Code:", error);
-      toast.error("Erro ao gerar QR Code. Tente novamente.");
+      // Close payment modal
+      setShowPaymentModal(false);
+      setSelectedGift(null);
     }
+  };
+
+  const formatPrice = (price) => {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(price);
   };
 
   return (
@@ -216,7 +64,7 @@ export default function Presentes() {
       <Divisor />
 
       <div className="py-2 sm:py-4 md:py-6">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4">
           {/* Header */}
           <div
             className={`text-center mb-8 sm:mb-12 md:mb-16 transition-all duration-1000 ${
@@ -226,238 +74,203 @@ export default function Presentes() {
             }`}
           >
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-slate-800 mb-4 sm:mb-6 elegant-text-gradient">
-              Lista de Presentes
+              🎁 Lista de Presentes
             </h1>
             <div className="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-pink-300 to-rose-300 mx-auto mb-6 sm:mb-8 rounded-full"></div>
+            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed px-4">
+              Uma lista divertida e descontraída para celebrar nosso casamento!
+              <br />
+              Escolha um presente que faça você sorrir e nos ajude a começar
+              nossa vida juntos. 😄
+            </p>
           </div>
 
-          {/* Gift Items Grid */}
+          {/* Gift Grid */}
           <div
-            className={`transition-all duration-1000 ${
+            className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 transition-all duration-1000 ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-8"
             }`}
           >
-            <div className="text-center mb-8 sm:mb-12">
-              <h2 className="text-2xl sm:text-3xl font-serif text-slate-800 mb-3 sm:mb-4 elegant-text-gradient">
-                Nossos Presentes
-              </h2>
-              <div className="w-12 sm:w-16 h-1 bg-gradient-to-r from-pink-200 to-rose-200 mx-auto mb-3 sm:mb-4 rounded-full"></div>
-              <p className="text-base sm:text-lg text-slate-600">
-                {gifts.length} itens disponíveis
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 md:gap-4 lg:gap-6 xl:gap-8 mb-8 sm:mb-12">
-              {paginatedGifts.map((gift) => (
-                <div
-                  key={gift.id}
-                  className="bg-white rounded-lg sm:rounded-xl md:rounded-2xl shadow-md sm:shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer transform hover:scale-105 overflow-hidden"
-                  onClick={() => handleGiftClick(gift)}
-                >
+            {gifts.map((gift, index) => (
+              <div
+                key={gift.id}
+                className={`group cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                  gift.reserved ? "opacity-60" : "hover:shadow-lg"
+                }`}
+                style={{ animationDelay: `${index * 0.1}s` }}
+                onClick={() => !gift.reserved && handleGiftClick(gift)}
+              >
+                <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300">
                   {/* Gift Image */}
-                  <div className="relative h-28 sm:h-40 md:h-48 lg:h-56 overflow-hidden">
+                  <div className="relative aspect-square overflow-hidden">
                     <img
-                      src={gift.image}
-                      alt={gift.name}
-                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                      src={`/src/assets/presentes/${gift.image}`}
+                      alt={gift.title}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      onError={(e) => {
+                        e.target.src =
+                          "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIyMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xMDAgNzBMMTMwIDEzMEg3MEwxMDAgNzBaIiBmaWxsPSIjRUM0ODk5Ii8+Cjx0ZXh0IHg9IjEwMCIgeT0iMTYwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjNkI3MjgwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCI+🎁</text+Cjwvc3ZnPgo=";
+                      }}
                     />
-                    {/* Category Badge Overlay */}
-                    <div className="absolute top-1 sm:top-2 md:top-3 left-1 sm:left-2 md:left-3 flex items-center gap-1">
-                      <span className="text-sm sm:text-lg md:text-xl lg:text-2xl bg-white/90 rounded-full p-0.5 sm:p-1 shadow-md">
-                        {gift.icon}
-                      </span>
-                      <span className="text-xs bg-white/90 text-pink-800 px-1 sm:px-1.5 md:px-2 lg:px-3 py-0.5 sm:py-1 rounded-full font-medium shadow-md">
-                        {gift.category}
-                      </span>
+
+                    {/* Reserved Overlay */}
+                    {gift.reserved && (
+                      <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                        <div className="text-center text-white">
+                          <div className="text-2xl mb-2">✅</div>
+                          <div className="text-sm font-medium">Reservado</div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Price Badge */}
+                    <div className="absolute top-2 right-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-2 py-1 rounded-full text-xs font-medium shadow-lg">
+                      {formatPrice(gift.price)}
                     </div>
                   </div>
 
                   {/* Gift Info */}
-                  <div className="p-2 sm:p-3 md:p-4 lg:p-6">
-                    <h3 className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl font-serif text-slate-800 mb-1 sm:mb-1.5 md:mb-2 lg:mb-3 elegant-text-gradient line-clamp-2">
-                      {gift.name}
+                  <div className="p-3 sm:p-4">
+                    <h3 className="text-xs sm:text-sm font-medium text-slate-800 line-clamp-2 leading-tight">
+                      {gift.title}
                     </h3>
-                    <p className="text-xs sm:text-sm md:text-base lg:text-lg text-pink-600 font-semibold mb-1 sm:mb-1.5 md:mb-2 lg:mb-3">
-                      {gift.price}
-                    </p>
-                    <p className="text-xs sm:text-xs md:text-sm lg:text-base text-slate-600 mb-2 sm:mb-3 md:mb-4 lg:mb-6 line-clamp-2">
-                      {gift.description}
-                    </p>
-                    <button className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-1.5 sm:py-2 md:py-2.5 lg:py-3 px-2 sm:px-3 md:px-4 lg:px-6 rounded-full text-xs sm:text-xs md:text-sm lg:text-base font-medium hover:from-pink-600 hover:to-rose-600 transition-all duration-300 transform hover:scale-105">
-                      Presentear
-                    </button>
+
+                    {!gift.reserved && (
+                      <div className="mt-2 text-xs text-pink-600 font-medium">
+                        Clique para reservar
+                      </div>
+                    )}
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
+          </div>
 
-            {/* Paginação */}
-            {totalPages > 1 && (
-              <div className="flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4">
-                <div className="flex items-center justify-center gap-3 w-full sm:w-auto">
-                  <button
-                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                    disabled={currentPage === 1}
-                    className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 border border-pink-200 bg-white hover:bg-pink-50 ${
-                      currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                  >
-                    Anterior
-                  </button>
-                  <span className="text-base sm:text-lg font-serif text-slate-800 min-w-[120px] text-center">
-                    Página {currentPage} de {totalPages}
-                  </span>
-                  <button
-                    onClick={() =>
-                      setCurrentPage((p) => Math.min(totalPages, p + 1))
-                    }
-                    disabled={currentPage === totalPages}
-                    className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 border border-pink-200 bg-white hover:bg-pink-50 ${
-                      currentPage === totalPages
-                        ? "opacity-50 cursor-not-allowed"
-                        : ""
-                    }`}
-                  >
-                    Próxima
-                  </button>
+          {/* Footer Info */}
+          <div
+            className={`text-center mt-8 sm:mt-12 md:mt-16 transition-all duration-1000 ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
+            }`}
+          >
+            <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 max-w-4xl mx-auto">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-serif text-slate-800 mb-4 elegant-text-gradient">
+                💕 Como Funciona
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 text-sm sm:text-base text-slate-600">
+                <div className="text-center">
+                  <div className="text-2xl mb-2">🎯</div>
+                  <p>Escolha o presente que mais combina com você</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl mb-2">📝</div>
+                  <p>Preencha seus dados para reservar</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl mb-2">🎉</div>
+                  <p>Presenteie os noivos de forma divertida!</p>
                 </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* PIX Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-2 sm:p-4">
-          <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-4 md:p-6 lg:p-8 max-w-sm sm:max-w-md w-full mx-2 sm:mx-4 relative shadow-2xl max-h-[90vh] overflow-y-auto">
-            {/* Close Button */}
-            <button
-              onClick={closeModal}
-              className="absolute top-2 sm:top-3 md:top-4 right-2 sm:right-3 md:right-4 text-slate-400 hover:text-slate-600 transition-colors z-10"
-            >
-              <svg
-                className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-
-            {/* Modal Content */}
-            <div className="text-center">
-              <div className="text-3xl sm:text-4xl md:text-6xl mb-3 sm:mb-4 md:mb-6">
-                💝
+      {/* Payment Modal */}
+      {showPaymentModal && selectedGift && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+          <div className="bg-white rounded-2xl p-6 mx-4 max-w-md w-full shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="text-center mb-6">
+              <div className="w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4">
+                💳
               </div>
-              <h3 className="text-lg sm:text-xl md:text-2xl font-serif text-slate-800 mb-2 sm:mb-3 md:mb-4 elegant-text-gradient">
-                Presentear com PIX
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                Pagamento
               </h3>
-              <div className="w-10 sm:w-12 md:w-16 h-1 bg-gradient-to-r from-pink-200 to-rose-200 mx-auto mb-3 sm:mb-4 md:mb-6 rounded-full"></div>
+              <p className="text-gray-600 text-sm mb-4">{selectedGift.title}</p>
+              <div className="text-2xl font-bold text-green-600 mb-2">
+                {formatPrice(selectedGift.price)}
+              </div>
+            </div>
 
-              {selectedGift && (
-                <div className="mb-3 sm:mb-4 md:mb-6 p-2 sm:p-3 md:p-4 bg-gradient-to-r from-pink-50 to-rose-50 rounded-lg sm:rounded-xl">
-                  {/* Gift Image in Modal */}
-                  <div className="mb-2 sm:mb-3 md:mb-4">
-                    <img
-                      src={selectedGift.image}
-                      alt={selectedGift.name}
-                      className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 mx-auto rounded-lg object-cover shadow-md"
-                    />
-                  </div>
-                  <h4 className="text-sm sm:text-base md:text-lg font-serif text-slate-800 mb-1 sm:mb-1.5 md:mb-2">
-                    {selectedGift.name}
-                  </h4>
-                  <p className="text-pink-600 font-semibold text-xs sm:text-sm md:text-base">
-                    {selectedGift.price}
-                  </p>
-                  <p className="text-xs sm:text-sm text-slate-600">
-                    {selectedGift.description}
-                  </p>
-                </div>
-              )}
-
-              {/* QR Code */}
-              <div className="mb-3 sm:mb-4 md:mb-6 p-3 sm:p-4 md:p-6 bg-white rounded-lg sm:rounded-xl border-2 border-dashed border-pink-200">
-                <div className="text-2xl sm:text-3xl md:text-4xl mb-2 sm:mb-3 md:mb-4">
-                  📱
-                </div>
-                <p className="text-xs sm:text-sm text-slate-600 mb-2 sm:mb-3 md:mb-4">
-                  QR Code do PIX do casal
+            {/* QR Code Section */}
+            <div className="bg-gray-50 rounded-xl p-6 mb-6">
+              <div className="text-center mb-4">
+                <h4 className="text-lg font-medium text-gray-800 mb-2">
+                  Escaneie o QR Code
+                </h4>
+                <p className="text-sm text-gray-600">
+                  Use seu app de pagamento para escanear
                 </p>
-                <div className="w-24 h-24 sm:w-32 sm:h-32 md:w-48 md:h-48 mx-auto bg-white rounded-lg flex items-center justify-center p-2">
-                  {qrCodeUrl ? (
-                    <img
-                      src={qrCodeUrl}
-                      alt="QR Code PIX"
-                      className="w-full h-full object-contain"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-pink-100 to-rose-100 rounded-lg flex items-center justify-center">
-                      <span className="text-2xl sm:text-4xl md:text-6xl">
-                        📱
-                      </span>
-                    </div>
-                  )}
+              </div>
+
+              {/* QR Code Placeholder */}
+              <div className="bg-white rounded-lg p-4 mb-4 border-2 border-dashed border-gray-300">
+                <div className="w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="text-4xl mb-2">📱</div>
+                    <p className="text-sm text-gray-500">QR Code do PIX</p>
+                    <p className="text-xs text-gray-400 mt-1">
+                      Chave: (11) 98912-3506
+                    </p>
+                  </div>
                 </div>
               </div>
 
-              {/* PIX Info */}
-              <div className="space-y-1.5 sm:space-y-2 md:space-y-3 text-left">
-                <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
-                  <span className="text-pink-500 text-xs sm:text-sm md:text-base">
-                    📱
-                  </span>
-                  <span className="text-xs sm:text-sm text-slate-600">
-                    Chave PIX: erica.junior@email.com
+              {/* Payment Info */}
+              <div className="bg-white rounded-lg p-4 border border-gray-200">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-gray-600">Valor:</span>
+                  <span className="font-semibold text-gray-800">
+                    {formatPrice(selectedGift.price)}
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
-                  <span className="text-pink-500 text-xs sm:text-sm md:text-base">
-                    👤
-                  </span>
-                  <span className="text-xs sm:text-sm text-slate-600">
-                    Nome: Erica Silva Santos
-                  </span>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-sm text-gray-600">Método:</span>
+                  <span className="text-sm text-gray-800">PIX</span>
                 </div>
-                <div className="flex items-center gap-1.5 sm:gap-2 md:gap-3">
-                  <span className="text-pink-500 text-xs sm:text-sm md:text-base">
-                    🏦
-                  </span>
-                  <span className="text-xs sm:text-sm text-slate-600">
-                    Banco: Nubank
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Status:</span>
+                  <span className="text-sm text-orange-600 font-medium">
+                    Aguardando pagamento
                   </span>
                 </div>
               </div>
+            </div>
 
-              <div className="mt-4 sm:mt-6 md:mt-8 space-y-2 sm:space-y-3">
-                <button
-                  onClick={() => {
-                    // Copy PIX key to clipboard
-                    navigator.clipboard.writeText("erica.junior@email.com");
-                    toast.success(
-                      "Chave PIX copiada para a área de transferência!"
-                    );
-                  }}
-                  className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-2 sm:py-2.5 md:py-3 px-3 sm:px-4 md:px-6 rounded-full text-xs sm:text-sm md:text-base font-medium hover:from-pink-600 hover:to-rose-600 transition-all duration-300"
-                >
-                  Copiar Chave PIX
-                </button>
-                <button
-                  onClick={closeModal}
-                  className="w-full bg-white border border-pink-200 text-slate-700 py-2 sm:py-2.5 md:py-3 px-3 sm:px-4 md:px-6 rounded-full text-xs sm:text-sm md:text-base font-medium hover:bg-pink-50 transition-all duration-300"
-                >
-                  Fechar
-                </button>
-              </div>
+            {/* Instructions */}
+            <div className="bg-blue-50 rounded-xl p-4 mb-6">
+              <h4 className="text-sm font-medium text-blue-800 mb-2">
+                📋 Instruções:
+              </h4>
+              <ul className="text-xs text-blue-700 space-y-1">
+                <li>• Escaneie o QR Code com seu app bancário</li>
+                <li>• Confirme o valor: {formatPrice(selectedGift.price)}</li>
+                <li>• Após o pagamento, clique em "Pagamento Realizado"</li>
+                <li>• Seu presente será reservado automaticamente</li>
+              </ul>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="space-y-3">
+              <button
+                onClick={handlePaymentComplete}
+                className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 px-4 rounded-xl font-medium hover:from-green-600 hover:to-emerald-600 transition-all transform hover:scale-105 shadow-lg"
+              >
+                ✅ Pagamento Realizado
+              </button>
+              <button
+                onClick={() => {
+                  setShowPaymentModal(false);
+                  setSelectedGift(null);
+                }}
+                className="w-full bg-red-100 text-red-600 py-3 px-4 rounded-xl font-medium hover:bg-red-200 transition-colors"
+              >
+                Cancelar
+              </button>
             </div>
           </div>
         </div>
