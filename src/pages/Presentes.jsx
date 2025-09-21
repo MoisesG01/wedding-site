@@ -41,7 +41,7 @@ export default function Presentes() {
     if (selectedGift) {
       // Close payment modal without reserving the gift
       setShowPaymentModal(false);
-    setSelectedGift(null);
+      setSelectedGift(null);
     }
   };
 
@@ -89,10 +89,6 @@ export default function Presentes() {
     setPriceRange(newRange);
   };
 
-  const clearFilters = () => {
-    setPriceRange([minPrice, maxPrice]);
-    setSortBy("name");
-  };
 
   // Pagination logic
   const totalPages = Math.ceil(filteredGifts.length / itemsPerPage);
@@ -148,7 +144,7 @@ export default function Presentes() {
             </p>
           </div>
 
-          {/* Filters */}
+          {/* Simple Filters */}
           <div
             className={`mb-8 sm:mb-12 md:mb-16 transition-all duration-1000 ${
               isVisible
@@ -156,79 +152,45 @@ export default function Presentes() {
                 : "opacity-0 translate-y-8"
             }`}
           >
-            <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl sm:rounded-2xl p-4 sm:p-6">
-              <h3 className="text-lg font-semibold text-slate-800 mb-6 text-center">
-                🔍 Filtros e Ordenação
-              </h3>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
+              {/* Sort */}
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="px-4 py-2 bg-white/90 border border-white/30 rounded-lg text-slate-700 focus:ring-2 focus:ring-pink-300 focus:border-transparent shadow-sm"
+              >
+                <option value="name">📝 Nome</option>
+                <option value="price-asc">💰 Menor preço</option>
+                <option value="price-desc">💰 Maior preço</option>
+              </select>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                {/* Sort */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    📊 Ordenar por
-                  </label>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-pink-300 focus:border-transparent"
-                  >
-                    <option value="name">Nome (A-Z)</option>
-                    <option value="price-asc">Menor preço</option>
-                    <option value="price-desc">Maior preço</option>
-                  </select>
-                </div>
-
-                {/* Price Range */}
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    💰 Faixa de preço: {formatPrice(priceRange[0])} -{" "}
-                    {formatPrice(priceRange[1])}
-                  </label>
-                  <div className="space-y-3">
-                    <input
-                      type="range"
-                      min={minPrice}
-                      max={maxPrice}
-                      value={priceRange[0]}
-                      onChange={(e) =>
-                        handlePriceRangeChange(0, e.target.value)
-                      }
-                      className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
-                    />
-                    <input
-                      type="range"
-                      min={minPrice}
-                      max={maxPrice}
-                      value={priceRange[1]}
-                      onChange={(e) =>
-                        handlePriceRangeChange(1, e.target.value)
-                      }
-                      className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer"
-                    />
-                  </div>
-                  <div className="flex justify-between text-xs text-slate-500 mt-1">
-                    <span>{formatPrice(minPrice)}</span>
-                    <span>{formatPrice(maxPrice)}</span>
-                  </div>
-                </div>
+              {/* Price Range */}
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-slate-600 whitespace-nowrap">
+                  Preço: {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
+                </span>
+                <input
+                  type="range"
+                  min={minPrice}
+                  max={maxPrice}
+                  value={priceRange[0]}
+                  onChange={(e) => handlePriceRangeChange(0, e.target.value)}
+                  className="w-20 h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                />
+                <input
+                  type="range"
+                  min={minPrice}
+                  max={maxPrice}
+                  value={priceRange[1]}
+                  onChange={(e) => handlePriceRangeChange(1, e.target.value)}
+                  className="w-20 h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer"
+                />
               </div>
 
-              {/* Clear Filters */}
-              <div className="flex justify-center mt-6">
-                <button
-                  onClick={clearFilters}
-                  className="px-6 py-2 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition-colors duration-200"
-                >
-                  🗑️ Limpar Filtros
-                </button>
-              </div>
-
-              {/* Results Summary */}
-              <div className="mt-6 pt-4 border-t border-slate-200">
-                <p className="text-sm text-slate-600 text-center">
-                  Mostrando {filteredGifts.length} de {gifts.length} presentes
-                </p>
-              </div>
+              {/* Results */}
+              <span className="text-sm text-slate-600">
+                {filteredGifts.length} presentes
+              </span>
             </div>
           </div>
 
@@ -241,8 +203,8 @@ export default function Presentes() {
             }`}
           >
             {currentGifts.map((gift, index) => (
-                <div
-                  key={gift.id}
+              <div
+                key={gift.id}
                 className={`group cursor-pointer transition-all duration-300 transform hover:scale-105 ${
                   gift.reserved ? "opacity-60" : "hover:shadow-lg"
                 }`}
@@ -284,13 +246,13 @@ export default function Presentes() {
                       {gift.title}
                     </h3>
                   </div>
-                  </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
+          </div>
 
           {/* Pagination */}
-            {totalPages > 1 && (
+          {totalPages > 1 && (
             <div
               className={`mt-8 sm:mt-12 md:mt-16 transition-all duration-1000 ${
                 isVisible
@@ -344,9 +306,9 @@ export default function Presentes() {
                     Próximo →
                   </button>
                 </div>
-                </div>
               </div>
-            )}
+            </div>
+          )}
 
           {/* Footer Info */}
           <div
@@ -401,11 +363,11 @@ export default function Presentes() {
               <div className="text-center mb-4">
                 <h4 className="text-lg font-medium text-gray-800 mb-2">
                   Escaneie o QR Code
-                  </h4>
+                </h4>
                 <p className="text-sm text-gray-600">
                   Use seu app de pagamento para escanear
-                  </p>
-                </div>
+                </p>
+              </div>
 
               {/* QR Code Placeholder */}
               <div className="bg-white rounded-lg p-4 mb-4 border-2 border-dashed border-gray-300">
@@ -416,7 +378,7 @@ export default function Presentes() {
                     <p className="text-xs text-gray-400 mt-1">
                       Chave: (11) 98912-3506
                     </p>
-                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -452,17 +414,17 @@ export default function Presentes() {
                 <li>• Após o pagamento, clique em "Pagamento Realizado"</li>
                 <li>• Seu presente será reservado automaticamente</li>
               </ul>
-              </div>
+            </div>
 
             {/* Action Buttons */}
             <div className="space-y-3">
-                <button
+              <button
                 onClick={handlePaymentComplete}
                 className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 px-4 rounded-xl font-medium hover:from-green-600 hover:to-emerald-600 transition-all transform hover:scale-105 shadow-lg"
               >
                 ✅ Pagamento Realizado
-                </button>
-                <button
+              </button>
+              <button
                 onClick={() => {
                   setShowPaymentModal(false);
                   setSelectedGift(null);
@@ -470,7 +432,7 @@ export default function Presentes() {
                 className="w-full bg-red-100 text-red-600 py-3 px-4 rounded-xl font-medium hover:bg-red-200 transition-colors"
               >
                 Cancelar
-                </button>
+              </button>
             </div>
           </div>
         </div>
