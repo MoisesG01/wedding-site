@@ -128,6 +128,31 @@ export default function Footer() {
             </div>
           </div>
 
+          {/* Contact Info */}
+          <div className="bg-white/10 backdrop-blur-sm border border-white/20 p-6 rounded-2xl mb-8">
+            <div className="text-center">
+              <h3 className="text-xl font-serif text-white mb-4 font-semibold">
+                Entre em Contato
+              </h3>
+              <div className="grid grid-cols-2 gap-8">
+                <div className="text-center">
+                  <div className="text-2xl mb-2">💬</div>
+                  <p className="text-sm font-medium text-white mb-1">
+                    WhatsApp
+                  </p>
+                  <p className="text-sm text-gray-300">(11) 98912-3506</p>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl mb-2">📧</div>
+                  <p className="text-sm font-medium text-white mb-1">Email</p>
+                  <p className="text-sm text-gray-300">
+                    erica.junior@email.com
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Bottom Bar */}
           <div className="border-t border-white/20 pt-6 text-center">
             <p className="text-base text-gray-300 mb-3">

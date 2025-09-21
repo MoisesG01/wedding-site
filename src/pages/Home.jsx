@@ -72,22 +72,29 @@ export default function Home() {
           </div>
 
           <div className="elegant-animation-delay-1">
-            <p
-              className="text-white text-sm sm:text-base italic leading-relaxed text-center max-w-lg mx-auto"
+            <button
+              onClick={() => {
+                const confirmacaoSection =
+                  document.getElementById("confirmacao");
+                if (confirmacaoSection) {
+                  confirmacaoSection.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+              className="group relative px-0 sm:px-3 md:px-5 py-2 sm:py-2.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white font-medium text-xs sm:text-sm overflow-hidden transition-all duration-500 hover:bg-white/20 hover:scale-105 hover:shadow-2xl transform-gpu w-48 sm:w-auto"
               style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontWeight: 400,
-                textShadow:
-                  "0 0 8px rgba(255, 255, 255, 0.3), 0 0 15px rgba(255, 255, 255, 0.1)",
-                filter: "drop-shadow(0 0 3px rgba(255, 255, 255, 0.2))",
+                boxShadow:
+                  "0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
               }}
             >
-              "Tudo tem o seu tempo determinado, e há tempo para todo o
-              propósito debaixo do céu"
-            </p>
-            <p className="text-white/80 text-xs sm:text-sm text-center mt-2 font-medium">
-              Eclesiastes 3:1
-            </p>
+              {/* Efeito 3D interno */}
+              <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+              {/* Texto do botão */}
+              <span className="relative z-10">Confirmar Presença</span>
+
+              {/* Efeito de brilho */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+            </button>
           </div>
         </div>
       </div>

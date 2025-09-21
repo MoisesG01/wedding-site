@@ -8,13 +8,6 @@ export default function Presentes() {
   const [selectedGift, setSelectedGift] = useState(null);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [gifts, setGifts] = useState(giftsData);
-  const [filteredGifts, setFilteredGifts] = useState(giftsData);
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // 10 presentes por página
-
-  // Filter states
-  const [sortBy, setSortBy] = useState("name"); // name, price-asc, price-desc
-  const [priceRange, setPriceRange] = useState([0, 1000]);
 
   useEffect(() => {
     setIsVisible(true);
@@ -28,7 +21,7 @@ export default function Presentes() {
         }))
       );
     };
-
+    
     loadReservations();
   }, []);
 
@@ -39,7 +32,19 @@ export default function Presentes() {
 
   const handlePaymentComplete = async () => {
     if (selectedGift) {
-      // Close payment modal without reserving the gift
+      // Save reservation using the service
+      const success = reservationService.saveReservation(selectedGift.id);
+      
+      if (success) {
+        // Update gift status
+        setGifts((prevGifts) =>
+          prevGifts.map((gift) =>
+            gift.id === selectedGift.id ? { ...gift, reserved: true } : gift
+          )
+        );
+      }
+
+      // Close payment modal
       setShowPaymentModal(false);
       setSelectedGift(null);
     }
@@ -50,79 +55,6 @@ export default function Presentes() {
       style: "currency",
       currency: "BRL",
     }).format(price);
-  };
-
-  // Get price range
-  const maxPrice = Math.max(...gifts.map((gift) => gift.price));
-  const minPrice = Math.min(...gifts.map((gift) => gift.price));
-
-  // Filter and sort gifts
-  useEffect(() => {
-    let filtered = [...gifts];
-
-    // Price range filter
-    filtered = filtered.filter(
-      (gift) => gift.price >= priceRange[0] && gift.price <= priceRange[1]
-    );
-
-    // Sort
-    switch (sortBy) {
-      case "price-asc":
-        filtered.sort((a, b) => a.price - b.price);
-        break;
-      case "price-desc":
-        filtered.sort((a, b) => b.price - a.price);
-        break;
-      case "name":
-      default:
-        filtered.sort((a, b) => a.title.localeCompare(b.title));
-        break;
-    }
-
-    setFilteredGifts(filtered);
-    setCurrentPage(1); // Reset to first page when filters change
-  }, [gifts, priceRange, sortBy]);
-
-  const handlePriceRangeChange = (index, value) => {
-    const newRange = [...priceRange];
-    const newValue = parseInt(value) || minPrice;
-
-    // Only update max value, min stays at minPrice
-    if (index === 1) {
-      // max slider
-      newRange[1] = Math.min(maxPrice, Math.max(newValue, minPrice));
-      newRange[0] = minPrice; // Keep min fixed
-    }
-
-    setPriceRange(newRange);
-  };
-
-  // Pagination logic
-  const totalPages = Math.ceil(filteredGifts.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentGifts = filteredGifts.slice(startIndex, endIndex);
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  const getPageNumbers = () => {
-    const pages = [];
-    const maxVisiblePages = 3;
-
-    let start = Math.max(1, currentPage - 1);
-    let end = Math.min(totalPages, start + maxVisiblePages - 1);
-
-    if (end - start + 1 < maxVisiblePages) {
-      start = Math.max(1, end - maxVisiblePages + 1);
-    }
-
-    for (let i = start; i <= end; i++) {
-      pages.push(i);
-    }
-
-    return pages;
   };
 
   return (
@@ -151,173 +83,26 @@ export default function Presentes() {
             </p>
           </div>
 
-          {/* Special Message */}
-          <div
-            className={`mb-8 sm:mb-12 md:mb-16 transition-all duration-1000 ${
-              isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            <div className="bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto">
-              <div className="text-center">
-                <div className="text-4xl mb-4">💕</div>
-                <p className="text-lg sm:text-xl text-slate-800 mb-6 font-medium leading-relaxed">
-                  O maior presente é ter você ao nosso lado nesse dia tão
-                  especial!
-                </p>
-                <p className="text-base sm:text-lg text-slate-700 mb-6">
-                  Se ainda assim quiser nos mimar, deixamos duas opções com
-                  muito carinho:
-                </p>
-                <div className="space-y-4 text-left max-w-2xl mx-auto">
-                  <div className="bg-white/80 rounded-xl p-4 border border-pink-100">
-                    <div className="flex items-start gap-3">
-                      <span className="text-2xl">💰</span>
-                      <div>
-                        <p className="font-medium text-slate-800 mb-2">
-                          Contribuir com o valor que desejar via Pix:
-                        </p>
-                        <p className="text-lg font-mono bg-pink-100 px-3 py-2 rounded-lg inline-block text-slate-700">
-                          Chave Pix: 11989123506
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="bg-white/80 rounded-xl p-4 border border-pink-100">
-                    <div className="flex items-start gap-3">
-                      <span className="text-2xl">🎁</span>
-                      <div>
-                        <p className="font-medium text-slate-800">
-                          Ou escolher algo em nossa lista de presentes, do
-                          jeitinho que preferir.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Elegant Filters */}
-          <div
-            className={`mb-8 sm:mb-12 md:mb-16 transition-all duration-1000 ${
-              isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-8"
-            }`}
-          >
-            <div className="bg-gradient-to-r from-white/95 to-white/90 backdrop-blur-md border border-white/40 rounded-2xl shadow-xl p-6 sm:p-8">
-              <div className="flex items-center justify-between mb-6">
-                <div className="text-center flex-1">
-                  <h3 className="text-xl font-serif text-slate-800 mb-2 elegant-text-gradient">
-                    ✨ Filtros
-                  </h3>
-                  <p className="text-sm text-slate-600">
-                    Encontre o presente perfeito
-                  </p>
-                </div>
-                <button
-                  onClick={() => {
-                    setPriceRange([minPrice, maxPrice]);
-                    setSortBy("name");
-                  }}
-                  className="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition-colors duration-200 text-sm font-medium"
-                >
-                  🗑️ Limpar
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Sort Section */}
-                <div className="space-y-3">
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    🎯 Ordenar por
-                  </label>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full px-4 py-3 bg-white/80 border border-slate-200 rounded-xl text-slate-700 focus:ring-2 focus:ring-pink-300 focus:border-pink-300 transition-all duration-200 shadow-sm hover:shadow-md"
-                  >
-                    <option value="name">📝 Nome (A-Z)</option>
-                    <option value="price-asc">💰 Menor preço</option>
-                    <option value="price-desc">💎 Maior preço</option>
-                  </select>
-                </div>
-
-                {/* Price Range Section */}
-                <div className="space-y-3">
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    💰 Faixa de preço
-                  </label>
-                  <div className="bg-white/80 border border-slate-200 rounded-xl p-4 shadow-sm">
-                    {/* Simple Range Slider */}
-                    <div className="space-y-3">
-                      <div className="relative">
-                        <input
-                          type="range"
-                          min={minPrice}
-                          max={maxPrice}
-                          value={priceRange[1]}
-                          onChange={(e) =>
-                            handlePriceRangeChange(1, e.target.value)
-                          }
-                          className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb"
-                          style={{
-                            background: `linear-gradient(to right, #fbb6ce 0%, #fbb6ce ${
-                              ((priceRange[1] - minPrice) /
-                                (maxPrice - minPrice)) *
-                              100
-                            }%, #e5e7eb ${
-                              ((priceRange[1] - minPrice) /
-                                (maxPrice - minPrice)) *
-                              100
-                            }%, #e5e7eb 100%)`,
-                          }}
-                        />
-
-                        {/* Min and Max Labels */}
-                        <div className="flex justify-between text-xs text-slate-500 mt-1">
-                          <span>{formatPrice(minPrice)}</span>
-                          <span>{formatPrice(priceRange[1])}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Results Summary */}
-              <div className="mt-4 pt-3 border-t border-slate-200">
-                <div className="text-center">
-                  <span className="text-sm text-slate-500">
-                    {filteredGifts.length} de {gifts.length} presentes
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
           {/* Gift Grid */}
           <div
-            className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4 sm:gap-6 transition-all duration-1000 ${
+            className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 transition-all duration-1000 ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-8"
             }`}
           >
-            {currentGifts.map((gift, index) => (
+            {gifts.map((gift, index) => (
               <div
                 key={gift.id}
-                className={`group transition-all duration-300 transform hover:scale-105 ${
+                className={`group cursor-pointer transition-all duration-300 transform hover:scale-105 ${
                   gift.reserved ? "opacity-60" : "hover:shadow-lg"
                 }`}
                 style={{ animationDelay: `${index * 0.1}s` }}
+                onClick={() => !gift.reserved && handleGiftClick(gift)}
               >
-                <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col">
+                <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300">
                   {/* Gift Image */}
-                  <div className="relative aspect-square overflow-hidden flex-shrink-0">
+                  <div className="relative aspect-square overflow-hidden">
                     <img
                       src={gift.image}
                       alt={gift.title}
@@ -339,86 +124,27 @@ export default function Presentes() {
                     )}
 
                     {/* Price Badge */}
-                    <div className="absolute top-2 right-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-xl">
+                    <div className="absolute top-2 right-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-2 py-1 rounded-full text-xs font-medium shadow-lg">
                       {formatPrice(gift.price)}
                     </div>
                   </div>
 
                   {/* Gift Info */}
-                  <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
-                    <h3 className="text-xs sm:text-sm font-medium text-slate-800 line-clamp-3 leading-tight mb-3">
+                  <div className="p-3 sm:p-4">
+                    <h3 className="text-xs sm:text-sm font-medium text-slate-800 line-clamp-2 leading-tight">
                       {gift.title}
                     </h3>
-                    <button
-                      onClick={() => handleGiftClick(gift)}
-                      className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-2 px-3 rounded-lg text-xs font-medium hover:from-pink-600 hover:to-rose-600 transition-all duration-200 transform hover:scale-105 shadow-md"
-                    >
-                      🎁 Presentear
-                    </button>
+
+                    {!gift.reserved && (
+                      <div className="mt-2 text-xs text-pink-600 font-medium">
+                        Clique para reservar
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             ))}
           </div>
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div
-              className={`mt-8 sm:mt-12 md:mt-16 transition-all duration-1000 ${
-                isVisible
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-              }`}
-            >
-              <div className="flex flex-col items-center space-y-3">
-                {/* Page Info */}
-                <div className="text-center">
-                  <p className="text-sm text-slate-600">
-                    Página {currentPage} de {totalPages} ({filteredGifts.length}{" "}
-                    presentes)
-                  </p>
-                </div>
-
-                {/* Pagination Controls */}
-                <div className="flex items-center space-x-2">
-                  {/* Previous Button */}
-                  <button
-                    onClick={() => handlePageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className="px-4 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-                  >
-                    ← Anterior
-                  </button>
-
-                  {/* Page Numbers */}
-                  <div className="flex space-x-1">
-                    {getPageNumbers().map((page, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handlePageChange(page)}
-                        className={`px-3 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                          page === currentPage
-                            ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-lg"
-                            : "text-slate-600 bg-white border border-slate-300 hover:bg-slate-50"
-                        }`}
-                      >
-                        {page}
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* Next Button */}
-                  <button
-                    onClick={() => handlePageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className="px-4 py-2 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-                  >
-                    Próximo →
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
 
           {/* Footer Info */}
           <div
@@ -438,8 +164,8 @@ export default function Presentes() {
                   <p>Escolha o presente que mais combina com você</p>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl mb-2">💳</div>
-                  <p>Pague via PIX usando o QR Code</p>
+                  <div className="text-2xl mb-2">📝</div>
+                  <p>Preencha seus dados para reservar</p>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl mb-2">🎉</div>
@@ -522,6 +248,7 @@ export default function Presentes() {
                 <li>• Escaneie o QR Code com seu app bancário</li>
                 <li>• Confirme o valor: {formatPrice(selectedGift.price)}</li>
                 <li>• Após o pagamento, clique em "Pagamento Realizado"</li>
+                <li>• Seu presente será reservado automaticamente</li>
               </ul>
             </div>
 

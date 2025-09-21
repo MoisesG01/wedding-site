@@ -6,6 +6,7 @@ export default function Contato() {
   const [isVisible, setIsVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
+  const [openFAQ, setOpenFAQ] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     subject: "",
@@ -62,6 +63,33 @@ export default function Contato() {
     }
   };
 
+  const toggleFAQ = (index) => {
+    setOpenFAQ(openFAQ === index ? null : index);
+  };
+
+  const faqData = [
+    {
+      question: "Posso levar acompanhante?",
+      answer:
+        "Sim! Basta confirmar no formulário de confirmação de presença quantas pessoas irão acompanhá-lo.",
+    },
+    {
+      question: "Há estacionamento no local?",
+      answer:
+        "Sim! O Espaço de Eventos Flores oferece estacionamento gratuito com capacidade para 200 veículos.",
+    },
+    {
+      question: "Posso levar crianças?",
+      answer:
+        "Claro! É um evento familiar e as crianças são muito bem-vindas. Teremos atividades especiais para elas.",
+    },
+    {
+      question: "Qual o dress code?",
+      answer:
+        "Elegante Esportivo. Para mulheres: vestidos ou conjuntos elegantes. Para homens: terno ou camisa social com calça.",
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
       <Divisor />
@@ -112,13 +140,29 @@ export default function Contato() {
                         WhatsApp
                       </h3>
                       <p className="text-sm sm:text-base text-slate-600 mb-1 sm:mb-2">
-                        (11) 98912-3506 - Junior
-                      </p>
-                      <p className="text-sm sm:text-base text-slate-600 mb-1 sm:mb-2">
-                        (11) 99172-0657 - Érica
+                        (11) 98912-3506
                       </p>
                       <p className="text-xs sm:text-sm text-slate-500">
                         Resposta rápida via mensagem
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white/80 backdrop-blur-sm border border-white/20 p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl hover:shadow-lg transition-all duration-300">
+                  <div className="flex items-start gap-4 sm:gap-6">
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-full flex items-center justify-center text-white text-lg sm:text-2xl shadow-lg">
+                      📧
+                    </div>
+                    <div>
+                      <h3 className="text-lg sm:text-xl font-serif text-slate-800 mb-2 sm:mb-3 elegant-text-gradient">
+                        Email
+                      </h3>
+                      <p className="text-sm sm:text-base text-slate-600 mb-1 sm:mb-2">
+                        erica.junior@email.com
+                      </p>
+                      <p className="text-xs sm:text-sm text-slate-500">
+                        Resposta em até 24 horas
                       </p>
                     </div>
                   </div>
@@ -196,6 +240,9 @@ export default function Contato() {
                   >
                     💌
                   </div>
+                  <h2 className="text-2xl sm:text-3xl font-serif text-slate-800 mb-4 sm:mb-6 elegant-text-gradient">
+                    Envie uma Mensagem
+                  </h2>
                   <div className="w-12 sm:w-16 h-1 bg-gradient-to-r from-pink-200 to-rose-200 mx-auto mb-4 sm:mb-6 rounded-full"></div>
                   <p className="text-sm sm:text-base text-slate-600">
                     Preencha o formulário abaixo e entraremos em contato em
@@ -339,6 +386,70 @@ export default function Contato() {
                   </div>
                 )}
               </div>
+            </div>
+          </div>
+
+          {/* FAQ Section - Accordion Style */}
+          <div
+            className={`bg-white/80 backdrop-blur-sm border border-white/20 shadow-lg shadow-slate-200/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 mt-6 sm:mt-8 md:mt-12 transition-all duration-1000 ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
+            }`}
+          >
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-serif text-slate-800 text-center mb-4 sm:mb-6 elegant-text-gradient">
+              Perguntas Frequentes
+            </h2>
+            <div className="w-8 sm:w-12 h-1 bg-gradient-to-r from-pink-200 to-rose-200 mx-auto mb-4 sm:mb-6 rounded-full"></div>
+
+            <div className="max-w-2xl mx-auto space-y-2">
+              {faqData.map((faq, index) => (
+                <div
+                  key={index}
+                  className="bg-gradient-to-r from-pink-50 to-rose-50 rounded-lg border border-pink-200/50 overflow-hidden"
+                >
+                  <button
+                    onClick={() => toggleFAQ(index)}
+                    className="w-full px-4 py-3 sm:px-6 sm:py-4 text-left flex items-center justify-between hover:bg-pink-100/50 transition-all duration-300"
+                  >
+                    <h3 className="text-sm sm:text-base font-serif text-slate-800 font-medium">
+                      {faq.question}
+                    </h3>
+                    <div
+                      className={`transform transition-transform duration-300 ${
+                        openFAQ === index ? "rotate-180" : "rotate-0"
+                      }`}
+                    >
+                      <svg
+                        className="w-4 h-4 sm:w-5 sm:h-5 text-pink-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ${
+                      openFAQ === index
+                        ? "max-h-32 opacity-100"
+                        : "max-h-0 opacity-0"
+                    }`}
+                  >
+                    <div className="px-4 pb-3 sm:px-6 sm:pb-4">
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
