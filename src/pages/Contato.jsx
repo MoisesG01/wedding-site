@@ -133,17 +133,17 @@ export default function Contato() {
                 <div className="bg-white/80 backdrop-blur-sm border border-white/20 p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl hover:shadow-lg transition-all duration-300">
                   <div className="flex items-start gap-4 sm:gap-6">
                     <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-pink-400 to-rose-500 rounded-full flex items-center justify-center text-white text-lg sm:text-2xl shadow-lg">
-                      📞
+                      🎉
                     </div>
                     <div>
                       <h3 className="text-lg sm:text-xl font-serif text-slate-800 mb-2 sm:mb-3 elegant-text-gradient">
-                        Telefone
+                        Local da Festa
                       </h3>
                       <p className="text-sm sm:text-base text-slate-600 mb-1 sm:mb-2">
-                        (11) 99999-9999
+                        Espaço de Eventos Flores
                       </p>
                       <p className="text-xs sm:text-sm text-slate-500">
-                        Segunda a Sexta, 9h às 18h
+                        Rua das Flores, 123 - Jardim das Rosas, São Paulo - SP
                       </p>
                     </div>
                   </div>
@@ -159,7 +159,7 @@ export default function Contato() {
                         WhatsApp
                       </h3>
                       <p className="text-sm sm:text-base text-slate-600 mb-1 sm:mb-2">
-                        (11) 99999-9999
+                        11 989123506
                       </p>
                       <p className="text-xs sm:text-sm text-slate-500">
                         Resposta rápida via mensagem
