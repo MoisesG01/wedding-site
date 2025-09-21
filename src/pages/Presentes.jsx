@@ -89,7 +89,6 @@ export default function Presentes() {
     setPriceRange(newRange);
   };
 
-
   // Pagination logic
   const totalPages = Math.ceil(filteredGifts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -144,53 +143,48 @@ export default function Presentes() {
             </p>
           </div>
 
-          {/* Simple Filters */}
+          {/* Minimal Filters */}
           <div
-            className={`mb-8 sm:mb-12 md:mb-16 transition-all duration-1000 ${
+            className={`mb-6 sm:mb-8 md:mb-12 transition-all duration-1000 ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-8"
             }`}
           >
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
-              {/* Sort */}
+            <div className="flex flex-wrap items-center justify-center gap-3 text-sm">
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-4 py-2 bg-white/90 border border-white/30 rounded-lg text-slate-700 focus:ring-2 focus:ring-pink-300 focus:border-transparent shadow-sm"
+                className="px-3 py-1 bg-white rounded-md border-0 text-slate-600 focus:outline-none focus:ring-1 focus:ring-pink-300"
               >
-                <option value="name">📝 Nome</option>
-                <option value="price-asc">💰 Menor preço</option>
-                <option value="price-desc">💰 Maior preço</option>
+                <option value="name">Nome</option>
+                <option value="price-asc">Menor preço</option>
+                <option value="price-desc">Maior preço</option>
               </select>
-
-              {/* Price Range */}
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-slate-600 whitespace-nowrap">
-                  Preço: {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
-                </span>
-                <input
-                  type="range"
-                  min={minPrice}
-                  max={maxPrice}
-                  value={priceRange[0]}
-                  onChange={(e) => handlePriceRangeChange(0, e.target.value)}
-                  className="w-20 h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer"
-                />
-                <input
-                  type="range"
-                  min={minPrice}
-                  max={maxPrice}
-                  value={priceRange[1]}
-                  onChange={(e) => handlePriceRangeChange(1, e.target.value)}
-                  className="w-20 h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer"
-                />
-              </div>
-
-              {/* Results */}
-              <span className="text-sm text-slate-600">
-                {filteredGifts.length} presentes
+              
+              <span className="text-slate-500">•</span>
+              
+              <span className="text-slate-600">
+                {formatPrice(priceRange[0])} - {formatPrice(priceRange[1])}
               </span>
+              
+              <input
+                type="range"
+                min={minPrice}
+                max={maxPrice}
+                value={priceRange[0]}
+                onChange={(e) => handlePriceRangeChange(0, e.target.value)}
+                className="w-16 h-1 bg-slate-200 rounded appearance-none cursor-pointer"
+              />
+              
+              <input
+                type="range"
+                min={minPrice}
+                max={maxPrice}
+                value={priceRange[1]}
+                onChange={(e) => handlePriceRangeChange(1, e.target.value)}
+                className="w-16 h-1 bg-slate-200 rounded appearance-none cursor-pointer"
+              />
             </div>
           </div>
 
