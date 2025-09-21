@@ -85,7 +85,15 @@ export default function Presentes() {
 
   const handlePriceRangeChange = (index, value) => {
     const newRange = [...priceRange];
-    newRange[index] = parseInt(value);
+    const newValue = parseInt(value) || minPrice;
+
+    // Only update max value, min stays at minPrice
+    if (index === 1) {
+      // max slider
+      newRange[1] = Math.min(maxPrice, Math.max(newValue, minPrice));
+      newRange[0] = minPrice; // Keep min fixed
+    }
+
     setPriceRange(newRange);
   };
 
@@ -143,6 +151,55 @@ export default function Presentes() {
             </p>
           </div>
 
+          {/* Special Message */}
+          <div
+            className={`mb-8 sm:mb-12 md:mb-16 transition-all duration-1000 ${
+              isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-0 translate-y-8"
+            }`}
+          >
+            <div className="bg-gradient-to-r from-pink-50 to-rose-50 border border-pink-200 rounded-2xl p-6 sm:p-8 max-w-4xl mx-auto">
+              <div className="text-center">
+                <div className="text-4xl mb-4">💕</div>
+                <p className="text-lg sm:text-xl text-slate-800 mb-6 font-medium leading-relaxed">
+                  O maior presente é ter você ao nosso lado nesse dia tão
+                  especial!
+                </p>
+                <p className="text-base sm:text-lg text-slate-700 mb-6">
+                  Se ainda assim quiser nos mimar, deixamos duas opções com
+                  muito carinho:
+                </p>
+                <div className="space-y-4 text-left max-w-2xl mx-auto">
+                  <div className="bg-white/80 rounded-xl p-4 border border-pink-100">
+                    <div className="flex items-start gap-3">
+                      <span className="text-2xl">💰</span>
+                      <div>
+                        <p className="font-medium text-slate-800 mb-2">
+                          Contribuir com o valor que desejar via Pix:
+                        </p>
+                        <p className="text-lg font-mono bg-pink-100 px-3 py-2 rounded-lg inline-block text-slate-700">
+                          Chave Pix: 11989123506
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="bg-white/80 rounded-xl p-4 border border-pink-100">
+                    <div className="flex items-start gap-3">
+                      <span className="text-2xl">🎁</span>
+                      <div>
+                        <p className="font-medium text-slate-800">
+                          Ou escolher algo em nossa lista de presentes, do
+                          jeitinho que preferir.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Elegant Filters */}
           <div
             className={`mb-8 sm:mb-12 md:mb-16 transition-all duration-1000 ${
@@ -151,14 +208,25 @@ export default function Presentes() {
                 : "opacity-0 translate-y-8"
             }`}
           >
-            <div className="bg-gradient-to-r from-white/95 to-white/90 backdrop-blur-md border border-white/40 rounded-2xl shadow-xl shadow-pink-500/10 p-6 sm:p-8">
-              <div className="text-center mb-6">
-                <h3 className="text-xl font-serif text-slate-800 mb-2 elegant-text-gradient">
-                  ✨ Filtros Elegantes
-                </h3>
-                <p className="text-sm text-slate-600">
-                  Encontre o presente perfeito
-                </p>
+            <div className="bg-gradient-to-r from-white/95 to-white/90 backdrop-blur-md border border-white/40 rounded-2xl shadow-xl p-6 sm:p-8">
+              <div className="flex items-center justify-between mb-6">
+                <div className="text-center flex-1">
+                  <h3 className="text-xl font-serif text-slate-800 mb-2 elegant-text-gradient">
+                    ✨ Filtros
+                  </h3>
+                  <p className="text-sm text-slate-600">
+                    Encontre o presente perfeito
+                  </p>
+                </div>
+                <button
+                  onClick={() => {
+                    setPriceRange([minPrice, maxPrice]);
+                    setSortBy("name");
+                  }}
+                  className="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition-colors duration-200 text-sm font-medium"
+                >
+                  🗑️ Limpar
+                </button>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -184,51 +252,36 @@ export default function Presentes() {
                     💰 Faixa de preço
                   </label>
                   <div className="bg-white/80 border border-slate-200 rounded-xl p-4 shadow-sm">
-                    <div className="text-center mb-4">
-                      <span className="text-lg font-semibold text-slate-800">
-                        {formatPrice(priceRange[0])} -{" "}
-                        {formatPrice(priceRange[1])}
-                      </span>
-                    </div>
-                    
-                    {/* Dual Range Slider */}
-                    <div className="relative">
-                      <div className="flex justify-between text-xs text-slate-500 mb-2">
-                        <span>{formatPrice(minPrice)}</span>
-                        <span>{formatPrice(maxPrice)}</span>
-                      </div>
-                      
-                      <div className="relative h-2 bg-slate-200 rounded-lg">
-                        {/* Active range background */}
-                        <div 
-                          className="absolute h-2 bg-gradient-to-r from-pink-400 to-rose-400 rounded-lg"
-                          style={{
-                            left: `${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%`,
-                            width: `${((priceRange[1] - priceRange[0]) / (maxPrice - minPrice)) * 100}%`
-                          }}
-                        ></div>
-                        
-                        {/* Min range input */}
-                        <input
-                          type="range"
-                          min={minPrice}
-                          max={maxPrice}
-                          value={priceRange[0]}
-                          onChange={(e) => handlePriceRangeChange(0, e.target.value)}
-                          className="absolute w-full h-2 bg-transparent appearance-none cursor-pointer slider-thumb"
-                          style={{ zIndex: priceRange[0] > priceRange[1] - 10 ? 5 : 3 }}
-                        />
-                        
-                        {/* Max range input */}
+                    {/* Simple Range Slider */}
+                    <div className="space-y-3">
+                      <div className="relative">
                         <input
                           type="range"
                           min={minPrice}
                           max={maxPrice}
                           value={priceRange[1]}
-                          onChange={(e) => handlePriceRangeChange(1, e.target.value)}
-                          className="absolute w-full h-2 bg-transparent appearance-none cursor-pointer slider-thumb"
-                          style={{ zIndex: priceRange[1] < priceRange[0] + 10 ? 5 : 4 }}
+                          onChange={(e) =>
+                            handlePriceRangeChange(1, e.target.value)
+                          }
+                          className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb"
+                          style={{
+                            background: `linear-gradient(to right, #fbb6ce 0%, #fbb6ce ${
+                              ((priceRange[1] - minPrice) /
+                                (maxPrice - minPrice)) *
+                              100
+                            }%, #e5e7eb ${
+                              ((priceRange[1] - minPrice) /
+                                (maxPrice - minPrice)) *
+                              100
+                            }%, #e5e7eb 100%)`,
+                          }}
                         />
+
+                        {/* Min and Max Labels */}
+                        <div className="flex justify-between text-xs text-slate-500 mt-1">
+                          <span>{formatPrice(minPrice)}</span>
+                          <span>{formatPrice(priceRange[1])}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -236,25 +289,11 @@ export default function Presentes() {
               </div>
 
               {/* Results Summary */}
-              <div className="mt-6 pt-4 border-t border-slate-200">
-                <div className="flex items-center justify-center space-x-4">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-pink-600">
-                      {filteredGifts.length}
-                    </div>
-                    <div className="text-xs text-slate-600">
-                      Presentes encontrados
-                    </div>
-                  </div>
-                  <div className="w-px h-8 bg-slate-300"></div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-slate-600">
-                      {gifts.length}
-                    </div>
-                    <div className="text-xs text-slate-600">
-                      Total disponível
-                    </div>
-                  </div>
+              <div className="mt-4 pt-3 border-t border-slate-200">
+                <div className="text-center">
+                  <span className="text-sm text-slate-500">
+                    {filteredGifts.length} de {gifts.length} presentes
+                  </span>
                 </div>
               </div>
             </div>
@@ -271,11 +310,10 @@ export default function Presentes() {
             {currentGifts.map((gift, index) => (
               <div
                 key={gift.id}
-                className={`group cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                className={`group transition-all duration-300 transform hover:scale-105 ${
                   gift.reserved ? "opacity-60" : "hover:shadow-lg"
                 }`}
                 style={{ animationDelay: `${index * 0.1}s` }}
-                onClick={() => !gift.reserved && handleGiftClick(gift)}
               >
                 <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col">
                   {/* Gift Image */}
@@ -301,16 +339,22 @@ export default function Presentes() {
                     )}
 
                     {/* Price Badge */}
-                    <div className="absolute top-2 right-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-2 py-1 rounded-full text-xs font-medium shadow-lg">
+                    <div className="absolute top-2 right-2 bg-gradient-to-r from-pink-500 to-rose-500 text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-xl">
                       {formatPrice(gift.price)}
                     </div>
                   </div>
 
                   {/* Gift Info */}
-                  <div className="p-3 sm:p-4 flex-1 flex flex-col justify-center">
-                    <h3 className="text-xs sm:text-sm font-medium text-slate-800 line-clamp-3 leading-tight">
+                  <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
+                    <h3 className="text-xs sm:text-sm font-medium text-slate-800 line-clamp-3 leading-tight mb-3">
                       {gift.title}
                     </h3>
+                    <button
+                      onClick={() => handleGiftClick(gift)}
+                      className="w-full bg-gradient-to-r from-pink-500 to-rose-500 text-white py-2 px-3 rounded-lg text-xs font-medium hover:from-pink-600 hover:to-rose-600 transition-all duration-200 transform hover:scale-105 shadow-md"
+                    >
+                      🎁 Presentear
+                    </button>
                   </div>
                 </div>
               </div>
@@ -478,7 +522,6 @@ export default function Presentes() {
                 <li>• Escaneie o QR Code com seu app bancário</li>
                 <li>• Confirme o valor: {formatPrice(selectedGift.price)}</li>
                 <li>• Após o pagamento, clique em "Pagamento Realizado"</li>
-                <li>• Seu presente será reservado automaticamente</li>
               </ul>
             </div>
 
