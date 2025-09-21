@@ -160,16 +160,10 @@ export default function Presentes() {
                   </div>
 
                   {/* Gift Info */}
-                  <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
-                    <h3 className="text-xs sm:text-sm font-medium text-slate-800 line-clamp-3 leading-tight mb-2">
+                  <div className="p-3 sm:p-4 flex-1 flex flex-col justify-center">
+                    <h3 className="text-xs sm:text-sm font-medium text-slate-800 line-clamp-3 leading-tight">
                       {gift.title}
                     </h3>
-
-                    {!gift.reserved && (
-                      <div className="text-xs text-pink-600 font-medium mt-auto">
-                        Clique para reservar
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>
