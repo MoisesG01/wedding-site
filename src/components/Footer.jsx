@@ -123,7 +123,9 @@ export default function Footer() {
               <div className="grid grid-cols-3 gap-6">
                 <div className="text-center">
                   <div className="text-2xl mb-2">💬</div>
-                  <p className="text-sm font-medium text-white mb-1">WhatsApp</p>
+                  <p className="text-sm font-medium text-white mb-1">
+                    WhatsApp
+                  </p>
                   <p className="text-sm text-gray-300">(11) 98912-3506</p>
                 </div>
                 <div className="text-center">
@@ -136,9 +138,14 @@ export default function Footer() {
                 <div className="text-center">
                   <div className="text-2xl mb-2">📍</div>
                   <p className="text-sm font-medium text-white mb-1">Local</p>
-                  <p className="text-sm text-gray-300">
+                  <a 
+                    href="https://www.google.com/maps/search/?api=1&query=Rua+Comendador+J.+de+Matos,+429+-+Vila+Clarice,+São+Paulo+-+SP,+05177-100"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-gray-300 hover:text-white transition-colors duration-300 underline decoration-gray-400 hover:decoration-white"
+                  >
                     Mansão Jaraguá
-                  </p>
+                  </a>
                 </div>
               </div>
             </div>
