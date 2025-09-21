@@ -34,19 +34,7 @@ export default function Presentes() {
 
   const handlePaymentComplete = async () => {
     if (selectedGift) {
-      // Save reservation using the service
-      const success = reservationService.saveReservation(selectedGift.id);
-
-      if (success) {
-        // Update gift status
-        setGifts((prevGifts) =>
-          prevGifts.map((gift) =>
-            gift.id === selectedGift.id ? { ...gift, reserved: true } : gift
-          )
-        );
-      }
-
-      // Close payment modal
+      // Close payment modal without reserving the gift
       setShowPaymentModal(false);
       setSelectedGift(null);
     }
