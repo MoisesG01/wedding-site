@@ -80,7 +80,7 @@ export default function Footer() {
               <div className="w-8 h-1 bg-gradient-to-r from-pink-300 to-rose-300 mx-auto mb-4 rounded-full"></div>
               <div className="space-y-2 text-base text-gray-300">
                 <p>📅 22 de Novembro, 2025</p>
-                <a 
+                <a
                   href="https://www.google.com/maps/search/?api=1&query=Rua+Nossa+Sra.+da+Conceição,+117+–+Jaraguá,+São+Paulo+–+SP,+05181-280"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -88,7 +88,7 @@ export default function Footer() {
                 >
                   📍 Igreja Nossa Senhora da Conceição
                 </a>
-                <a 
+                <a
                   href="https://www.google.com/maps/search/?api=1&query=Rua+Comendador+J.+de+Matos,+429+-+Vila+Clarice,+São+Paulo+-+SP,+05177-100"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -134,7 +134,7 @@ export default function Footer() {
               <h3 className="text-xl font-serif text-white mb-4 font-semibold">
                 Entre em Contato
               </h3>
-              <div className="grid grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 gap-8">
                 <div className="text-center">
                   <div className="text-2xl mb-2">💬</div>
                   <p className="text-sm font-medium text-white mb-1">
@@ -147,13 +147,6 @@ export default function Footer() {
                   <p className="text-sm font-medium text-white mb-1">Email</p>
                   <p className="text-sm text-gray-300">
                     erica.junior@email.com
-                  </p>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl mb-2">📝</div>
-                  <p className="text-sm font-medium text-white mb-1">Formulário</p>
-                  <p className="text-sm text-gray-300">
-                    Página de Contato
                   </p>
                 </div>
               </div>
