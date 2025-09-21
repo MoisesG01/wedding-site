@@ -9,7 +9,7 @@ export default function Presentes() {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [gifts, setGifts] = useState(giftsData);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8; // 8 presentes por página
+  const itemsPerPage = 10; // 10 presentes por página
 
   useEffect(() => {
     setIsVisible(true);
@@ -115,7 +115,7 @@ export default function Presentes() {
 
           {/* Gift Grid */}
           <div
-            className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 transition-all duration-1000 ${
+            className={`grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4 sm:gap-6 transition-all duration-1000 ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-8"
@@ -130,9 +130,9 @@ export default function Presentes() {
                 style={{ animationDelay: `${index * 0.1}s` }}
                 onClick={() => !gift.reserved && handleGiftClick(gift)}
               >
-                <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300">
+                <div className="bg-white/80 backdrop-blur-sm border border-white/20 rounded-xl sm:rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col">
                   {/* Gift Image */}
-                  <div className="relative aspect-square overflow-hidden">
+                  <div className="relative aspect-square overflow-hidden flex-shrink-0">
                     <img
                       src={gift.image}
                       alt={gift.title}
@@ -160,13 +160,13 @@ export default function Presentes() {
                   </div>
 
                   {/* Gift Info */}
-                  <div className="p-3 sm:p-4">
-                    <h3 className="text-xs sm:text-sm font-medium text-slate-800 line-clamp-2 leading-tight">
+                  <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
+                    <h3 className="text-xs sm:text-sm font-medium text-slate-800 line-clamp-3 leading-tight mb-2">
                       {gift.title}
                     </h3>
 
                     {!gift.reserved && (
-                      <div className="mt-2 text-xs text-pink-600 font-medium">
+                      <div className="text-xs text-pink-600 font-medium mt-auto">
                         Clique para reservar
                       </div>
                     )}
