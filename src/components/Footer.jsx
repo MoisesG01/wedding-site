@@ -43,15 +43,9 @@ export default function Footer() {
 
           {/* Contact - Mobile */}
           <div className="text-center mb-4">
-            <div className="flex justify-center gap-6">
-              <div className="text-center">
-                <div className="text-lg mb-1">📞</div>
-                <p className="text-xs text-gray-300">(11) 98912-3506</p>
-              </div>
-              <div className="text-center">
-                <div className="text-lg mb-1">💬</div>
-                <p className="text-xs text-gray-300">WhatsApp</p>
-              </div>
+            <div className="text-center">
+              <div className="text-lg mb-1">💬</div>
+              <p className="text-xs text-gray-300">WhatsApp: (11) 98912-3506</p>
             </div>
           </div>
 
@@ -88,7 +82,6 @@ export default function Footer() {
                 <p>📅 22 de Novembro, 2025</p>
                 <p>📍 Igreja Nossa Senhora da Conceição</p>
                 <p>🎉 Mansão Jaraguá (Recepção)</p>
-                <p>👗 Dress Code: Elegante Esportivo</p>
               </div>
             </div>
 
@@ -127,17 +120,15 @@ export default function Footer() {
               <h3 className="text-xl font-serif text-white mb-4 font-semibold">
                 Entre em Contato
               </h3>
-              <div className="grid grid-cols-3 gap-4">
-                <div className="text-center">
-                  <div className="text-2xl mb-2">📞</div>
-                  <p className="text-sm text-gray-300">(11) 98912-3506</p>
-                </div>
+              <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
                   <div className="text-2xl mb-2">💬</div>
                   <p className="text-sm text-gray-300">WhatsApp</p>
+                  <p className="text-sm text-gray-300">(11) 98912-3506</p>
                 </div>
                 <div className="text-center">
                   <div className="text-2xl mb-2">📧</div>
+                  <p className="text-sm text-gray-300">Email</p>
                   <p className="text-sm text-gray-300">
                     erica.junior@email.com
                   </p>
