@@ -7,10 +7,14 @@ export default function AudioPlayer() {
   const [showControls, setShowControls] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [youtubePlayer, setYoutubePlayer] = useState(null);
+  const [showMobileModal, setShowMobileModal] = useState(false);
 
   // Detectar se é mobile
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-  
+  const isMobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+
   const audioRef = useRef(null);
   const hideTimeoutRef = useRef(null);
   const youtubeContainerRef = useRef(null);
@@ -98,6 +102,19 @@ export default function AudioPlayer() {
     }
   };
 
+  // Função para iniciar música no modal mobile
+  const handleStartMusic = () => {
+    if (youtubePlayer) {
+      youtubePlayer.playVideo();
+      setShowMobileModal(false);
+    }
+  };
+
+  // Função para fechar modal sem tocar música
+  const handleCloseModal = () => {
+    setShowMobileModal(false);
+  };
+
   // Efeito para tentar reproduzir automaticamente
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -108,6 +125,24 @@ export default function AudioPlayer() {
 
     return () => clearTimeout(timer);
   }, [youtubePlayer]);
+
+  // Efeito para mostrar modal mobile automaticamente
+  useEffect(() => {
+    if (isMobile) {
+      // Verificar se já foi mostrado nesta sessão
+      const hasShownModal = sessionStorage.getItem("mobileMusicModalShown");
+
+      if (!hasShownModal) {
+        // Aguardar um pouco para o YouTube player estar pronto
+        const timer = setTimeout(() => {
+          setShowMobileModal(true);
+          sessionStorage.setItem("mobileMusicModalShown", "true");
+        }, 3000);
+
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [isMobile, youtubePlayer]);
 
   // Efeito para detectar quando mudar as cores do player
   useEffect(() => {
@@ -340,6 +375,64 @@ export default function AudioPlayer() {
           </div>
         )}
       </div>
+
+      {/* Modal Mobile */}
+      {showMobileModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-6 mx-4 max-w-sm w-full shadow-2xl">
+            <div className="text-center">
+              {/* Ícone de música */}
+              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-pink-400 to-pink-600 rounded-full flex items-center justify-center mb-4">
+                <svg
+                  className="w-8 h-8 text-white"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+
+              {/* Título */}
+              <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                🎵 Música de Fundo
+              </h3>
+
+              {/* Descrição */}
+              <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+                Que tal tocar uma música especial para acompanhar sua visita ao
+                nosso site de casamento?
+              </p>
+
+              {/* Botões */}
+              <div className="space-y-3">
+                <button
+                  onClick={handleStartMusic}
+                  className="w-full bg-gradient-to-r from-pink-500 to-pink-600 text-white py-3 px-6 rounded-xl font-medium hover:from-pink-600 hover:to-pink-700 transition-all duration-200 transform hover:scale-105 shadow-lg"
+                >
+                  🎵 Tocar Música
+                </button>
+
+                <button
+                  onClick={handleCloseModal}
+                  className="w-full bg-gray-100 text-gray-600 py-3 px-6 rounded-xl font-medium hover:bg-gray-200 transition-all duration-200"
+                >
+                  Talvez depois
+                </button>
+              </div>
+
+              {/* Texto explicativo */}
+              <p className="text-xs text-gray-500 mt-4">
+                Você pode controlar a música pelo botão no canto inferior
+                direito
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Estilos para o slider */}
       <style jsx>{`
