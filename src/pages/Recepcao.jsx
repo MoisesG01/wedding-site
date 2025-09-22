@@ -70,11 +70,19 @@ export default function Recepcao() {
                   Rua Comendador J. de Matos, 429 – Vila Clarice, São Paulo –
                   SP, 05177-100
                 </p>
-                <div className="bg-gray-50 border-l-4 border-gray-400 p-3 sm:p-4 rounded">
-                  <p className="text-sm sm:text-base text-slate-700 font-medium">
-                    <span className="text-gray-600">🚗</span> Sugerimos irem de
-                    Uber para que possam aproveitar melhor a festa
-                  </p>
+                <div className="space-y-3">
+                  <div className="bg-gray-50 border-l-4 border-gray-400 p-3 sm:p-4 rounded">
+                    <p className="text-sm sm:text-base text-slate-700 font-medium">
+                      <span className="text-gray-600">⚠️</span> Taxa de
+                      estacionamento: R$ 30,00 por veículo
+                    </p>
+                  </div>
+                  <div className="bg-gray-50 border-l-4 border-gray-400 p-3 sm:p-4 rounded">
+                    <p className="text-sm sm:text-base text-slate-700 font-medium">
+                      <span className="text-gray-600">🚗</span> Sugerimos irem
+                      de Uber para que possam aproveitar melhor a festa
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
