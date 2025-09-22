@@ -74,7 +74,7 @@ export default function Recepcao() {
                   <div className="bg-gray-50 border-l-4 border-gray-400 p-3 sm:p-4 rounded">
                     <p className="text-sm sm:text-base text-slate-700 font-medium">
                       <span className="text-gray-600">⚠️</span> Taxa de
-                      estacionamento: R$ 30,00 por veículo
+                      estacionamento com manobrista: R$ 30,00 por veículo
                     </p>
                   </div>
                   <div className="bg-gray-50 border-l-4 border-gray-400 p-3 sm:p-4 rounded">

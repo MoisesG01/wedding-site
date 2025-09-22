@@ -158,15 +158,9 @@ export default function Presentes() {
             }`}
           >
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif text-slate-800 mb-4 sm:mb-6 elegant-text-gradient">
-              🎁 Lista de Presentes
+              Lista de Presentes
             </h1>
             <div className="w-16 sm:w-20 md:w-24 h-1 bg-gradient-to-r from-pink-300 to-rose-300 mx-auto mb-6 sm:mb-8 rounded-full"></div>
-            <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-4xl mx-auto leading-relaxed px-4">
-              Uma lista divertida e descontraída para celebrar nosso casamento!
-              <br />
-              Escolha um presente que faça você sorrir e nos ajude a começar
-              nossa vida juntos. 😄
-            </p>
           </div>
 
           {/* Special Message */}

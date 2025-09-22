@@ -923,36 +923,6 @@ export const giftsData = [
     reservedBy: null,
   },
   {
-    id: 100,
-    title: "Jogo de Praia",
-    price: 150,
-    image:
-      "https://cdn.awsli.com.br/2500x2500/1866/1866589/produto/18355333370f326a5c5.jpg",
-    category: "tradicional",
-    reserved: false,
-    reservedBy: null,
-  },
-  {
-    id: 101,
-    title: "Câmera Polaroid",
-    price: 320,
-    image:
-      "https://s2-techtudo.glbimg.com/crCmKlzGec6CoeqSTuGM-R5c2L0=/0x0:1140x713/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2021/M/s/vnQQK9R4Ckp5JqVos4Zg/polaroid-now.jpg",
-    category: "tradicional",
-    reserved: false,
-    reservedBy: null,
-  },
-  {
-    id: 102,
-    title: "Jogo de Tabuleiro",
-    price: 90,
-    image:
-      "https://images.tcdn.com.br/img/img_prod/841504/agente_secreto_jogo_de_tabuleiro_brinquedo_educativo_de_detetive_256784_2_57a4e500de219f73668ae408ca4bcaf0.jpg",
-    category: "tradicional",
-    reserved: false,
-    reservedBy: null,
-  },
-  {
     id: 103,
     title: "Contribuição para Lua de Mel",
     price: 500,
