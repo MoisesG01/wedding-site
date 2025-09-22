@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { giftsData } from "../data/gifts";
 import Divisor from "../components/Divisor";
 import reservationService from "../services/reservationService";
+import qrcodeImg from "../assets/qrcode.jpg";
 
 export default function Presentes() {
   const [isVisible, setIsVisible] = useState(false);
@@ -15,6 +16,8 @@ export default function Presentes() {
   // Filter states
   const [sortBy, setSortBy] = useState("name"); // name, price-asc, price-desc
   const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [selectedCategory, setSelectedCategory] = useState("all"); // all, descontraído, tradicional
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     setIsVisible(true);
@@ -45,6 +48,16 @@ export default function Presentes() {
     }
   };
 
+  const copyPixKey = async () => {
+    try {
+      await navigator.clipboard.writeText("11989123506");
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+    } catch (err) {
+      console.error("Erro ao copiar:", err);
+    }
+  };
+
   const formatPrice = (price) => {
     return new Intl.NumberFormat("pt-BR", {
       style: "currency",
@@ -59,6 +72,11 @@ export default function Presentes() {
   // Filter and sort gifts
   useEffect(() => {
     let filtered = [...gifts];
+
+    // Category filter
+    if (selectedCategory !== "all") {
+      filtered = filtered.filter((gift) => gift.category === selectedCategory);
+    }
 
     // Price range filter
     filtered = filtered.filter(
@@ -81,7 +99,7 @@ export default function Presentes() {
 
     setFilteredGifts(filtered);
     setCurrentPage(1); // Reset to first page when filters change
-  }, [gifts, priceRange, sortBy]);
+  }, [gifts, priceRange, sortBy, selectedCategory]);
 
   const handlePriceRangeChange = (index, value) => {
     const newRange = [...priceRange];
@@ -171,18 +189,120 @@ export default function Presentes() {
                   muito carinho:
                 </p>
                 <div className="space-y-4 text-left max-w-2xl mx-auto">
-                  <div className="bg-white/80 rounded-xl p-4 border border-pink-100">
-                    <div className="flex items-start gap-3">
-                      <span className="text-2xl">💰</span>
+                  <div className="bg-gradient-to-br from-white to-pink-50/30 rounded-2xl p-6 border border-pink-200/50 shadow-lg backdrop-blur-sm">
+                    {/* Header */}
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="w-12 h-12 bg-gradient-to-br from-pink-400 to-rose-500 rounded-xl flex items-center justify-center shadow-md">
+                        <span className="text-2xl">💰</span>
+                      </div>
                       <div>
-                        <p className="font-medium text-slate-800 mb-2">
-                          Contribuir com o valor que desejar via Pix:
-                        </p>
-                        <p className="text-lg font-mono bg-pink-100 px-3 py-2 rounded-lg inline-block text-slate-700">
-                          Chave Pix: 11989123506
+                        <h3 className="text-xl font-semibold text-slate-800 mb-1">
+                          Contribuição via Pix
+                        </h3>
+                        <p className="text-sm text-slate-600">
+                          Contribua com o valor que desejar
                         </p>
                       </div>
                     </div>
+
+                    {/* Main Content - Responsive Layout */}
+                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-8">
+                      {/* Left Side - Pix Key */}
+                      <div className="flex-1">
+                        <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-pink-200/50 shadow-sm">
+                          <div className="flex items-center gap-3">
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-slate-700 mb-1">
+                                Chave Pix
+                              </p>
+                              <p className="text-lg font-mono text-slate-800 font-semibold">
+                                11989123506
+                              </p>
+                            </div>
+                            <button
+                              onClick={copyPixKey}
+                              className="bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white p-3 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-105"
+                              title={copied ? "Copiado!" : "Copiar chave Pix"}
+                            >
+                              {copied ? (
+                                <span className="text-sm font-medium">
+                                  ✅ Copiado
+                                </span>
+                              ) : (
+                                <>
+                                  {/* Mobile - Only Icon */}
+                                  <div className="flex sm:hidden items-center justify-center">
+                                    <svg
+                                      className="w-4 h-4"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                      />
+                                    </svg>
+                                  </div>
+                                  {/* Desktop - Icon + Text */}
+                                  <div className="hidden sm:flex items-center justify-center gap-2">
+                                    <svg
+                                      className="w-4 h-4"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                                      />
+                                    </svg>
+                                    <span className="text-sm font-medium">
+                                      Copiar
+                                    </span>
+                                  </div>
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Divider - Hidden on mobile */}
+                      <div className="hidden lg:block w-px h-16 bg-gradient-to-b from-transparent via-pink-300 to-transparent"></div>
+
+                      {/* Right Side - QR Code */}
+                      <div className="flex-shrink-0">
+                        <div className="text-center">
+                          <div className="bg-white/80 backdrop-blur-sm rounded-xl p-4 border border-pink-200/50 shadow-sm inline-block">
+                            <img
+                              src={qrcodeImg}
+                              alt="QR Code Pix"
+                              className="w-24 h-24 rounded-lg shadow-sm"
+                            />
+                          </div>
+                          <p className="text-xs text-slate-600 mt-3 font-medium">
+                            Ou escaneie com seu app
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Feedback Message */}
+                    {copied && (
+                      <div className="mt-4 flex items-center justify-center">
+                        <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-2">
+                          <p className="text-sm text-green-700 font-medium flex items-center gap-2">
+                            <span className="text-green-500">✓</span>
+                            Chave Pix copiada com sucesso!
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="bg-white/80 rounded-xl p-4 border border-pink-100">
                     <div className="flex items-start gap-3">
@@ -222,6 +342,7 @@ export default function Presentes() {
                   onClick={() => {
                     setPriceRange([minPrice, maxPrice]);
                     setSortBy("name");
+                    setSelectedCategory("all");
                   }}
                   className="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition-colors duration-200 text-sm font-medium"
                 >
@@ -229,7 +350,7 @@ export default function Presentes() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Sort Section */}
                 <div className="space-y-3">
                   <label className="block text-sm font-medium text-slate-700 mb-2">
@@ -243,6 +364,22 @@ export default function Presentes() {
                     <option value="name">📝 Nome (A-Z)</option>
                     <option value="price-asc">💰 Menor preço</option>
                     <option value="price-desc">💎 Maior preço</option>
+                  </select>
+                </div>
+
+                {/* Category Section */}
+                <div className="space-y-3">
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    🎭 Categoria
+                  </label>
+                  <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                    className="w-full px-4 py-3 bg-white/80 border border-slate-200 rounded-xl text-slate-700 focus:ring-2 focus:ring-pink-300 focus:border-pink-300 transition-all duration-200 shadow-sm hover:shadow-md"
+                  >
+                    <option value="all">🎪 Todos</option>
+                    <option value="descontraído">😄 Descontraído</option>
+                    <option value="tradicional">🎁 Tradicional</option>
                   </select>
                 </div>
 
@@ -479,15 +616,44 @@ export default function Presentes() {
                 </p>
               </div>
 
-              {/* QR Code Placeholder */}
+              {/* QR Code */}
               <div className="bg-white rounded-lg p-4 mb-4 border-2 border-dashed border-gray-300">
                 <div className="w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center">
                   <div className="text-center">
-                    <div className="text-4xl mb-2">📱</div>
+                    <img
+                      src={qrcodeImg}
+                      alt="QR Code Pix"
+                      className="w-32 h-32 rounded-lg shadow-sm mx-auto mb-2"
+                    />
                     <p className="text-sm text-gray-500">QR Code do PIX</p>
-                    <p className="text-xs text-gray-400 mt-1">
-                      Chave: (11) 98912-3506
-                    </p>
+                    <div className="flex items-center justify-center gap-2 mt-1">
+                      <p className="text-xs text-gray-400">
+                        Chave: (11) 98912-3506
+                      </p>
+                      <button
+                        onClick={copyPixKey}
+                        className="text-gray-500 hover:text-gray-700 transition-colors duration-200"
+                        title={copied ? "Copiado!" : "Copiar chave Pix"}
+                      >
+                        {copied ? (
+                          <span className="text-green-500">✅</span>
+                        ) : (
+                          <svg
+                            className="w-4 h-4"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                            />
+                          </svg>
+                        )}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
