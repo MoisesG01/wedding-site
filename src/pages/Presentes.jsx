@@ -114,12 +114,15 @@ export default function Presentes() {
     const newRange = [...priceRange];
     const newValue = parseInt(value) || minPrice;
 
-    // Only update max value, min stays at minPrice
-    if (index === 1) {
-      // max slider - round to nearest 50 for better UX
-      const roundedValue = Math.round(newValue / 50) * 50;
-      newRange[1] = Math.min(maxPrice, Math.max(roundedValue, minPrice));
-      newRange[0] = minPrice; // Keep min fixed
+    // Round to nearest 50 for better UX
+    const roundedValue = Math.round(newValue / 50) * 50;
+
+    if (index === 0) {
+      // min slider
+      newRange[0] = Math.max(minPrice, Math.min(roundedValue, priceRange[1] - 50));
+    } else if (index === 1) {
+      // max slider
+      newRange[1] = Math.min(maxPrice, Math.max(roundedValue, priceRange[0] + 50));
     }
 
     setPriceRange(newRange);
@@ -393,37 +396,80 @@ export default function Presentes() {
                     💰 Faixa de preço
                   </label>
                   <div className="bg-white/80 border border-slate-200 rounded-xl p-4 shadow-sm">
-                    {/* Simple Range Slider */}
-                    <div className="space-y-3">
-                      <div className="relative">
-                        <input
-                          type="range"
-                          min={minPrice}
-                          max={maxPrice}
-                          step="50"
-                          value={priceRange[1]}
-                          onChange={(e) =>
-                            handlePriceRangeChange(1, e.target.value)
-                          }
-                          className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb"
-                          style={{
-                            background: `linear-gradient(to right, #fbb6ce 0%, #fbb6ce ${
-                              ((priceRange[1] - minPrice) /
-                                (maxPrice - minPrice)) *
-                              100
-                            }%, #e5e7eb ${
-                              ((priceRange[1] - minPrice) /
-                                (maxPrice - minPrice)) *
-                              100
-                            }%, #e5e7eb 100%)`,
-                          }}
-                        />
+                    {/* Dual Range Slider */}
+                    <div className="space-y-4">
+                      {/* Current Values Display */}
+                      <div className="flex justify-between items-center text-sm font-medium text-slate-700 bg-slate-50 rounded-lg p-3">
+                        <span>Mínimo: {formatPrice(priceRange[0])}</span>
+                        <span>Máximo: {formatPrice(priceRange[1])}</span>
+                      </div>
 
-                        {/* Min and Max Labels */}
-                        <div className="flex justify-between text-xs text-slate-500 mt-1">
-                          <span>{formatPrice(minPrice)}</span>
-                          <span>{formatPrice(priceRange[1])}</span>
+                      {/* Min Slider */}
+                      <div className="space-y-2">
+                        <label className="block text-xs font-medium text-slate-600">
+                          Valor mínimo
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="range"
+                            min={minPrice}
+                            max={maxPrice}
+                            step="50"
+                            value={priceRange[0]}
+                            onChange={(e) =>
+                              handlePriceRangeChange(0, e.target.value)
+                            }
+                            className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb"
+                            style={{
+                              background: `linear-gradient(to right, #fbb6ce 0%, #fbb6ce ${
+                                ((priceRange[0] - minPrice) /
+                                  (maxPrice - minPrice)) *
+                                100
+                              }%, #e5e7eb ${
+                                ((priceRange[0] - minPrice) /
+                                  (maxPrice - minPrice)) *
+                                100
+                              }%, #e5e7eb 100%)`,
+                            }}
+                          />
                         </div>
+                      </div>
+
+                      {/* Max Slider */}
+                      <div className="space-y-2">
+                        <label className="block text-xs font-medium text-slate-600">
+                          Valor máximo
+                        </label>
+                        <div className="relative">
+                          <input
+                            type="range"
+                            min={minPrice}
+                            max={maxPrice}
+                            step="50"
+                            value={priceRange[1]}
+                            onChange={(e) =>
+                              handlePriceRangeChange(1, e.target.value)
+                            }
+                            className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb"
+                            style={{
+                              background: `linear-gradient(to right, #fbb6ce 0%, #fbb6ce ${
+                                ((priceRange[1] - minPrice) /
+                                  (maxPrice - minPrice)) *
+                                100
+                              }%, #e5e7eb ${
+                                ((priceRange[1] - minPrice) /
+                                  (maxPrice - minPrice)) *
+                                100
+                              }%, #e5e7eb 100%)`,
+                            }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Range Labels */}
+                      <div className="flex justify-between text-xs text-slate-500 pt-2 border-t border-slate-200">
+                        <span>{formatPrice(minPrice)}</span>
+                        <span>{formatPrice(maxPrice)}</span>
                       </div>
                     </div>
                   </div>
