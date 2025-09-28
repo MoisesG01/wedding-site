@@ -113,16 +113,23 @@ export default function Presentes() {
   const handlePriceRangeChange = (index, value) => {
     const newRange = [...priceRange];
     const newValue = parseInt(value) || minPrice;
+    const minRangeValueGap = 50; // Minimum gap between min and max
 
     // Round to nearest 50 for better UX
     const roundedValue = Math.round(newValue / 50) * 50;
 
     if (index === 0) {
       // min slider
-      newRange[0] = Math.max(minPrice, Math.min(roundedValue, priceRange[1] - 50));
+      newRange[0] = Math.max(
+        minPrice,
+        Math.min(roundedValue, priceRange[1] - minRangeValueGap)
+      );
     } else if (index === 1) {
       // max slider
-      newRange[1] = Math.min(maxPrice, Math.max(roundedValue, priceRange[0] + 50));
+      newRange[1] = Math.min(
+        maxPrice,
+        Math.max(roundedValue, priceRange[0] + minRangeValueGap)
+      );
     }
 
     setPriceRange(newRange);
@@ -396,7 +403,7 @@ export default function Presentes() {
                     💰 Faixa de preço
                   </label>
                   <div className="bg-white/80 border border-slate-200 rounded-xl p-4 shadow-sm">
-                    {/* Dual Range Slider */}
+                    {/* Single Bar Dual Range Slider */}
                     <div className="space-y-4">
                       {/* Current Values Display */}
                       <div className="flex justify-between items-center text-sm font-medium text-slate-700 bg-slate-50 rounded-lg p-3">
@@ -404,65 +411,55 @@ export default function Presentes() {
                         <span>Máximo: {formatPrice(priceRange[1])}</span>
                       </div>
 
-                      {/* Min Slider */}
-                      <div className="space-y-2">
-                        <label className="block text-xs font-medium text-slate-600">
-                          Valor mínimo
-                        </label>
-                        <div className="relative">
-                          <input
-                            type="range"
-                            min={minPrice}
-                            max={maxPrice}
-                            step="50"
-                            value={priceRange[0]}
-                            onChange={(e) =>
-                              handlePriceRangeChange(0, e.target.value)
-                            }
-                            className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb"
-                            style={{
-                              background: `linear-gradient(to right, #fbb6ce 0%, #fbb6ce ${
-                                ((priceRange[0] - minPrice) /
-                                  (maxPrice - minPrice)) *
-                                100
-                              }%, #e5e7eb ${
-                                ((priceRange[0] - minPrice) /
-                                  (maxPrice - minPrice)) *
-                                100
-                              }%, #e5e7eb 100%)`,
-                            }}
-                          />
-                        </div>
-                      </div>
+                      {/* Dual Range Slider */}
+                      <div className="double-range-slider">
+                        <div 
+                          className="range-track"
+                          style={{
+                            left: `${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%`,
+                            right: `${100 - ((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100}%`
+                          }}
+                        ></div>
+                        
+                        <input
+                          type="range"
+                          className="dual-range-input"
+                          min={minPrice}
+                          max={maxPrice}
+                          step="50"
+                          value={priceRange[0]}
+                          onChange={(e) => handlePriceRangeChange(0, e.target.value)}
+                        />
+                        
+                        <input
+                          type="range"
+                          className="dual-range-input"
+                          min={minPrice}
+                          max={maxPrice}
+                          step="50"
+                          value={priceRange[1]}
+                          onChange={(e) => handlePriceRangeChange(1, e.target.value)}
+                        />
 
-                      {/* Max Slider */}
-                      <div className="space-y-2">
-                        <label className="block text-xs font-medium text-slate-600">
-                          Valor máximo
-                        </label>
-                        <div className="relative">
-                          <input
-                            type="range"
-                            min={minPrice}
-                            max={maxPrice}
-                            step="50"
-                            value={priceRange[1]}
-                            onChange={(e) =>
-                              handlePriceRangeChange(1, e.target.value)
-                            }
-                            className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb"
-                            style={{
-                              background: `linear-gradient(to right, #fbb6ce 0%, #fbb6ce ${
-                                ((priceRange[1] - minPrice) /
-                                  (maxPrice - minPrice)) *
-                                100
-                              }%, #e5e7eb ${
-                                ((priceRange[1] - minPrice) /
-                                  (maxPrice - minPrice)) *
-                                100
-                              }%, #e5e7eb 100%)`,
-                            }}
-                          />
+                        {/* Value Bubbles */}
+                        <div 
+                          className="range-value-bubble min-value"
+                          style={{
+                            left: `${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%`,
+                            transform: `translate(-${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%, -100%)`
+                          }}
+                        >
+                          {formatPrice(priceRange[0])}
+                        </div>
+                        
+                        <div 
+                          className="range-value-bubble max-value"
+                          style={{
+                            right: `${100 - ((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100}%`,
+                            transform: `translate(${100 - ((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100}%, 100%)`
+                          }}
+                        >
+                          {formatPrice(priceRange[1])}
                         </div>
                       </div>
 
