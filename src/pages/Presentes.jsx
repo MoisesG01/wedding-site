@@ -413,14 +413,23 @@ export default function Presentes() {
 
                       {/* Dual Range Slider */}
                       <div className="double-range-slider">
-                        <div 
+                        <div
                           className="range-track"
                           style={{
-                            left: `${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%`,
-                            right: `${100 - ((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100}%`
+                            left: `${
+                              ((priceRange[0] - minPrice) /
+                                (maxPrice - minPrice)) *
+                              100
+                            }%`,
+                            right: `${
+                              100 -
+                              ((priceRange[1] - minPrice) /
+                                (maxPrice - minPrice)) *
+                                100
+                            }%`,
                           }}
                         ></div>
-                        
+
                         <input
                           type="range"
                           className="dual-range-input"
@@ -428,9 +437,11 @@ export default function Presentes() {
                           max={maxPrice}
                           step="50"
                           value={priceRange[0]}
-                          onChange={(e) => handlePriceRangeChange(0, e.target.value)}
+                          onChange={(e) =>
+                            handlePriceRangeChange(0, e.target.value)
+                          }
                         />
-                        
+
                         <input
                           type="range"
                           className="dual-range-input"
@@ -438,29 +449,11 @@ export default function Presentes() {
                           max={maxPrice}
                           step="50"
                           value={priceRange[1]}
-                          onChange={(e) => handlePriceRangeChange(1, e.target.value)}
+                          onChange={(e) =>
+                            handlePriceRangeChange(1, e.target.value)
+                          }
                         />
 
-                        {/* Value Bubbles */}
-                        <div 
-                          className="range-value-bubble min-value"
-                          style={{
-                            left: `${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%`,
-                            transform: `translate(-${((priceRange[0] - minPrice) / (maxPrice - minPrice)) * 100}%, -100%)`
-                          }}
-                        >
-                          {formatPrice(priceRange[0])}
-                        </div>
-                        
-                        <div 
-                          className="range-value-bubble max-value"
-                          style={{
-                            right: `${100 - ((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100}%`,
-                            transform: `translate(${100 - ((priceRange[1] - minPrice) / (maxPrice - minPrice)) * 100}%, 100%)`
-                          }}
-                        >
-                          {formatPrice(priceRange[1])}
-                        </div>
                       </div>
 
                       {/* Range Labels */}
