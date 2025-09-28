@@ -603,6 +603,8 @@ export default function Confirmacao() {
                                                 </option>
                                                 <option>Parceiro(a)</option>
                                                 <option>Filho(a)</option>
+                                                <option>Pai</option>
+                                                <option>Mãe</option>
                                               </select>
                                               <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-slate-400">
                                                 <svg

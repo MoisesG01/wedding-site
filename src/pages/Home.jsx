@@ -6,11 +6,11 @@ export default function Home() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <div
-        className="relative min-h-screen md:min-h-[120vh] flex items-center justify-center px-2 sm:px-6 hero-section"
+        className="relative min-h-screen md:min-h-[140vh] lg:min-h-[150vh] flex items-center justify-center px-2 sm:px-6 hero-section"
         style={{
           backgroundImage: `url(${fundoHome})`,
           backgroundSize: "cover",
-          backgroundPosition: "center 30%",
+          backgroundPosition: "center 25%",
           backgroundRepeat: "no-repeat",
         }}
       >
