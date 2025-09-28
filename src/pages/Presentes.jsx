@@ -14,7 +14,7 @@ export default function Presentes() {
   const itemsPerPage = 10; // 10 presentes por página
 
   // Filter states
-  const [sortBy, setSortBy] = useState("name"); // name, price-asc, price-desc
+  const [sortBy, setSortBy] = useState("id"); // id, name, price-asc, price-desc
   const [priceRange, setPriceRange] = useState([0, 1000]);
   const [selectedCategory, setSelectedCategory] = useState("all"); // all, descontraído, tradicional
   const [copied, setCopied] = useState(false);
@@ -69,6 +69,11 @@ export default function Presentes() {
   const maxPrice = Math.max(...gifts.map((gift) => gift.price));
   const minPrice = Math.min(...gifts.map((gift) => gift.price));
 
+  // Initialize price range with actual min/max
+  useEffect(() => {
+    setPriceRange([minPrice, maxPrice]);
+  }, [minPrice, maxPrice]);
+
   // Filter and sort gifts
   useEffect(() => {
     let filtered = [...gifts];
@@ -92,8 +97,12 @@ export default function Presentes() {
         filtered.sort((a, b) => b.price - a.price);
         break;
       case "name":
-      default:
         filtered.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case "id":
+      default:
+        // Mantém a ordem original dos IDs
+        filtered.sort((a, b) => a.id - b.id);
         break;
     }
 
@@ -107,8 +116,9 @@ export default function Presentes() {
 
     // Only update max value, min stays at minPrice
     if (index === 1) {
-      // max slider
-      newRange[1] = Math.min(maxPrice, Math.max(newValue, minPrice));
+      // max slider - round to nearest 50 for better UX
+      const roundedValue = Math.round(newValue / 50) * 50;
+      newRange[1] = Math.min(maxPrice, Math.max(roundedValue, minPrice));
       newRange[0] = minPrice; // Keep min fixed
     }
 
@@ -335,7 +345,7 @@ export default function Presentes() {
                 <button
                   onClick={() => {
                     setPriceRange([minPrice, maxPrice]);
-                    setSortBy("name");
+                    setSortBy("id");
                     setSelectedCategory("all");
                   }}
                   className="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg hover:bg-slate-200 transition-colors duration-200 text-sm font-medium"
@@ -390,6 +400,7 @@ export default function Presentes() {
                           type="range"
                           min={minPrice}
                           max={maxPrice}
+                          step="50"
                           value={priceRange[1]}
                           onChange={(e) =>
                             handlePriceRangeChange(1, e.target.value)

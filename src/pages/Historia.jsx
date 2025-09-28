@@ -1,6 +1,11 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Divisor from "../components/Divisor";
 import casal from "../assets/casal.jpg";
+import inicio from "../assets/inicio.jpg";
+import primeiraViagem from "../assets/primeiraViagem.jpg";
+import pedidoCasamento from "../assets/pedidoCasamento.jpg";
+import decada from "../assets/decada.jpg";
+import padrinhos from "../assets/padrinhos.jpg";
 
 export default function Historia() {
   const [isVisible, setIsVisible] = useState(false);
@@ -13,6 +18,46 @@ export default function Historia() {
   const [currentImage, setCurrentImage] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const carouselRef = useRef();
+
+  // Carousel images data (momentos especiais do casal)
+  const carouselImages = [
+    {
+      title: "O início de tudo",
+      date: "04/2014",
+      img: inicio,
+    },
+    {
+      title: "Primeira viagem juntos",
+      date: "03/2017",
+      img: primeiraViagem,
+    },
+    {
+      title: "Pedido de casamento",
+      date: "04/2023",
+      img: pedidoCasamento,
+    },
+    {
+      title: "Um marco importante, uma década de namoro",
+      date: "04/2024",
+      img: decada,
+    },
+    {
+      title:
+        "Nossos padrinhos, escolhidos com o coração, parte essencial da nossa história",
+      date: "08/2025",
+      img: padrinhos,
+    },
+  ];
+
+  const nextImage = useCallback(() => {
+    setCurrentImage((prev) => (prev + 1) % carouselImages.length);
+  }, [carouselImages.length]);
+
+  const prevImage = () => {
+    setCurrentImage(
+      (prev) => (prev - 1 + carouselImages.length) % carouselImages.length
+    );
+  };
 
   useEffect(() => {
     setIsVisible(true);
@@ -60,56 +105,7 @@ export default function Historia() {
       nextImage();
     }, 5000);
     return () => clearInterval(interval);
-  }, [isHovered, currentImage]);
-
-  // Carousel images data (com imagens reais de exemplo)
-  const carouselImages = [
-    {
-      title: "Nosso Primeiro Encontro",
-      date: "Janeiro 2020",
-      icon: "☕",
-      img: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
-    },
-    {
-      title: "Primeiro Teatro Juntos",
-      date: "Março 2020",
-      icon: "🎭",
-      img: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80",
-    },
-    {
-      title: "Morando Juntos",
-      date: "Setembro 2021",
-      icon: "🏠",
-      img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
-    },
-    {
-      title: "Viagem para Paris",
-      date: "Janeiro 2022",
-      icon: "✈️",
-      img: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80",
-    },
-    {
-      title: "O Pedido de Casamento",
-      date: "Dezembro 2023",
-      icon: "💍",
-      img: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-    },
-    {
-      title: "Ensaio de Casamento",
-      date: "Janeiro 2024",
-      icon: "📸",
-      img: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80",
-    },
-  ];
-
-  const nextImage = () => {
-    setCurrentImage((prev) => (prev + 1) % carouselImages.length);
-  };
-  const prevImage = () => {
-    setCurrentImage(
-      (prev) => (prev - 1 + carouselImages.length) % carouselImages.length
-    );
-  };
+  }, [isHovered, currentImage, nextImage]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
@@ -277,90 +273,60 @@ export default function Historia() {
           </div>
 
           {/* Photo Gallery Carousel */}
-          <div className="text-center mb-2 sm:mb-3">
-            <h3 className="text-2xl sm:text-3xl font-serif text-slate-800 mb-1 sm:mb-2 elegant-text-gradient">
+          <div className="text-center mb-1 sm:mb-2">
+            <h3 className="text-2xl sm:text-3xl font-serif text-slate-800 mb-1 elegant-text-gradient">
               Nossos Momentos Especiais
             </h3>
-            <div className="w-12 sm:w-16 h-1 bg-gradient-to-r from-slate-300 to-gray-400 mx-auto mb-2 sm:mb-3 rounded-full"></div>
+            <div className="w-12 sm:w-16 h-1 bg-gradient-to-r from-slate-300 to-gray-400 mx-auto mb-1 sm:mb-2 rounded-full"></div>
           </div>
 
-          {/* Modern 3D Carousel */}
+          {/* Elegant Modern Carousel */}
           <div
-            className="relative max-w-4xl mx-auto select-none px-4"
+            className="relative max-w-4xl mx-auto select-none px-4 py-8 sm:py-12"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             ref={carouselRef}
           >
-            {/* 3D Carousel Track */}
-            <div className="flex items-center justify-center h-80 sm:h-96 md:h-[500px] lg:h-[600px] relative overflow-hidden mb-4 sm:mb-6">
-              {carouselImages.map((img, idx) => {
-                // Calcula a posição relativa ao item central
-                const offset = idx - currentImage;
-                let style =
-                  "absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-700 ease-in-out ";
-                if (offset === 0) {
-                  style +=
-                    "z-20 scale-100 shadow-2xl bg-white/90 border-4 border-pink-200 w-72 h-60 sm:w-96 sm:h-80 md:w-[400px] md:h-[320px] lg:w-[500px] lg:h-[400px] ";
-                } else if (
-                  offset === -1 ||
-                  (offset === carouselImages.length - 1 && currentImage === 0)
-                ) {
-                  style +=
-                    "z-10 scale-75 -translate-x-[90%] opacity-60 blur-sm rotate-y-6 bg-white/60 w-72 h-60 sm:w-96 sm:h-80 md:w-[400px] md:h-[320px] lg:w-[500px] lg:h-[400px] ";
-                } else if (
-                  offset === 1 ||
-                  (offset === -(carouselImages.length - 1) &&
-                    currentImage === carouselImages.length - 1)
-                ) {
-                  style +=
-                    "z-10 scale-75 translate-x-[90%] opacity-60 blur-sm -rotate-y-6 bg-white/60 w-72 h-60 sm:w-96 sm:h-80 md:w-[400px] md:h-[320px] lg:w-[500px] lg:h-[400px] ";
-                } else {
-                  style +=
-                    "z-0 opacity-0 pointer-events-none w-72 h-60 sm:w-96 sm:h-80 md:w-[400px] md:h-[320px] lg:w-[500px] lg:h-[400px]";
-                }
-                return (
+            {/* Main Image Display with Fade Effect */}
+            <div className="relative mb-10 sm:mb-12">
+              <div className="relative w-full h-[400px] sm:h-[450px] md:h-[500px] lg:h-[550px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl">
+                {carouselImages.map((img, idx) => (
                   <div
                     key={idx}
-                    className={
-                      style +
-                      " rounded-2xl sm:rounded-3xl flex flex-col items-center justify-center cursor-pointer overflow-hidden"
-                    }
-                    aria-hidden={offset !== 0}
+                    className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+                      currentImage === idx ? "opacity-100" : "opacity-0"
+                    }`}
                   >
-                    <div className="relative w-full h-full">
-                      <img
-                        src={img.img}
-                        alt={img.title}
-                        className="object-cover w-full h-full rounded-2xl sm:rounded-3xl transition-all duration-700 shadow-lg"
-                        draggable={false}
-                      />
-                      {/* Ícone sobreposto */}
-                      <span className="absolute left-3 sm:left-4 bottom-3 sm:bottom-4 text-xl sm:text-2xl md:text-3xl lg:text-4xl bg-white/80 rounded-full px-2 sm:px-3 py-1 shadow-md">
-                        {img.icon}
-                      </span>
-                      {/* Gradiente para texto */}
-                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-3 sm:p-4 md:p-5 rounded-b-2xl sm:rounded-b-3xl">
-                        <h3 className="text-white text-sm sm:text-base md:text-lg lg:text-xl font-serif mb-1 text-left">
-                          {img.title}
-                        </h3>
-                        <p className="text-gray-200 text-xs sm:text-sm text-left">
-                          {img.date}
-                        </p>
-                      </div>
-                    </div>
+                    <img
+                      src={img.img}
+                      alt={img.title}
+                      className="object-contain w-full h-full bg-gradient-to-br from-slate-50 to-gray-100"
+                      style={{ objectPosition: "center center" }}
+                      draggable={false}
+                    />
                   </div>
-                );
-              })}
+                ))}
+
+                {/* Gradient Overlay with Fade Effect */}
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent p-6 sm:p-8 transition-all duration-800">
+                  <h3 className="text-white text-lg sm:text-xl md:text-2xl font-serif mb-2 transition-all duration-800">
+                    {carouselImages[currentImage].title}
+                  </h3>
+                  <p className="text-gray-200 text-sm sm:text-base transition-all duration-800">
+                    {carouselImages[currentImage].date}
+                  </p>
+                </div>
+              </div>
             </div>
 
-            {/* Glassmorphism Navigation Buttons */}
+            {/* Navigation Arrows */}
             <button
               onClick={prevImage}
               aria-label="Imagem anterior"
-              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-lg hover:bg-pink-100 text-pink-600 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 z-30 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-pink-200"
+              className="absolute left-6 top-1/3 -translate-y-1/2 bg-white/10 backdrop-blur-sm hover:bg-white/30 text-gray-400 hover:text-gray-600 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-none hover:shadow-sm transition-all duration-300 z-10 focus:outline-none focus:ring-2 focus:ring-gray-200"
             >
               <svg
-                className="w-5 h-5 sm:w-6 sm:h-6"
+                className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -373,14 +339,13 @@ export default function Historia() {
                 />
               </svg>
             </button>
-
             <button
               onClick={nextImage}
               aria-label="Próxima imagem"
-              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-lg hover:bg-pink-100 text-pink-600 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 z-30 focus:outline-none focus:ring-2 focus:ring-pink-400 border border-pink-200"
+              className="absolute right-6 top-1/3 -translate-y-1/2 bg-white/10 backdrop-blur-sm hover:bg-white/30 text-gray-400 hover:text-gray-600 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center shadow-none hover:shadow-sm transition-all duration-300 z-10 focus:outline-none focus:ring-2 focus:ring-gray-200"
             >
               <svg
-                className="w-5 h-5 sm:w-6 sm:h-6"
+                className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -394,17 +359,17 @@ export default function Historia() {
               </svg>
             </button>
 
-            {/* Miniaturas circulares animadas com imagens */}
-            <div className="flex justify-center gap-3 sm:gap-4 overflow-x-auto pb-2 sm:pb-4 px-4 py-1">
+            {/* Elegant Thumbnail Navigation */}
+            <div className="flex justify-center gap-3 sm:gap-4 overflow-x-auto pb-2 px-4 pt-4 sm:pt-6">
               {carouselImages.map((img, idx) => (
                 <button
                   key={idx}
                   onClick={() => setCurrentImage(idx)}
                   aria-label={`Miniatura ${img.title}`}
-                  className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 lg:w-16 lg:h-16 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all duration-300 bg-gradient-to-br from-white to-pink-50 shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-400 overflow-hidden ${
+                  className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all duration-300 bg-white shadow-md hover:shadow-lg overflow-hidden ${
                     currentImage === idx
-                      ? "border-pink-500 scale-110 ring-2 ring-pink-300"
-                      : "border-pink-100 opacity-60 hover:opacity-100"
+                      ? "border-pink-500 scale-105 ring-2 ring-pink-200 shadow-lg opacity-100"
+                      : "border-gray-200 hover:border-pink-300 hover:scale-105 opacity-40 hover:opacity-70"
                   }`}
                 >
                   <img
@@ -414,6 +379,22 @@ export default function Historia() {
                     draggable={false}
                   />
                 </button>
+              ))}
+            </div>
+
+            {/* Progress Indicators */}
+            <div className="flex justify-center mt-4 gap-2">
+              {carouselImages.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentImage(idx)}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    currentImage === idx
+                      ? "bg-pink-500 w-6"
+                      : "bg-gray-300 hover:bg-pink-300"
+                  }`}
+                  aria-label={`Ir para imagem ${idx + 1}`}
+                />
               ))}
             </div>
           </div>

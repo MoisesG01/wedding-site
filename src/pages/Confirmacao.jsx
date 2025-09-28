@@ -564,7 +564,7 @@ export default function Confirmacao() {
                                           </span>
                                         </div>
                                         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-                                          <div className="lg:col-span-6">
+                                          <div className="lg:col-span-7">
                                             <input
                                               type="text"
                                               value={
@@ -581,7 +581,7 @@ export default function Confirmacao() {
                                               placeholder="Nome completo"
                                             />
                                           </div>
-                                          <div className="lg:col-span-3">
+                                          <div className="lg:col-span-5">
                                             <div className="relative">
                                               <select
                                                 value={
@@ -598,15 +598,11 @@ export default function Confirmacao() {
                                                 required
                                                 className="appearance-none w-full px-4 py-3 pr-10 border border-slate-200 rounded-lg bg-white/80 backdrop-blur-sm shadow-sm focus:ring-2 focus:ring-slate-300 focus:border-transparent transition-all duration-300 text-sm"
                                               >
-                                                <option value="">
-                                                  Relação
+                                                <option value="" disabled>
+                                                  Selecione a relação
                                                 </option>
-                                                <option>Amigo(a)</option>
-                                                <option>Família</option>
-                                                <option>Colega</option>
-                                                <option>Criança</option>
                                                 <option>Parceiro(a)</option>
-                                                <option>Outro</option>
+                                                <option>Filho(a)</option>
                                               </select>
                                               <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-slate-400">
                                                 <svg
