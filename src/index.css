@@ -385,3 +385,74 @@
   transform: scale(1.1);
   box-shadow: 0 6px 16px rgba(236, 72, 153, 0.6);
 }
+
+/* Dual Range Slider Styles */
+.double-range-slider {
+  position: relative;
+  width: 100%;
+  height: 10px;
+  background-color: #e5e7eb;
+  border-radius: 20px;
+  margin: 20px 0;
+}
+
+.range-track {
+  height: 100%;
+  position: absolute;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #fbb6ce 0%, #ec4899 100%);
+  top: 0;
+  left: 0;
+  right: 0;
+  transition: all 0.3s ease;
+}
+
+.dual-range-input {
+  position: absolute;
+  width: 100%;
+  height: 10px;
+  background: none;
+  pointer-events: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  top: 0;
+  left: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.dual-range-input::-webkit-slider-thumb {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+  pointer-events: auto;
+  -webkit-appearance: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4);
+  transition: all 0.2s ease;
+}
+
+.dual-range-input::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(236, 72, 153, 0.6);
+}
+
+.dual-range-input::-moz-range-thumb {
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  background: linear-gradient(135deg, #ec4899 0%, #be185d 100%);
+  pointer-events: auto;
+  -moz-appearance: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(236, 72, 153, 0.4);
+  transition: all 0.2s ease;
+}
+
+.dual-range-input::-moz-range-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(236, 72, 153, 0.6);
+}
