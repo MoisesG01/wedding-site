@@ -453,7 +453,6 @@ export default function Presentes() {
                             handlePriceRangeChange(1, e.target.value)
                           }
                         />
-
                       </div>
 
                       {/* Range Labels */}
