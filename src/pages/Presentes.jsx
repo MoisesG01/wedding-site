@@ -113,10 +113,10 @@ export default function Presentes() {
   const handlePriceRangeChange = (index, value) => {
     const newRange = [...priceRange];
     const newValue = parseInt(value) || minPrice;
-    const minRangeValueGap = 50; // Minimum gap between min and max
+    const minRangeValueGap = 100; // Minimum gap between min and max
 
-    // Round to nearest 50 for better UX
-    const roundedValue = Math.round(newValue / 50) * 50;
+    // Round to nearest 100 for better UX
+    const roundedValue = Math.round(newValue / 100) * 100;
 
     if (index === 0) {
       // min slider
@@ -435,7 +435,7 @@ export default function Presentes() {
                           className="dual-range-input"
                           min={minPrice}
                           max={maxPrice}
-                          step="50"
+                          step="100"
                           value={priceRange[0]}
                           onChange={(e) =>
                             handlePriceRangeChange(0, e.target.value)
@@ -447,7 +447,7 @@ export default function Presentes() {
                           className="dual-range-input"
                           min={minPrice}
                           max={maxPrice}
-                          step="50"
+                          step="100"
                           value={priceRange[1]}
                           onChange={(e) =>
                             handlePriceRangeChange(1, e.target.value)
