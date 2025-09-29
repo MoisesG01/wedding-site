@@ -54,6 +54,42 @@ export default function App() {
     initEmailJS();
   }, []);
 
+  // Hash routing - navigate to section based on URL hash
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.slice(1); // Remove the # symbol
+      if (hash && hash !== activeSection) {
+        // Valid sections
+        const validSections = [
+          "home",
+          "historia",
+          "cerimonia",
+          "recepcao",
+          "presentes",
+          "confirmacao",
+          "contato",
+        ];
+        if (validSections.includes(hash)) {
+          setActiveSection(hash);
+          // Scroll to section after a short delay to ensure DOM is ready
+          setTimeout(() => {
+            scrollToSection(hash);
+          }, 100);
+        }
+      }
+    };
+
+    // Check initial hash on page load
+    handleHashChange();
+
+    // Listen for hash changes
+    window.addEventListener("hashchange", handleHashChange);
+
+    return () => {
+      window.removeEventListener("hashchange", handleHashChange);
+    };
+  }, [activeSection]);
+
   // Smooth scroll to section
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
