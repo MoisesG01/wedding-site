@@ -15,7 +15,7 @@ import { initEmailJS } from "./config/emailjs";
 
 export default function App() {
   // Controle para modo de manutenção - mude para false quando o site estiver pronto
-  const isMaintenanceMode = true;
+  const isMaintenanceMode = false;
   const [activeSection, setActiveSection] = useState("home");
   const [devMode, setDevMode] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
