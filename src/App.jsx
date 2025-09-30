@@ -58,7 +58,7 @@ export default function App() {
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.slice(1); // Remove the # symbol
-      if (hash && hash !== activeSection) {
+      if (hash) {
         // Valid sections
         const validSections = [
           "home",
@@ -79,8 +79,10 @@ export default function App() {
       }
     };
 
-    // Check initial hash on page load
-    handleHashChange();
+    // Check initial hash on page load only if there's a hash in the URL
+    if (window.location.hash) {
+      handleHashChange();
+    }
 
     // Listen for hash changes
     window.addEventListener("hashchange", handleHashChange);
@@ -88,7 +90,7 @@ export default function App() {
     return () => {
       window.removeEventListener("hashchange", handleHashChange);
     };
-  }, [activeSection]);
+  }, []); // Remove activeSection dependency to prevent re-triggering
 
   // Smooth scroll to section
   const scrollToSection = (sectionId) => {
