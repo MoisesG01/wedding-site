@@ -50,7 +50,7 @@ export default function Historia() {
     },
     {
       title: "A espera do grande dia",
-      date: "12/2025",
+      date: "11/2025",
       img: grandeDia,
     },
   ];
