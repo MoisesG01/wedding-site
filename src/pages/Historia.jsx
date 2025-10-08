@@ -6,6 +6,7 @@ import primeiraViagem from "../assets/primeiraViagem.jpg";
 import pedidoCasamento from "../assets/pedidoCasamento.jpg";
 import decada from "../assets/decada.jpg";
 import padrinhos from "../assets/padrinhos.jpg";
+import grandeDia from "../assets/grandeDia.jpg";
 
 export default function Historia() {
   const [isVisible, setIsVisible] = useState(false);
@@ -46,6 +47,11 @@ export default function Historia() {
         "Nossos padrinhos, escolhidos com o coração, parte essencial da nossa história",
       date: "08/2025",
       img: padrinhos,
+    },
+    {
+      title: "A espera do grande dia",
+      date: "12/2025",
+      img: grandeDia,
     },
   ];
 
