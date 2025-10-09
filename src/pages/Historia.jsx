@@ -245,12 +245,12 @@ export default function Historia() {
           <div className="mb-12 sm:mb-16 md:mb-20">
             {/* Photo */}
             <div className="text-center mb-10 sm:mb-14 md:mb-18">
-              <div className="w-56 h-56 sm:w-60 sm:h-60 md:w-80 md:h-80 lg:w-96 lg:h-96 mx-auto elegant-card rounded-full flex items-center justify-center mb-6 sm:mb-8 elegant-card-hover shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
+              <div className="w-64 h-64 sm:w-60 sm:h-60 md:w-80 md:h-80 lg:w-96 lg:h-96 mx-auto elegant-card rounded-full flex items-center justify-center mb-6 sm:mb-8 elegant-card-hover shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
                 <img
                   src={casal}
                   alt="Erica & Junior"
-                  className="w-full h-full object-cover"
-                  style={{ objectPosition: "center bottom" }}
+                  className="w-[110%] h-[110%] object-cover"
+                  style={{ objectPosition: "center 60%" }}
                 />
               </div>
             </div>
