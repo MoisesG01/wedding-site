@@ -245,13 +245,29 @@ export default function Historia() {
           <div className="mb-12 sm:mb-16 md:mb-20">
             {/* Photo */}
             <div className="text-center mb-10 sm:mb-14 md:mb-18">
-              <div className="w-64 h-64 sm:w-60 sm:h-60 md:w-80 md:h-80 lg:w-96 lg:h-96 mx-auto elegant-card rounded-full flex items-center justify-center mb-6 sm:mb-8 elegant-card-hover shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-300">
-                <img
-                  src={casal}
-                  alt="Erica & Junior"
-                  className="w-[110%] h-[110%] object-cover"
-                  style={{ objectPosition: "center 60%" }}
-                />
+              <div className="relative w-72 h-80 sm:w-80 sm:h-96 md:w-96 md:h-[450px] lg:w-[450px] lg:h-[550px] mx-auto mb-6 sm:mb-8">
+                {/* Decorative frame */}
+                <div className="absolute inset-0 bg-gradient-to-br from-pink-100/40 via-rose-100/40 to-pink-200/40 rounded-[40px] rotate-3"></div>
+                <div className="absolute inset-0 bg-gradient-to-tl from-pink-100/30 via-rose-100/30 to-pink-200/30 rounded-[40px] -rotate-2"></div>
+
+                {/* Main image container */}
+                <div
+                  className="relative elegant-card overflow-hidden shadow-2xl h-full"
+                  style={{
+                    borderRadius: "40px 40px 40px 40px",
+                    clipPath:
+                      "polygon(0% 8%, 8% 0%, 92% 0%, 100% 8%, 100% 92%, 92% 100%, 8% 100%, 0% 92%)",
+                  }}
+                >
+                  <img
+                    src={casal}
+                    alt="Erica & Junior"
+                    className="w-full h-full object-contain"
+                    style={{ objectPosition: "center center" }}
+                  />
+                  {/* Elegant overlay gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/5 via-transparent to-white/5 pointer-events-none"></div>
+                </div>
               </div>
             </div>
 
